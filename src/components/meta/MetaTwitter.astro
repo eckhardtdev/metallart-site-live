@@ -1,0 +1,32 @@
+---
+import type { Site, Asset } from '@/types'
+
+export type Props = {
+  site: Site
+}
+
+const { site } = Astro.props
+
+// Twitter Card meta
+// https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
+const title =
+  site.twitter_title || site.twitterTitle || site.title || site.defaultTitle
+const description =
+  site.twitter_description ||
+  site.twitterDescription ||
+  site.description ||
+  site.defaultDescription
+const image = site.twitter_image || site.twitterImage || site.defaultImage
+const url = site.twitterUrl || site.canonicalUrl
+const card = site.twitterCard || 'summary_large_image'
+
+const imageSrc = (
+  (image as Asset)?.filename ? (image as Asset).filename : image
+) as string
+---
+
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageSrc} />
+<meta name="twitter:url" content={url} />
+<meta name="twitter:card" content={card} />

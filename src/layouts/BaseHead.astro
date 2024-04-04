@@ -1,0 +1,21 @@
+---
+import '@fontsource-variable/sora'
+import '@/styles/index.css'
+import type { Site } from '@/types'
+import Meta from '@/components/meta/Meta.astro'
+import SiteVerification from '@/components/meta/SiteVerification.astro'
+// import ConsentManagement from '@/components/meta/ConsentManagement.astro'
+
+export type Props = {
+  meta?: Site
+}
+
+const { meta } = Astro.props
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<Meta meta={meta} />
+<SiteVerification />
+<!-- <ConsentManagement /> -->
+<meta name="generator" content={Astro.generator} />

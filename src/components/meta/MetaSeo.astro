@@ -1,0 +1,17 @@
+---
+import type { Site } from '@/types'
+
+export type Props = {
+  site: Site
+}
+
+const { site } = Astro.props
+const { title, defaultTitle, description, defaultDescription, canonicalUrl } =
+  site
+---
+
+<title>{title || defaultTitle}</title>
+<meta name="description" content={description || defaultDescription} />
+<link rel="canonical" href={canonicalUrl} />
+<!-- TODO: GOLIVE: Enable indexing -->
+<meta name="robots" content="noindex" />

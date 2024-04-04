@@ -1,0 +1,18 @@
+---
+import type { Hreflang } from '@/types/hreflang'
+
+// Good read on hreflangs
+// https://ahrefs.com/blog/de/hreflang-tags/
+
+export type Props = {
+  hreflangs?: Hreflang[]
+}
+
+const { hreflangs } = Astro.props
+---
+
+{
+  hreflangs?.map((hreflang) => (
+    <link rel="alternate" hreflang={hreflang.language} href={hreflang.url} />
+  ))
+}

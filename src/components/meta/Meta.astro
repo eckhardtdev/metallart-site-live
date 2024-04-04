@@ -1,0 +1,18 @@
+---
+import type { Site } from '@/types'
+import MetaSeo from '@/components/meta/MetaSeo.astro'
+import MetaIcon from '@/components/meta/MetaIcon.astro'
+import MetaColorScheme from '@/components/meta/MetaColorScheme.astro'
+import MetaRobots from '@/components/meta/MetaRobots.astro'
+
+export type Props = { meta?: Site }
+
+const { meta } = Astro.props
+
+const site = {
+  ...meta,
+}
+---
+
+<MetaSeo site={site} />
+<MetaRobots />

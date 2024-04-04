@@ -1,0 +1,35 @@
+---
+import BaseHead from '@/layouts/BaseHead.astro'
+import EnvBadge from '@/components/debug/EnvBadge.astro'
+import clsx from 'clsx'
+
+import type { Site } from '@/types'
+
+export type Props = {
+  meta?: Site
+  schema?: any
+  language?: string
+  class?: string
+}
+
+const { language, meta, schema, class: className } = Astro.props
+
+const lang = language || 'en'
+---
+
+<html lang={lang} class="scroll-pt-header">
+  <head>
+    <BaseHead meta={meta} />
+    {
+      schema && (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      )
+    }
+    <slot name="head" />
+  </head>
+
+  <body class={clsx('bg-steel text-white', className)}>
+    <slot />
+    <EnvBadge />
+  </body>
+</html>

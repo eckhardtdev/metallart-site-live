@@ -1,0 +1,99 @@
+---
+const colors = {
+  'creme': {
+    'DEFAULT': '#f2f2f2', // 100
+    '50': '#f8f8f8',
+    '100': '#f2f2f2',
+    '200': '#dcdcdc',
+    '300': '#bdbdbd',
+    '400': '#989898',
+    '500': '#7c7c7c',
+    '600': '#656565',
+    '700': '#525252',
+    '800': '#464646',
+    '900': '#3d3d3d',
+    '950': '#292929',
+  },
+  'velvet': {
+    'DEFAULT': '#00474f', // 900
+    '50': '#ecffff',
+    '100': '#bdf9ff',
+    '200': '#7bf2ff',
+    '300': '#31e8ff',
+    '400': '#00ecff',
+    '500': '#00e3ed',
+    '600': '#00b2bf',
+    '700': '#008a97',
+    '800': '#006b77',
+    '900': '#00474f',
+    '950': '#00353d',
+  },
+  'gold': {
+    'DEFAULT': '#ad9467', // 400
+    '50': '#f6f5f0',
+    '100': '#eae5d7',
+    '200': '#d6ccb2',
+    '300': '#beac86',
+    '400': '#ad9467',
+    '500': '#9c8056',
+    '600': '#866848',
+    '700': '#6c503c',
+    '800': '#5c4537',
+    '900': '#503c33',
+    '950': '#2d201b',
+  },
+  'spark': {
+    'DEFAULT': '#f8685d', // 400
+    '50': '#fef3f2',
+    '100': '#fee4e2',
+    '200': '#fececa',
+    '300': '#fdaaa4',
+    '400': '#f8685d',
+    '500': '#f04f43',
+    '600': '#dd3225',
+    '700': '#ba261b',
+    '800': '#9a231a',
+    '900': '#80231c',
+    '950': '#450e0a',
+  },
+  'steel': {
+    'DEFAULT': '#363f46', // 900
+    '50': '#f4f7f7',
+    '100': '#e2e9eb',
+    '200': '#c8d4d9',
+    '300': '#a1b6bf',
+    '400': '#73909d',
+    '500': '#587582',
+    '600': '#4c626e',
+    '700': '#42535c',
+    '800': '#3b474f',
+    '900': '#363f46',
+    '950': '#20272c',
+  },
+}
+
+// <span class="p-3 group cursor-pointer absolute left-1/2 bottom-1/2 transform -translate-x-1/2 translate-y-1/2">
+//       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="group-hover:hidden w-5 h-5" style="color: rgb(226, 233, 235);">
+//         <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"></path>
+//       </svg>
+//       <span class="hidden group-hover:inline text-sm" style="color: rgb(226, 233, 235);">Unlock</span>
+//     </span>
+---
+
+<div
+  class="color-family-outline relative flex flex-col space-y-1 overflow-hidden rounded-lg md:flex-row md:space-x-1 md:space-y-0"
+>
+  <div
+    class="relative flex h-14 w-full flex-col justify-center rounded-lg p-2 md:h-36 md:p-4"
+    style="background-color: rgb(244, 247, 247); color: rgb(54, 63, 70);"
+  >
+    <div
+      class="flex cursor-pointer items-center justify-between px-4 md:mt-auto md:block md:px-0"
+    >
+      <div style="color: rgb(54, 63, 70);">
+        <div class="text-center text-sm font-medium">50</div>
+        <div class="text-center text-xs uppercase opacity-90">f4f7f7</div>
+      </div>
+    </div>
+  </div>
+</div>

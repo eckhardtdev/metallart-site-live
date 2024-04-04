@@ -1,0 +1,42 @@
+---
+import type { Site, Asset } from '@/types'
+
+// Open Graph Image
+// 1200 x 630 px
+// Max. 300 KB otherwise it will not be sent, e.g. when sharing in WhatsApp.
+
+export type Props = {
+  site: Site
+}
+
+const { site } = Astro.props
+
+// Open Graph meta
+// https://ogp.me/#metadata
+const title =
+  site.og_title ||
+  site.ogTitle ||
+  site.facebookTitle ||
+  site.title ||
+  site.defaultTitle
+const description =
+  site.og_description ||
+  site.ogDescription ||
+  site.facebookDescription ||
+  site.description ||
+  site.defaultDescription
+const image =
+  site.og_image || site.ogImage || site.facebookImage || site.defaultImage
+const url = site.ogUrl || site.facebookUrl || site.canonicalUrl
+const type = site.ogType || site.facebookType || 'website'
+
+const imageSrc = (
+  (image as Asset)?.filename ? (image as Asset).filename : image
+) as string
+---
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageSrc} />
+<meta property="og:url" content={url} />
+<meta property="og:type" content={type} />

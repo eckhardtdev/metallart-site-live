@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+  --anchornav-height: 5rem;
+  --header-height: 5rem;
+  --page-margin: 20px;
+  --content-margin: 0px;
+  --container-max-width: 2000px;
+  --offset-wide: var(--page-margin);
+  --offset-content: calc(var(--page-margin) + var(--content-margin));
+  --gap: 20px;
+}
+
+@screen md {
+  :root {
+    --header-height: 7.5rem;
+  }
+}
+
+@screen lg {
+  :root {
+    --header-height: 7.5rem;
+    --page-margin: 60px;
+    --content-margin: 50px;
+  }
+}
+
+@screen xl {
+  :root {
+    --page-margin: 120px;
+    --content-margin: 100px;
+  }
+}
+
+@font-face {
+  font-family: 'Adieu';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url('/fonts/Adieu-Regular.woff') format('woff'),
+    url('/fonts/Adieu-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Adieu';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url('/fonts/Adieu-Bold.woff') format('woff'),
+    url('/fonts/Adieu-Bold.woff2') format('woff2');
+}
+
+@layer base {
+  * {
+    /* Fix overflow of grid/flex childs */
+    min-width: 0;
+    /* Prevent any object from being highlighted upon touch event*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  html {
+    word-spacing: 0.05em;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply font-sans;
+    @apply break-words;
+    @apply text-steel;
+
+    /* Push footer to the bottom  */
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    /* grid-template-rows: 1fr auto; */
+  }
+
+  svg {
+    @apply pointer-events-none;
+  }
+
+  b,
+  strong {
+    font-weight: 600;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    @apply font-mono;
+  }
+
+  [type='text'],
+  input:where(:not([type])),
+  [type='email'],
+  [type='url'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='week'],
+  [multiple],
+  textarea,
+  select {
+    border-width: 0;
+    padding: 0;
+  }
+}
+
+@layer components {
+  .card-hover,
+  .card-hover-group {
+    @apply hovers:transition hovers:duration-500 hovers:ease-out-power2;
+  }
+  .card-hover {
+    @apply hovers:hover:-translate-y-1 hovers:hover:shadow-lg;
+  }
+  .card-hover-group {
+    @apply hovers:group-hover:-translate-y-1 hovers:group-hover:shadow-lg;
+  }
+
+  .hero-shade {
+    @apply relative;
+    @apply before:absolute before:top-0 before:z-20 before:h-full before:w-full before:bg-gradient-to-b before:from-black/75 before:via-black/15 before:via-[300px] before:to-black/15;
+  }
+
+  .area {
+    --meta: minmax(0, 1fr);
+    display: grid;
+    /* grid-template-areas: '. . meta . .' '. . container1 container2 . .' 'ad ad ad ad ad'; */
+    grid-template-columns:
+      var(--offset-wide)
+      var(--meta)
+      /* min(calc(100vw - var(--offset-wide) * 2), var(--container-max-width)) */
+      min(calc(50vw - var(--offset-wide) - var(--content-margin)))
+      min(calc(50vw - var(--offset-wide) - var(--content-margin)))
+      var(--meta)
+      var(--offset-wide);
+  }
+  .area .area-content {
+    grid-column: 3 / -3;
+  }
+  .area .area-content-left {
+    grid-column: 3 / 4;
+  }
+  .area .area-content-right {
+    grid-column: 4 / -3;
+  }
+
+  .area .area-wide {
+    grid-column: 2 / -2;
+  }
+  .area .area-wide-left {
+    grid-column: 2 / 4;
+  }
+  .area .area-wide-right {
+    grid-column: 4 / -2;
+  }
+
+  .area .area-full {
+    grid-column: 1 / -1;
+  }
+  .area .area-full-left {
+    grid-column: 1 / 4;
+  }
+  .area .area-full-right {
+    grid-column: 4 / -1;
+  }
+
+  .area-image {
+    grid-area: image;
+  }
+
+  .area-text {
+    grid-area: text;
+  }
+
+  [astro-icon] {
+    fill: currentColor;
+  }
+}
+
+@layer utilities {
+  .absolute-center {
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .scrollbar-hidden {
+    /* for Firefox */
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    /* for Chrome, Safari, Edge, and Opera */
+    display: none;
+  }
+
+  .outline-none {
+    outline: none;
+  }
+}
