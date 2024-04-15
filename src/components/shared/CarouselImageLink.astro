@@ -1,0 +1,36 @@
+---
+import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
+import clsx from 'clsx'
+import { applyLinkAttrs } from '@/utils/link'
+import type { AssetStoryblok } from '@/types/storyblok'
+
+export type Props = {
+  class?: string
+  image?: AssetStoryblok
+  title?: string
+  url: string
+  aspectRatio?: string | number
+  pictureSizes: string
+}
+
+const {
+  class: className,
+  url,
+  image,
+  title,
+  aspectRatio,
+  pictureSizes,
+} = Astro.props
+---
+
+<a {...applyLinkAttrs(url)} class={clsx('group block', className)}>
+  <StoryblokPicture
+    image={image}
+    aspectRatio={aspectRatio}
+    class={clsx('w-full rounded bg-white')}
+    classPicture="card-hover-group"
+    sizes={pictureSizes}
+    alt={title}
+  />
+  {title && <div class="mt-1 text-18 text-steel lg:mt-5">{title}</div>}
+</a>

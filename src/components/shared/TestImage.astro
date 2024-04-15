@@ -1,0 +1,52 @@
+---
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import type { TestImageStoryblok } from '@/types/storyblok'
+
+export type Props = {
+  blok: TestImageStoryblok
+}
+
+const { blok } = Astro.props
+---
+
+<StoryblokPicture
+  image={blok.imageChanged}
+  sizes="(max-width: 400px) 100vw, 400px"
+  class="max-w-100"
+/>
+
+{
+  // <div>
+  //   <div class="max-w-100">
+  //     {blok.image?.filename && <img src={blok.image.filename} alt="" />}
+  //   </div>
+  //   <pre>{JSON.stringify(meta, null, 2)}</pre>
+  // </div>
+  // <div>
+  //   <div class="max-w-100">
+  //     {
+  //       blok.imageChanged?.filename && (
+  //         <img src={blok.imageChanged.filename} alt="" />
+  //       )
+  //     }
+  //   </div>
+  //   <pre>{JSON.stringify(getAssetDimensions(blok.imageChanged), null, 2)}</pre>
+  // </div>
+  // <div>
+  //   <div class="max-w-100">
+  //     <Image
+  //       src={blok.imageChanged?.filename}
+  //       alt="Astro Image from Storyblok"
+  //       width={meta.width}
+  //       height={meta.height}
+  //     />
+  //   </div>
+  //   <div class="max-w-100">
+  //     <Image
+  //       src={blok.imageChanged?.filename}
+  //       alt="Astro Image from Storyblok"
+  //       inferSize={true}
+  //     />
+  //   </div>
+  // </div>
+}

@@ -1,0 +1,87 @@
+---
+import type { MediaGridStoryblok } from '@/types/storyblok'
+import { containerWidth } from '@/utils/containerWidth'
+import type { SbBlokData } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: MediaGridStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const items = blok.items
+const columnConfig = {
+  // The option 2 is not included in the design.
+  '2': 'md:grid-cols-2',
+  '3': clsx(items && items?.length > 3 && 'sm:grid-cols-2', 'md:grid-cols-3'),
+  '4': 'sm:grid-cols-2 md:grid-cols-4',
+}
+const columnClass = columnConfig[blok.numColumns] ?? columnConfig['3']
+
+const sizesConfig = {
+  full: 'min-width(768px) calc((100vw - var(--gap)) / 2), 100vw',
+  wide: 'min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-wide) * 2)',
+  content:
+    'min-width(768px) calc((100vw - var(--offset-content) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2)',
+}
+const sizes = sizesConfig[blok.containerWidth] ?? sizesConfig.full
+
+const numColumns = parseInt(blok.numColumns) ?? 2
+---
+
+<Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>
+  <div
+    class={clsx(
+      containerWidth(blok.containerWidth),
+      'grid gap-gap',
+      columnClass,
+    )}
+  >
+    {
+      items?.map((item, index) => (
+        <>
+          {(item as unknown as SbBlokData).component === 'Media' ? (
+            <StoryblokComponent
+              blok={item as unknown as SbBlokData}
+              aspectRatio={blok.imageAspectRatio}
+              sizes={sizes}
+              class={clsx(
+                'w-full',
+                blok.containerWidth !== 'full' && 'rounded',
+                blok.containerWidth === 'full' && index % numColumns === 0
+                  ? // First column
+                    'md:rounded-br md:rounded-tr'
+                  : (index + numColumns + 1) % numColumns === 0
+                    ? // Last column
+                      'md:rounded-bl md:rounded-tl'
+                    : // Center columns
+                      'md:rounded',
+              )}
+            />
+          ) : (
+            <StoryblokComponent
+              blok={item as unknown as SbBlokData}
+              aspectRatio={blok.imageAspectRatio}
+              class={clsx(
+                'w-full',
+                blok.containerWidth !== 'full' && 'rounded',
+                blok.containerWidth === 'full' && index % numColumns === 0
+                  ? // First column
+                    'md:rounded-br md:rounded-tr'
+                  : (index + numColumns + 1) % numColumns === 0
+                    ? // Last column
+                      'md:rounded-bl md:rounded-tl'
+                    : // Center columns
+                      'md:rounded',
+              )}
+            />
+          )}
+        </>
+      ))
+    }
+  </div>
+</Section>

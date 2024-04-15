@@ -1,0 +1,208 @@
+---
+import EntryGrid from '@/components/shared/EntryGrid.astro'
+import type { Props as EntryGridItemProps } from '@/components/shared/EntryGridItem.astro'
+import EntryLayout from '@/layouts/EntryLayout.astro'
+import type { ProjectArchiveStoryblok } from '@/types/storyblok'
+import { fetchStories, storyblokEditable } from '@/utils/storyblok'
+import { fetchDatasourceEntries } from '@/utils/storyblok/fetchDatasources'
+import clsx from 'clsx'
+import type { StoryblokStory } from 'storyblok-generate-ts'
+import ProjectFilter from '../shared/ProjectFilter.astro'
+import { useTranslate } from '@/i18n/utils'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import Button from '../shared/Button.astro'
+import type { DatasourceFilter } from '@/types/filter'
+import {
+  getDatasourceByField,
+  getFieldsForDatasources,
+} from '@/utils/storyblok/datasource-field-mapping'
+import Icon from '../shared/Icon.astro'
+import { projectsSortBy } from '@/utils/metallart'
+
+export type Props = {
+  slug?: string
+  language?: string
+  alternates?: {
+    [key: string]: string
+  }
+  story: StoryblokStory<ProjectArchiveStoryblok>
+  blok: ProjectArchiveStoryblok
+  color: string
+}
+
+const { story, blok } = Astro.props
+const t = useTranslate(Astro.url)
+
+// created_at, published_at, sort_by_date
+const stories = await fetchStories({
+  starts_with: 'global/projects/',
+  language: story.lang,
+  sort_by: projectsSortBy,
+  // per_page: 100,
+})
+
+const items =
+  stories?.map(
+    (story) =>
+      ({
+        ...story.content,
+        title: story.content?.listTitle || story.content?.title,
+        image: story.content?.cover?.filename
+          ? story.content?.cover
+          : story.content?.image,
+        uuid: story.uuid,
+        // link: {
+        //   url: story.full_slug,
+        //   linktype: 'url',
+        // },
+        url: story.full_slug,
+      }) as EntryGridItemProps,
+  ) ?? []
+
+const datasources = [
+  'color',
+  // 'handrail-material',
+  'railing-material',
+  'railing',
+  'stair-tread-material',
+  'staircase-material',
+  // 'staircase-shape',
+  // 'staircase-style',
+  'staircase-type',
+]
+
+let filters: DatasourceFilter[] = []
+for (const datasource of datasources) {
+  const options = await fetchDatasourceEntries(datasource, {
+    dimension: story.lang,
+  })
+  filters.push({
+    type: 'select',
+    label: t(`project_filter.${datasource}` as unknown),
+    name: datasource,
+    options:
+      options?.map((option) => ({
+        id: '',
+        label: option.value as string,
+        value: option.defaultValue,
+      })) ?? [],
+    advanced: datasource !== 'staircase-type',
+  })
+}
+filters.push({
+  type: 'select',
+  advanced: true,
+  label: t('project_filter.floors'),
+  name: 'floors',
+  options: [
+    { id: '', label: t('project_filter.floors_option_1'), value: '1' },
+    { id: '', label: t('project_filter.floors_option_2'), value: '2' },
+    { id: '', label: t('project_filter.floors_option_3'), value: '3' },
+    { id: '', label: t('project_filter.floors_option_4'), value: '4' },
+    { id: '', label: t('project_filter.floors_option_7'), value: '7' },
+    { id: '', label: t('project_filter.floors_option_11'), value: '11' },
+  ],
+})
+// filters.push({
+//   type: 'select',
+//   advanced: true,
+//   label: t('project_filter.outdoor'),
+//   name: 'outdoor',
+//   options: [
+//     { label: t('project_filter.outdoor.outdoors'), value: true },
+//     { label: t('project_filter.outdoor.indoors'), value: false },
+//   ],
+// })
+
+filters = filters.map((filter) => {
+  const id = filter.name
+
+  return {
+    ...filter,
+    id,
+    options: filter.options?.map((option) => ({
+      ...option,
+      id: `${id}_${option.value}`,
+    })),
+  }
+})
+
+const getFieldOptionId = (fieldName, option) => {
+  return `${getDatasourceByField(fieldName)}_${option}`
+}
+
+const fields = getFieldsForDatasources([...datasources, 'floors'])
+const filterValuesWithResults = [
+  ...new Set(
+    items.flatMap((item) => {
+      const allValues = fields.flatMap((field) => {
+        const values = item[field]
+
+        if (Array.isArray(values)) {
+          return values.map((value) => getFieldOptionId(field, value))
+        } else {
+          return getFieldOptionId(field, values)
+        }
+      })
+      return allValues
+    }),
+  ),
+]
+const filterWithResults = filters.map((filter) => {
+  const options = filter.options?.filter((option) => {
+    const id = option.id
+    const hasResult = filterValuesWithResults.includes(id)
+    return hasResult
+  })
+
+  return {
+    ...filter,
+    options,
+  }
+})
+---
+
+<EntryLayout story={story} {...storyblokEditable(blok)}>
+  <main>
+    {
+      blok.bodyBefore?.map((sectionBlok) => (
+        <StoryblokComponent blok={sectionBlok} />
+      ))
+    }
+    <div x-data="projects" class={clsx('area relative mt-md grid gap-y-10')}>
+      {
+        // NOTE: Astro Icon defines a sprite <symbol> with a unique ID the first time the Icon component is included on a page.
+        // This is why we need to include the Icon component here to ensure the sprite is available before the ProjectFilter component is rendered.
+        // Otherwise the <symbol> would be defined by the site footer.
+      }
+      <Icon name="logo-icon" class="sr-only" />
+      <ProjectFilter
+        variant="projects"
+        initialNumItems={items.length}
+        filters={filterWithResults}
+        class="area-content mb-10"
+      />
+      <EntryGrid items={items} class="area-wide" usesAlpine={true} />
+      <div class="area-wide" x-show="filtered && !filteredResults?.length">
+        <p class="text-20 text-center leading-150 md:text-24">
+          {t('project_filter.noresult_message')}
+        </p>
+        <div class="mt-5 text-center">
+          <Button
+            x-on:click="useClosestMatchFilters()"
+            preset="secondary-dark"
+            type="button"
+            as="button"
+          >
+            {t('project_filter.find_closest_match')}
+          </Button>
+        </div>
+      </div>
+    </div>
+    {
+      blok.bodyAfter?.map((sectionBlok) => (
+        <StoryblokComponent blok={sectionBlok} />
+      ))
+    }
+  </main>
+</EntryLayout>

@@ -1,0 +1,35 @@
+---
+import clsx from 'clsx'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import EntryLayout from '@/layouts/EntryLayout.astro'
+import { storyblokEditable } from '@/utils/storyblok'
+
+import type { StoryblokStory } from 'storyblok-generate-ts'
+import type { KnowledgeBaseArticleStoryblok } from '@/types/storyblok'
+
+export type Props = {
+  slug?: string
+  language?: string
+  alternates?: {
+    [key: string]: string
+  }
+  story: StoryblokStory<KnowledgeBaseArticleStoryblok>
+  blok: KnowledgeBaseArticleStoryblok
+  color: string
+}
+
+const { story, blok } = Astro.props
+
+const { body, ...storyProps } = blok
+const heroBlok = {
+  ...storyProps,
+  component: 'KnowledgeBaseHero',
+}
+const content = [heroBlok, ...(body ?? [])]
+---
+
+<EntryLayout story={story} {...storyblokEditable(blok)}>
+  <main class={clsx()}>
+    {content.map((blok) => <StoryblokComponent blok={blok} />)}
+  </main>
+</EntryLayout>

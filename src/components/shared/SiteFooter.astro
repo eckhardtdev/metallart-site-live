@@ -1,0 +1,242 @@
+---
+import { getSiteFromRoute } from '@/i18n/utils'
+import { applyLinkAttrs } from '@/utils/link'
+import { useSiteConfig } from '@/utils/useSiteConfig'
+import clsx from 'clsx'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+import Icon from './Icon.astro'
+import LanguageSelect from './LanguageSelect.astro'
+import SocialLink from './SocialLink.astro'
+import FooterCtaRequest from './FooterCtaRequest.astro'
+import type { MultilinkStoryblok } from '@/types/storyblok'
+import { getSbLanguageFromLocale } from '@/utils/storyblok/i18n'
+
+const { ctaVariant } = Astro.props
+
+const currentSite = getSiteFromRoute(Astro.url.href)
+const currentLocale = Astro.currentLocale
+const site = await useSiteConfig({ site: currentSite, lang: currentLocale })
+
+const year = new Date().getFullYear()
+const copyright = site.config.copyright
+  ? site.config.copyright.replace(/{{year}}/gm, year + '')
+  : undefined
+
+const directoryLinkClasses = clsx(
+  'inline-block flex-none py-1 hovers:transition-opacity hovers:hover:underline hovers:hover:opacity-80',
+)
+const metaLinkClasses = clsx(
+  'inline-block flex-none py-1 underline',
+  'hovers:transition hovers:hover:opacity-80',
+)
+
+const directoriesAndMetaLinks = [
+  ...(site.config.directories ?? []),
+  ...(site.config.metaLinks ?? []),
+]
+---
+
+<div class="mt-md">
+  {
+    ctaVariant === 'request' && (
+      <FooterCtaRequest
+        text={site.config.footerCtaText}
+        links={site.config.footerCtaLink}
+      />
+    )
+  }
+  <footer class="bg-steel py-6 text-14 leading-125 text-white xl:py-16">
+    <div
+      class="flex justify-between gap-x-24 gap-y-16 px-5 md:px-10 xl+:flex-col"
+    >
+      <nav class="xl:order-2">
+        {
+          // Mobile collapsible navigation
+          // directories, metaLinks, languageSelect
+        }
+        <ul class={clsx('md:hidden', 'divide-y divide-white/20')}>
+          {
+            directoriesAndMetaLinks.map((directory) => (
+              <li x-data="{ expanded: false }">
+                <div class="flex min-h-12 items-center justify-between">
+                  <a
+                    {...applyLinkAttrs(directory?.link as MultilinkStoryblok)}
+                    class={clsx(
+                      'block',
+                      'whitespace-nowrap font-bold',
+                      'hovers:transition-opacity hovers:hover:opacity-80',
+                    )}
+                  >
+                    <strong>{directory.label}</strong>
+                  </a>
+                  {directory.items?.length > 0 && (
+                    <button
+                      type="button"
+                      class={clsx(
+                        'flex h-12 w-12 items-center justify-end',
+                        'hovers:transition-opacity hovers:hover:opacity-80',
+                      )}
+                      x-on:click="expanded = ! expanded"
+                    >
+                      <Icon
+                        name="plus"
+                        x-bind:class="expanded && 'hidden'"
+                        class="h-6 w-6 flex-none"
+                      />
+                      <Icon
+                        name="minus"
+                        x-bind:class="!expanded && 'hidden'"
+                        class="h-6 w-6 flex-none"
+                      />
+                    </button>
+                  )}
+                </div>
+                {directory.items?.length > 0 && (
+                  <ul class="pb-2" x-show="expanded" x-collapse>
+                    {directory.items?.map((item) => (
+                      <li>
+                        {
+                          // TODO: Render buttons as button elements
+                        }
+                        <a
+                          {...applyLinkAttrs(item.link)}
+                          class={clsx(
+                            'block flex-none py-2 leading-5',
+                            'hovers:transition hovers:hover:opacity-80',
+                          )}
+                        >
+                          {item.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          }
+          <li class="min-h-12">
+            <LanguageSelect />
+          </li>
+        </ul>
+        {
+          // Directories on > tablet
+        }
+        <ul
+          class={clsx(
+            'hidden md:grid',
+            'md:grid-cols-3-max md:gap-x-16 md:gap-y-10 lg:grid-cols-5-max lg:gap-x-16',
+          )}
+        >
+          {
+            site.config?.directories?.map((directory) => (
+              <li>
+                <a
+                  {...applyLinkAttrs(directory.link as MultilinkStoryblok)}
+                  class={clsx(
+                    directoryLinkClasses,
+                    'whitespace-nowrap font-bold',
+                  )}
+                >
+                  <strong>{directory.label}</strong>
+                </a>
+                <ul class="mt-4 lg:mt-10">
+                  {directory.items?.map((item) => (
+                    <li>
+                      <a
+                        {...applyLinkAttrs(item.link as MultilinkStoryblok)}
+                        class={clsx(directoryLinkClasses)}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div class="space-y-[1em]">
+        <StoryblokRichText
+          content={site.config.address}
+          class="prose prose-sm prose-white"
+        />
+        <StoryblokRichText
+          content={site.config.contact}
+          class="prose prose-sm prose-white"
+        />
+        <StoryblokRichText
+          content={site.config.openingHours}
+          class="prose prose-sm prose-white"
+        />
+        <div class="!mt-8 -ml-2 flex gap-x-0">
+          {
+            site.config.socialLinks?.map((item) => (
+              <SocialLink
+                {...applyLinkAttrs(item.link)}
+                blok={item}
+                class="block hovers:transition-opacity hovers:hover:opacity-80"
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+    <div
+      class={clsx(
+        'mt-8 md:mt-16',
+        'relative grid gap-y-8 px-5 md:px-10 xl:grid-cols-2',
+      )}
+    >
+      <Icon
+        name="signet"
+        class={clsx(
+          'hidden xl:block',
+          'h-12 w-12 xl:absolute xl:left-1/2 xl:top-0 xl:block xl:-translate-x-1/2 xl:-translate-y-2.5',
+        )}
+      />
+      <div
+        class={clsx(
+          'hidden md:flex',
+          'flex-col gap-x-8 gap-y-2 md:flex-row md:items-center xl:justify-end',
+        )}
+      >
+        {
+          site.config?.metaLinks && site.config?.metaLinks?.length > 0 && (
+            <div class="flex flex-col gap-x-8 gap-y-2 md:flex-row md:items-center">
+              {site.config?.metaLinks?.map((item) => (
+                <a
+                  {...applyLinkAttrs(item.link as MultilinkStoryblok)}
+                  class={clsx(metaLinkClasses)}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          )
+        }
+        <LanguageSelect />
+      </div>
+      <div
+        class="flex flex-col gap-x-8 gap-y-2 md:flex-row md:items-center xl:row-start-1"
+      >
+        {
+          site.config?.legalLinks && site.config?.legalLinks?.length > 0 && (
+            <div class="flex flex-col gap-x-8 gap-y-2 md:order-2 md:flex-row md:items-center">
+              {site.config.legalLinks.map((item) => (
+                <a
+                  {...applyLinkAttrs(item.link as MultilinkStoryblok)}
+                  class={clsx('block', metaLinkClasses)}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          )
+        }
+        {copyright && <div class="flex-none py-2">{copyright}</div>}
+      </div>
+    </div>
+    <Icon name="signet" class={clsx('xl:hidden', 'mx-auto mt-5 h-12 w-12')} />
+  </footer>
+</div>

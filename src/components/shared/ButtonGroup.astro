@@ -1,0 +1,61 @@
+---
+import Button, {
+  type Arrow,
+  type Color,
+  type Size,
+} from '@/components/shared/Button.astro'
+import type { LinkStoryblok } from '@/types/storyblok'
+import { applyLinkAttrs } from '@/utils/link'
+import clsx from 'clsx'
+
+export type Theme = 'light' | 'dark'
+
+export type Props = {
+  as?: string
+  links: LinkStoryblok[]
+  class?: string
+  theme?: Theme
+  color?: Color
+  size?: Size
+  linkArrow?: Arrow
+  centered?: boolean
+}
+
+const {
+  as: ButtonTag = 'a',
+  class: className,
+  links = [],
+  theme = 'dark',
+  color,
+  size,
+  linkArrow = 'left',
+  centered = false,
+} = Astro.props
+
+const finalLinks = links.map((link) => ({
+  blok: link,
+  preset: link.preset ? `${link.preset}-${theme}` : undefined,
+  color,
+  size,
+  arrow: linkArrow,
+}))
+---
+
+{
+  finalLinks.length > 0 && (
+    <div class={clsx(className, centered && 'text-center')}>
+      {finalLinks.map((link) => (
+        <Button
+          as={ButtonTag}
+          {...(ButtonTag === 'a' ? applyLinkAttrs(link.blok?.link) : undefined)}
+          preset={link.preset}
+          color={link.color}
+          size={link.size}
+          arrow={link.arrow}
+        >
+          {link.blok?.label}
+        </Button>
+      ))}
+    </div>
+  )
+}

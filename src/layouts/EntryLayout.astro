@@ -1,0 +1,72 @@
+---
+import ContactDialog from '@/components/shared/ContactDialog.astro'
+import GlobalNavigation from '@/components/shared/GlobalNavigation.astro'
+import SiteFooter from '@/components/shared/SiteFooter.astro'
+import SiteHeader from '@/components/shared/SiteHeader.astro'
+import type {
+  JobPostingStoryblok,
+  KnowledgeBaseArticleStoryblok,
+  NewsArchiveStoryblok,
+  NewsArticleStoryblok,
+  PageStoryblok,
+  ProjectArchiveStoryblok,
+  ProjectStoryblok,
+} from '@/types/storyblok'
+import { getStoryDates, type AstroStoryblokPage } from '@/utils/storyblok'
+import clsx from 'clsx'
+import type { StoryblokStory } from 'storyblok-generate-ts'
+import BaseLayout from './BaseLayout.astro'
+
+export type Props = {
+  class?: string
+  page?: AstroStoryblokPage
+  story:
+    | StoryblokStory<PageStoryblok>
+    | StoryblokStory<JobPostingStoryblok>
+    | StoryblokStory<KnowledgeBaseArticleStoryblok>
+    | StoryblokStory<NewsArchiveStoryblok>
+    | StoryblokStory<NewsArticleStoryblok>
+    | StoryblokStory<ProjectStoryblok>
+    | StoryblokStory<ProjectArchiveStoryblok>
+}
+
+const { page, story } = Astro.props
+const { content, full_slug: fullSlug } = story || {}
+
+const { datePublished, dateModified } = getStoryDates(story)
+
+const meta = {
+  og_image: content.seo?.og_image,
+  og_title: content.seo?.og_title,
+  description: content.seo?.description,
+  twitter_image: content.seo?.twitter_image,
+  twitter_title: content.seo?.twitter_title,
+  og_description: content.seo?.og_description,
+  twitter_description: content.seo?.twitter_description,
+  title: content.seo?.title || content?.title || story?.name,
+  slug: fullSlug,
+  datePublished,
+  dateModified,
+  hreflangs: page?.hreflangs,
+}
+
+const heroComponents = ['PageHero', 'HomePageHero']
+const firstBlockComponent = story?.content?.body?.[0]?.component
+const hasHero = heroComponents.includes(firstBlockComponent)
+let floatingHeader = hasHero
+if (story?.content?.component === 'Project') {
+  floatingHeader = true
+}
+---
+
+<BaseLayout
+  {...Astro.props}
+  meta={meta}
+  class={clsx(!floatingHeader && 'pt-header')}
+>
+  <SiteHeader floating={floatingHeader} />
+  <slot />
+  <SiteFooter ctaVariant={story?.content?.footerCtaVariant} />
+  <GlobalNavigation />
+  <ContactDialog />
+</BaseLayout>

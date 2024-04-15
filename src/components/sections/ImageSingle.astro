@@ -1,0 +1,55 @@
+---
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import type { ImageSingleStoryblok } from '@/types/storyblok'
+import { containerWidth } from '@/utils/containerWidth'
+import clsx from 'clsx'
+import Markdown from '../shared/Markdown.astro'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: ImageSingleStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const imageSizes = {
+  'sm': 'h-[18.75rem]',
+  'md': 'h-[35rem]',
+  'lg': 'h-[45rem]',
+}
+const sizesConfig = {
+  'content': 'min-width(1024px) calc(100vw - var(--offset-content) * 2), 100vw',
+  'wide': 'min-width(1024px) calc(100vw - var(--offset-wide) * 2), 100vw',
+  'full': '100vw',
+}
+const sizes = sizesConfig[blok.containerWidth ?? ''] ?? sizesConfig.full
+const imageHeight = imageSizes[blok.imageSize ?? ''] ?? imageSizes.lg
+---
+
+<Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>
+  <div class={clsx(containerWidth(blok.containerWidth ?? 'content'))}>
+    {
+      blok.image?.filename && (
+        <StoryblokPicture
+          image={blok.image}
+          class={clsx(
+            imageHeight,
+            'object-cover',
+            blok.containerWidth !== 'full' && 'rounded',
+          )}
+          sizes={sizes}
+        />
+      )
+    }
+    {
+      blok.caption && (
+        <div class={clsx(blok.containerWidth === 'full' && 'pr-5')}>
+          <p class="ml-auto mt-5 max-w-4xl text-right text-base text-steel md:text-lg">
+            <Markdown content={blok.caption} />
+          </p>
+        </div>
+      )
+    }
+  </div>
+</Section>

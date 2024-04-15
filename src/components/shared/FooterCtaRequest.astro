@@ -1,0 +1,50 @@
+---
+import type { LinkStoryblok } from '@/types/storyblok'
+import Icon from './Icon.astro'
+import { Picture } from 'astro:assets'
+import BgImage from '@/images/made-in-salach-bg.jpg'
+import ButtonGroup from './ButtonGroup.astro'
+
+type Props = {
+  text?: string
+  links?: LinkStoryblok[]
+}
+
+const { text, links } = Astro.props
+---
+
+<div class="bg-steel text-white md:grid md:grid-cols-2">
+  <div class="relative stack">
+    <div class="aspect-16/9 max-w-[960px]"></div>
+    <Picture
+      src={BgImage}
+      formats={['avif', 'webp']}
+      alt="Made in Salach"
+      widths={[640, 768, 1024, 1366, 1600, 1920, 3840]}
+      sizes="min-width(768px) 50vw, 100vw"
+      class="h-full w-full object-cover object-center"
+      pictureAttributes={{ class: 'absolute inset-0 w-full h-full' }}
+    />
+    <div class="flex items-center justify-center">
+      <Icon
+        name="made-in-salach"
+        class="relative z-10 w-[64%] min-w-[260px] max-w-[340px]"
+      />
+    </div>
+  </div>
+  <div class="flex items-center bg-spark p-20 md:p-10">
+    <div class="mx-auto w-full max-w-[32rem] flex-none">
+      {text && <div class="text-18 leading-125 lg:text-24">{text}</div>}
+      {
+        links && (
+          <ButtonGroup
+            links={links}
+            linkArrow="left"
+            theme="light"
+            class="-mb-5 mt-5"
+          />
+        )
+      }
+    </div>
+  </div>
+</div>

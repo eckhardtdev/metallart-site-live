@@ -1,0 +1,69 @@
+---
+import { ContactForm as Form } from '@/components/form/ContactForm'
+import { getLangFromUrl, useTranslate } from '@/i18n/utils'
+
+export type Props = {
+  class?: string
+}
+
+const { class: className } = Astro.props
+const t = useTranslate(Astro.url)
+const language = getLangFromUrl(Astro.url)
+
+// client:idle
+---
+
+<Form
+  client:load
+  className={className}
+  language={language}
+  preferredLanguage={Astro.preferredLocale}
+  locale={Astro.currentLocale}
+  submitLabel={t('contact.submit')}
+  privacyText={t('contact.privacy')}
+  successText={t('contact.success')}
+  emailInvalidText={t('form.email.email')}
+  emailRequiredText={t('form.email.required')}
+  messageRequiredText={t('form.message.required')}
+  submittingMessage={t('form.sending')}
+  nameLabel={t('form.name.label')}
+  emailLabel={t('form.email.label')}
+  phoneLabel={t('form.phone.label')}
+  postalCodeLabel={t('form.postalCode.label')}
+  messageLabel={t('form.message.label')}
+  occupationalGroupLabel={t('form.occupationalGroup.label')}
+  originalSourceFirstPersonLabel={t('form.originalSourceFirstPerson.label')}
+  appointmentLabel={t('form.appointment.label')}
+  newsletterLabel={t('form.newsletter.label')}
+  occupationalGroupOptionArchitect={t(
+    'form.occupationalGroup.option.architect',
+  )}
+  occupationalGroupOptionCommercialBuilder={t(
+    'form.occupationalGroup.option.commercial_builder',
+  )}
+  occupationalGroupOptionPrivateBuilder={t(
+    'form.occupationalGroup.option.private_builder',
+  )}
+  occupationalGroupOptionLocksmithMetalworkers={t(
+    'form.occupationalGroup.option.locksmith_metalworkers',
+  )}
+  occupationalGroupOptionOther={t('form.occupationalGroup.option.other')}
+  originalSourceFirstPersonOptionInternetSearch={t(
+    'form.originalSourceFirstPerson.option.internet_search',
+  )}
+  originalSourceFirstPersonOptionSocialMedia={t(
+    'form.originalSourceFirstPerson.option.social_media',
+  )}
+  originalSourceFirstPersonOptionRecommendation={t(
+    'form.originalSourceFirstPerson.option.recommendation',
+  )}
+  originalSourceFirstPersonOptionEvent={t(
+    'form.originalSourceFirstPerson.option.event',
+  )}
+  originalSourceFirstPersonOptionPress={t(
+    'form.originalSourceFirstPerson.option.press',
+  )}
+  originalSourceFirstPersonOptionOther={t(
+    'form.originalSourceFirstPerson.option.other',
+  )}
+/>

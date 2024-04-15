@@ -33,26 +33,6 @@
   }
 }
 
-@font-face {
-  font-family: 'Adieu';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src:
-    url('/fonts/Adieu-Regular.woff') format('woff'),
-    url('/fonts/Adieu-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Adieu';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src:
-    url('/fonts/Adieu-Bold.woff') format('woff'),
-    url('/fonts/Adieu-Bold.woff2') format('woff2');
-}
-
 @layer base {
   * {
     /* Fix overflow of grid/flex childs */
@@ -85,8 +65,7 @@
     min-height: 100vh;
     min-height: 100svh;
     display: grid;
-    align-items: center;
-    /* grid-template-rows: 1fr auto; */
+    grid-template-rows: 1fr auto;
   }
 
   svg {
@@ -221,4 +200,9 @@
   .outline-none {
     outline: none;
   }
+}
+
+/* Slide */
+.splide .splide__pagination__page {
+  @apply opacity-100;
 }

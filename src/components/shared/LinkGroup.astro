@@ -1,0 +1,16 @@
+---
+import Link from '@/components/shared/Link.astro'
+import clsx from 'clsx'
+
+const { class: className, links = [] } = Astro.props
+---
+
+{
+  links.length > 0 && (
+    <div class={clsx(className)}>
+      {links.map((link) => (
+        <Link blok={link} />
+      ))}
+    </div>
+  )
+}

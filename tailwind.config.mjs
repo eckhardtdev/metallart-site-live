@@ -1,8 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 import tailwindcssTypography from '@tailwindcss/typography'
+import tailwindcssForms from '@tailwindcss/forms'
 import colors from 'tailwindcss/colors'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import plugin from 'tailwindcss/plugin'
+const withMT = require('@material-tailwind/react/utils/withMT')
 
 const round = (num) =>
   num
@@ -14,7 +16,7 @@ const em = (px, base) => `${round(px / base)}em`
 
 const fontFamily = {
   sans: ['Sora Variable', ...defaultTheme.fontFamily.sans],
-  hero: ['Adieu', ...defaultTheme.fontFamily.sans],
+  static: ['Sora', ...defaultTheme.fontFamily.sans],
   mono: [
     'Apple Color Emoji',
     'Segoe UI Emoji',
@@ -24,7 +26,7 @@ const fontFamily = {
   ],
 }
 
-export default {
+export default withMT({
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
@@ -120,6 +122,7 @@ export default {
       },
       fontFamily,
       fontSize: {
+        '10': rem(10),
         '12': rem(12),
         '14': rem(14),
         '16': rem(16),
@@ -147,6 +150,7 @@ export default {
         'page-margin': 'var(--page-margin)',
         'gap': 'var(--gap)',
         'offset-wide': 'var(--offset-wide)',
+        'offset-content': 'var(--offset-content)',
         'header': 'var(--header-height)',
         'anchornav': 'var(--anchornav-height)',
         'xs': rem(20), // used for default column gap
@@ -220,6 +224,9 @@ export default {
       backgroundImage: {},
       transitionProperty: {
         'opacity': 'opacity, visibility',
+      },
+      transitionDuration: {
+        DEFAULT: '300ms',
       },
       transitionDelay: {
         '50': '50ms',
@@ -327,8 +334,10 @@ export default {
           css: {
             fontSize: rem(16),
             lineHeight: round(20 / 16),
-            a: {
+            'a, .richtext-link': {
+              color: 'var(--tw-prose-links)',
               fontWeight: 'inherit',
+              textDecoration: 'underline',
               textDecorationThickness: 'max(1px, 0.05em)',
               textUnderlineOffset: '0.125em',
               textUnderlinePosition: 'auto',
@@ -807,6 +816,7 @@ export default {
   },
   plugins: [
     tailwindcssTypography,
+    tailwindcssForms,
     plugin(function ({ addUtilities }) {
       addUtilities({
         '.stack': {
@@ -819,4 +829,4 @@ export default {
       })
     }),
   ],
-}
+})

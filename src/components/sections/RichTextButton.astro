@@ -1,0 +1,32 @@
+---
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import type { RichTextButtonStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: RichTextButtonStoryblok
+  isRichTextEmbed?: boolean
+}
+
+const { class: className, blok, isRichTextEmbed = false } = Astro.props
+const { theme, replaceButtonPreset } = getBlokColorClasses(blok)
+const links = [
+  {
+    ...blok,
+  },
+]
+---
+
+<div class={clsx('not-prose', className)}>
+  {
+    links && (
+      <ButtonGroup
+        links={replaceButtonPreset(links)}
+        linkArrow="left"
+        theme={theme}
+      />
+    )
+  }
+</div>

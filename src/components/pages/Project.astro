@@ -1,0 +1,66 @@
+---
+import clsx from 'clsx'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import EntryLayout from '@/layouts/EntryLayout.astro'
+import { fetchStories, storyblokEditable } from '@/utils/storyblok'
+
+import type { StoryblokStory } from 'storyblok-generate-ts'
+import type { ProjectStoryblok } from '@/types/storyblok'
+import RelatedEntryNav from '../shared/RelatedEntryNav.astro'
+import { useTranslate } from '@/i18n/utils'
+import SiteHeaderSticky from '../shared/SiteHeaderSticky.astro'
+
+export type Props = {
+  slug?: string
+  language?: string
+  alternates?: {
+    [key: string]: string
+  }
+  story: StoryblokStory<ProjectStoryblok>
+  blok: ProjectStoryblok
+  color: string
+}
+
+const { story, blok } = Astro.props
+const t = useTranslate(Astro.url)
+
+const stories =
+  (await fetchStories({
+    starts_with: 'global/projects/',
+    language: story.lang,
+    sort_by: 'sort_by_date:desc,published_at:desc,created_at:desc',
+  })) ?? []
+const storyIndex = stories?.findIndex((s) => s.full_slug === story.full_slug)
+const prevStory =
+  storyIndex === 0 ? stories[stories.length - 1] : stories[storyIndex - 1]
+const nextStory =
+  storyIndex === stories.length - 1 ? stories[0] : stories[storyIndex + 1]
+
+const { body, ...storyProps } = blok ?? {}
+const heroBlok = {
+  ...storyProps,
+  component: 'ProjectHero',
+}
+const content = [...(body ?? [])]
+---
+
+<EntryLayout story={story} {...storyblokEditable(blok ?? {})}>
+  <main class={clsx()}>
+    {heroBlok && <StoryblokComponent blok={heroBlok} />}
+    <SiteHeaderSticky />
+    {content.map((blok) => <StoryblokComponent blok={blok} />)}
+  </main>
+  <RelatedEntryNav
+    class="mt-md"
+    headline={t('related_projects_title')}
+    headingOrder={2}
+    prev={{
+      ...prevStory.content,
+      full_slug: prevStory.full_slug,
+    }}
+    next={{
+      ...nextStory.content,
+      full_slug: nextStory.full_slug,
+    }}
+  />
+</EntryLayout>

@@ -1,0 +1,74 @@
+---
+import clsx from 'clsx'
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import { applyLinkAttrs } from '@/utils/link'
+import type { MultilinkStoryblok } from '@/types/storyblok'
+import Icon from './Icon.astro'
+
+export type Props = {
+  // AlpineJS
+  xDataName?: string
+  xAspectRatio?: string
+  //
+  aspectRatio?: string
+  class?: string
+  title?: string
+  featured?: boolean
+  image?: {
+    filename: string
+    alt?: string
+    focus?: string
+  }
+  // link: MultilinkStoryblok
+  url?: string
+  [key: string]: any
+}
+
+const {
+  class: className,
+  title,
+  image,
+  url,
+  aspectRatio,
+  featured,
+} = Astro.props
+---
+
+<a {...applyLinkAttrs(url)} class={clsx('group relative block', className)}>
+  <figure>
+    <div class="card-hover relative">
+      {
+        featured && (
+          <div
+            class={clsx(
+              'absolute right-0 top-0 z-10 flex items-center gap-x-2 px-6 py-4',
+              'text-18 leading-none',
+              'bg-spark text-white',
+              'rounded-tr',
+            )}
+          >
+            <Icon name="logo-icon" class="h-6 w-6" />
+            Highlight
+          </div>
+        )
+      }
+      {
+        image?.filename && (
+          <StoryblokPicture
+            image={image}
+            class="rounded"
+            sizes="50vw"
+            aspectRatio={aspectRatio}
+          />
+        )
+      }
+    </div>
+    {
+      title && (
+        <figcaption class="mt-2 whitespace-pre-line text-18 leading-120 lg:mt-5">
+          {title}
+        </figcaption>
+      )
+    }
+  </figure>
+</a>

@@ -2,6 +2,7 @@
 import BaseHead from '@/layouts/BaseHead.astro'
 import EnvBadge from '@/components/debug/EnvBadge.astro'
 import clsx from 'clsx'
+import AlpineSetup from './AlpineSetup.astro'
 
 import type { Site } from '@/types'
 
@@ -28,8 +29,9 @@ const lang = language || 'en'
     <slot name="head" />
   </head>
 
-  <body class={clsx('bg-steel text-white', className)}>
+  <body class={clsx('bg-creme', className)}>
     <slot />
     <EnvBadge />
+    <AlpineSetup />
   </body>
 </html>

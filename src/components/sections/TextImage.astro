@@ -1,0 +1,90 @@
+---
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import StoryblokRichText from '@/components/storyblok/StoryblokRichText.astro'
+import type { TextImageStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+import Section from './Section.astro'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+
+export type Props = {
+  class?: string
+  blok: TextImageStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const { theme, replaceButtonPreset } = getBlokColorClasses(blok)
+const hasText = blok.headline || blok.text
+
+const headlineStyles = {
+  lg: 'text-22 md:text-36 leading-150',
+  md: 'text-20 md:text-24 leading-150',
+  sm: 'text-18 font-bold leading-150',
+}
+const headlineStyle =
+  headlineStyles[blok.headlineStyle ?? 'lg'] || headlineStyles.lg
+---
+
+<Section
+  blok={blok}
+  defaultSpacing="md"
+  padding="gap-y-8"
+  class={clsx('area', className)}
+>
+  {
+    blok.image?.filename && (
+      <div
+        class={clsx(
+          'area-full w-full',
+          blok.imageLeft ? 'lg:area-full-left' : 'lg:area-full-right',
+        )}
+      >
+        <StoryblokPicture
+          image={blok.image}
+          aspectRatio={blok.imageAspectRatio}
+          class={clsx(
+            'w-full object-cover lg+:max-h-svh',
+            !blok.imageLeft && 'lg:rounded-bl lg:rounded-tl',
+            blok.imageLeft && 'lg:rounded-br lg:rounded-tr',
+          )}
+          sizes="min-width(768px) 50vw, 100vw"
+        />
+      </div>
+    )
+  }
+  <div
+    class={clsx(
+      'area-content lg:row-start-1 lg+:mt-8',
+      blok.imageLeft
+        ? 'lg:area-content-right lg:pl-page-margin'
+        : 'lg:area-content-left lg:pr-page-margin',
+    )}
+  >
+    <div class="space-y-7 lg:sticky lg:top-sm lg:py-sm">
+      {
+        blok.headline && (
+          <HtmlHeading class={headlineStyle} order={blok.headingOrder}>
+            {blok.headline}
+          </HtmlHeading>
+        )
+      }
+      {
+        isRichTextField(blok.text) && (
+          <StoryblokRichText class="prose prose-lg" content={blok.text} />
+        )
+      }
+      {
+        blok.linksI18n && (
+          <ButtonGroup
+            links={replaceButtonPreset(blok.linksI18n)}
+            theme={theme}
+            class={hasText && '!mt-10'}
+          />
+        )
+      }
+    </div>
+  </div>
+</Section>

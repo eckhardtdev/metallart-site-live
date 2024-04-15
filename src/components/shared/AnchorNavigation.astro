@@ -1,0 +1,30 @@
+---
+export type AnchorLink = {
+  label: string
+  href: string
+  id: string
+}
+
+export type Props = {
+  anchors: AnchorLink[]
+}
+
+const { anchors = [] } = Astro.props
+---
+
+<div class="bg-white/50 text-16 leading-none text-steel backdrop-blur-lg">
+  <div
+    class="h-anchornav scrollbar-hidden flex items-center gap-x-8 overflow-y-auto px-5 md:px-15"
+  >
+    {
+      anchors.map((anchor) => (
+        <a
+          href={anchor.href}
+          class="block flex-none whitespace-nowrap text-steel hovers:hover:underline"
+        >
+          {anchor.label}
+        </a>
+      ))
+    }
+  </div>
+</div>

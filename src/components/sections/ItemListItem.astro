@@ -1,0 +1,36 @@
+---
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import type { ItemListItemStoryblok } from '@/types/storyblok'
+import clsx from 'clsx'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+
+export type Props = {
+  class?: string
+  blok: ItemListItemStoryblok
+  headlineOrder?: string | number
+}
+
+const { class: className, blok, headlineOrder } = Astro.props
+---
+
+<div class={clsx(className)}>
+  {
+    blok.headline && (
+      <HtmlHeading
+        class={clsx('text-18 leading-125 lg:text-24', 'font-600 text-black')}
+        order={headlineOrder}
+      >
+        {blok.headline}
+      </HtmlHeading>
+    )
+  }
+  {
+    isRichTextField(blok.text) && (
+      <StoryblokRichText
+        class={clsx('prose prose-lg md:prose-2xl', blok.headline && 'mt-4')}
+        content={blok.text}
+      />
+    )
+  }
+</div>

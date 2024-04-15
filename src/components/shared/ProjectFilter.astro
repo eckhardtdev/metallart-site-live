@@ -1,0 +1,143 @@
+---
+import clsx from 'clsx'
+import FilterGroupSelect from './FilterGroupSelect.astro'
+import { useTranslate } from '@/i18n/utils'
+import Icon from './Icon.astro'
+import type { DatasourceFilter } from '@/types/filter'
+
+export type Props = {
+  class?: string
+  variant?: 'projects' | 'news'
+  initialNumItems: number
+  filters: DatasourceFilter[]
+}
+
+const {
+  class: className,
+  variant = 'projects',
+  filters,
+  initialNumItems,
+} = Astro.props
+const t = useTranslate(
+  Astro.url,
+  variant === 'news' ? 'news_filter' : 'project_filter',
+)
+
+const heroFilters = filters.filter((filter) => !filter.advanced)
+const advancedFilters = filters.filter((filter) => filter.advanced)
+const numItemsText =
+  initialNumItems === 0
+    ? t('found_items_0')
+    : initialNumItems === 1
+      ? t('found_items_1')
+      : `${initialNumItems} ${t('found_items')}`
+---
+
+<div class={clsx(className)}>
+  {
+    heroFilters.length > 0 && (
+      <div>
+        {heroFilters.map((filter) => (
+          <FilterGroupSelect filter={filter} />
+        ))}
+      </div>
+    )
+  }
+  {
+    advancedFilters.length === 0 && (
+      <div class="mt-7 min-h-8">
+        <div class={clsx('w-full py-2 text-16 leading-none')}>
+          <span x-show="!filtered">{numItemsText}</span>
+          <span x-cloak x-show="filtered && filteredResults?.length === 0">
+            {t('found_items_0')}
+          </span>
+          <span x-cloak x-show="filtered && filteredResults?.length === 1">
+            {t('found_items_1')}
+          </span>
+          <span x-cloak x-show="filtered && filteredResults?.length > 1">
+            <span x-text="filteredResults?.length" />
+            <span> {t('found_items')}</span>
+          </span>
+        </div>
+      </div>
+    )
+  }
+  {
+    advancedFilters.length > 0 && (
+      <div x-data="{ expanded: false }">
+        <div x-show="expanded" x-collapse x-cloak>
+          <div class="flex flex-wrap gap-x-10 gap-y-7 pt-7">
+            {advancedFilters.map((filter) => (
+              <FilterGroupSelect filter={filter} />
+            ))}
+          </div>
+        </div>
+        <div class="relative mt-8 flex flex-wrap items-center justify-between gap-y-5 md:gap-5">
+          <button
+            type="button"
+            class={clsx(
+              'flex border-b border-current',
+              'hovers:transition-opacity hovers:hover:opacity-80',
+            )}
+            x-on:click="expanded = !expanded"
+            x-cloak
+          >
+            <div class="flex min-h-10 items-center gap-x-2 py-2 text-16 leading-none">
+              <div x-show="!expanded">{t('collapse.more')}</div>
+              <div x-show="expanded" x-cloak>
+                {t('collapse.less')}
+              </div>
+              <div x-bind:class="expanded && 'rotate-180'">
+                <Icon name="chevron-down" class="h-4 w-4" />
+              </div>
+            </div>
+          </button>
+          <div>
+            <button
+              type="button"
+              class={clsx(
+                'border-b border-current',
+                'hovers:transition-opacity hovers:hover:opacity-80',
+              )}
+              x-on:click="reset()"
+              x-cloak
+              x-show="activeFilters.length"
+            >
+              <div class="flex min-h-10 items-center gap-x-2 py-2 text-16 leading-none">
+                <div
+                  class="hidden md:block"
+                  x-bind:class="expanded && 'rotate-180'"
+                >
+                  <Icon name="restore" class="h-4 w-4" />
+                </div>
+                <div>{t('reset')}</div>
+                <div
+                  x-text="activeFilters.length"
+                  class="rounded border border-steel-500 px-2 py-1 text-14"
+                />
+              </div>
+            </button>
+          </div>
+          <div
+            class={clsx(
+              'w-full py-2 text-16 leading-none',
+              'md:absolute-center md:w-auto',
+            )}
+          >
+            <span x-show="!filtered">{numItemsText}</span>
+            <span x-cloak x-show="filtered && filteredResults?.length === 0">
+              {t('found_items_0')}
+            </span>
+            <span x-cloak x-show="filtered && filteredResults?.length === 1">
+              {t('found_items_1')}
+            </span>
+            <span x-cloak x-show="filtered && filteredResults?.length > 1">
+              <span x-text="filteredResults?.length" />
+              <span> {t('found_items')}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+</div>

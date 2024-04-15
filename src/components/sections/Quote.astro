@@ -1,0 +1,60 @@
+---
+import StoryblokRichText from '@/components/storyblok/StoryblokRichText.astro'
+import type { QuoteStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: QuoteStoryblok
+  backgroundColor?: {
+    value: string
+  }
+}
+
+const { class: className, blok, backgroundColor } = Astro.props
+const { textColor, muteColor } = getBlokColorClasses({ backgroundColor })
+---
+
+<figure class={clsx('mx-offset-content relative', className)}>
+  <blockquote
+    class={clsx(
+      'relative',
+      'lg:before:absolute lg:before:-left-18 lg:before:top-[-0.25rem] lg:before:text-[6.875rem] lg:before:leading-none lg:before:content-["“"]',
+    )}
+  >
+    {
+      isRichTextField(blok.text) && (
+        <StoryblokRichText
+          class={clsx(`blockquote text-24 leading-125 lg:text-36`, textColor)}
+          content={blok.text}
+        />
+      )
+    }
+  </blockquote>
+  {
+    blok.author && (
+      <figcaption class={clsx('mt-5 text-right text-18', muteColor)}>
+        {blok.author}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style is:global>
+  .blockquote p:first-child::before {
+    content: '“';
+  }
+
+  .blockquote p:last-child::after {
+    content: '”';
+  }
+
+  @screen lg {
+    .blockquote p:first-child::before,
+    .blockquote p:last-child::after {
+      content: '';
+    }
+  }
+</style>

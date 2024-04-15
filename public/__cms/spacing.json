@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Automatisch",
+    "value": "auto"
+  },
+  {
+    "name": "Kein Abstand",
+    "value": "none"
+  },
+  {
+    "name": "xs",
+    "value": "xs"
+  },
+  {
+    "name": "sm",
+    "value": "sm"
+  },
+  {
+    "name": "md",
+    "value": "md"
+  },
+  {
+    "name": "lg",
+    "value": "lg"
+  },
+  {
+    "name": "xl",
+    "value": "xl"
+  }
+]

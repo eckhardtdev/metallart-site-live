@@ -1,0 +1,37 @@
+---
+import clsx from 'clsx'
+import Chip from './Chip.astro'
+import type { DatasourceFilter } from '@/types/filter'
+
+export type Props = {
+  class?: string
+  filter: DatasourceFilter
+}
+
+const { class: className, filter } = Astro.props
+---
+
+<div class={clsx(className)}>
+  {
+    filter.label && (
+      <h3 class="mb-3 text-18 leading-none text-steel-500">{filter.label}</h3>
+    )
+  }
+  {
+    filter.type === 'select' &&
+      filter?.options &&
+      filter.options?.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          {filter.options.map((option) => (
+            <Chip
+              label={`${option.label || option.value}`}
+              initialState={false}
+              value={`${option.value}`}
+              x-on:click={`() => updateFilter('${option.id}')`}
+              x-bind:aria-pressed={`activeFilters.includes('${option.id}')`}
+            />
+          ))}
+        </div>
+      )
+  }
+</div>

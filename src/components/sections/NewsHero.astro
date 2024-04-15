@@ -1,0 +1,72 @@
+---
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import StoryblokRichText from '@/components/storyblok/StoryblokRichText.astro'
+import type { NewsArticleStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import { getValidImage } from '@/utils/storyblok/asset'
+import { formatStoryDate } from '@/utils/storyblok/date'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import clsx from 'clsx'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: NewsArticleStoryblok
+}
+
+const { class: className, blok } = Astro.props
+const { proseColor } = getBlokColorClasses(blok)
+const hasHeading = Boolean(blok.title)
+
+const cover = getValidImage(blok.image)
+const meta = blok.date ? formatStoryDate(blok.date) : undefined
+---
+
+<Section
+  as="header"
+  blok={blok}
+  class={clsx('area mb-md overflow-hidden', className)}
+>
+  {
+    cover && (
+      <div class="area-full aspect-3/2 lg:aspect-5/2">
+        <StoryblokPicture
+          image={cover}
+          class="h-full w-full object-cover"
+          aspectRatio="16/9"
+          sizes="100vw"
+        />
+      </div>
+    )
+  }
+  <div class={clsx('area-content', cover && 'lg:15 mt-8 md:mt-12')}>
+    {
+      blok.title && (
+        <HtmlHeading
+          class="whitespace-pre-line text-26 leading-125 md:text-36 lg:text-46"
+          order={1}
+        >
+          {blok.title}
+        </HtmlHeading>
+      )
+    }
+    {
+      meta && (
+        <p class={clsx('text-18', hasHeading && 'mt-2, md:mt-3')}>{meta}</p>
+      )
+    }
+    {
+      isRichTextField(blok.description) && (
+        <StoryblokRichText
+          class={clsx(
+            'prose prose-lg',
+            proseColor,
+            hasHeading && 'mt-6 md:mt-8 lg:mt-10',
+          )}
+          content={blok.description}
+        />
+      )
+    }
+  </div>
+</Section>

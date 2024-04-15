@@ -1,0 +1,74 @@
+---
+import Section from '@/components/sections/Section.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import type { TextCarouselStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import type { SbBlokData } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+import Carousel from '../shared/Carousel.astro'
+
+export type Props = {
+  class?: string
+  blok: TextCarouselStoryblok
+}
+
+const { class: className, blok } = Astro.props
+const { muteColor } = getBlokColorClasses(blok)
+
+const items = blok?.items?.slice(0, 10) ?? []
+
+const splideOptions = {
+  arrows: false,
+  classes: {
+    pagination: 'flex justify-center mt-5 md:mt-10',
+  },
+}
+---
+
+<Section
+  blok={blok}
+  defaultSpacing="md"
+  padding="py-sm lg:py-md"
+  class={clsx('area', className)}
+  x-data="carousel"
+>
+  <!-- <div class="area-wide row-start-1 h-5 bg-purple-300"></div>
+  <div class="area-content row-start-1 h-5 bg-pink-300"></div> -->
+  <div class="area-content flex pb-2 md:pb-6">
+    {
+      blok.headline && (
+        <HtmlHeading
+          class={clsx('text-18 leading-125', muteColor)}
+          order={blok.headingOrder}
+        >
+          {blok.headline}
+        </HtmlHeading>
+      )
+    }
+  </div>
+  <div class="area-full">
+    {
+      items && items?.length > 1 && (
+        <Carousel splideOptions={JSON.stringify(splideOptions)}>
+          {items?.map((item) => (
+            <li class="splide__slide">
+              <StoryblokComponent
+                blok={item as unknown as SbBlokData}
+                backgroundColor={blok.backgroundColor}
+              />
+            </li>
+          ))}
+        </Carousel>
+      )
+    }
+    {
+      items && items?.length === 1 && (
+        <StoryblokComponent
+          blok={items[0] as unknown as SbBlokData}
+          backgroundColor={blok.backgroundColor}
+        />
+      )
+    }
+  </div>
+</Section>

@@ -1,0 +1,23 @@
+---
+import '@splidejs/splide/css'
+import '@splidejs/splide/css/core'
+
+const { as: Component = 'section', label, splideOptions } = Astro.props
+---
+
+<Component
+  class="splide"
+  data-splide='{"type":"loop","speed":700,"arrows":false}'
+  aria-label={label}
+  data-splide={splideOptions}
+>
+  <div class="splide__track">
+    <ul class="splide__list">
+      <slot>
+        <li class="splide__slide">Slide 01</li>
+        <li class="splide__slide">Slide 02</li>
+        <li class="splide__slide">Slide 03</li>
+      </slot>
+    </ul>
+  </div>
+</Component>

@@ -1,0 +1,93 @@
+---
+import type { MediaQuartetStoryblok } from '@/types/storyblok'
+import { containerWidth } from '@/utils/containerWidth'
+import type { SbBlokData } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: MediaQuartetStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const layouts = [
+  {
+    container: clsx('md:row-span-2 md:row-start-1 md:aspect-1/1'),
+    aspectRato: '1/1',
+  },
+  {
+    container: clsx('md:row-start-3 md:aspect-16/9'),
+    aspectRato: '16/9',
+  },
+  {
+    container: clsx('md:row-start-1 md:aspect-16/9'),
+    aspectRato: '16/9',
+  },
+  {
+    container: clsx('md:row-span-2 md:row-start-2 md:aspect-1/1'),
+    aspectRato: '1/1',
+  },
+]
+
+const items = [
+  blok.blockTopLeft?.[0],
+  blok.blockBottomLeft?.[0],
+  blok.blockTopRight?.[0],
+  blok.blockBottomRight?.[0],
+]
+
+const sizesConfig = {
+  full: 'min-width(768px) calc((100vw - var(--gap)) / 2), 100vw',
+  wide: 'min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-wide) * 2)',
+  content:
+    'min-width(768px) calc((100vw - var(--offset-content) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2)',
+}
+const sizes = sizesConfig[blok.containerWidth ?? 'full'] ?? sizesConfig.full
+---
+
+<Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>
+  <div
+    class={clsx(
+      containerWidth(blok.containerWidth ?? 'content'),
+      'grid gap-gap md:grid-cols-2',
+    )}
+  >
+    {
+      items?.map((item, index) => (
+        <div class={clsx(layouts[index]?.container, 'flex bg-creme-50')}>
+          <>
+            {(item as unknown as SbBlokData).component === 'Media' ? (
+              <StoryblokComponent
+                blok={item as unknown as SbBlokData}
+                aspectRatio={layouts[index]?.aspectRato}
+                sizes={sizes}
+                class={clsx(
+                  'w-full',
+                  blok.containerWidth !== 'full' && 'rounded',
+                  index < 2
+                    ? 'md:rounded-br md:rounded-tr'
+                    : 'md:rounded-bl md:rounded-tl',
+                )}
+              />
+            ) : (
+              <StoryblokComponent
+                blok={item as unknown as SbBlokData}
+                aspectRatio={layouts[index]?.aspectRato}
+                class={clsx(
+                  'w-full',
+                  blok.containerWidth !== 'full' && 'rounded',
+                  index < 2
+                    ? 'md:rounded-br md:rounded-tr'
+                    : 'md:rounded-bl md:rounded-tl',
+                )}
+              />
+            )}
+          </>
+        </div>
+      ))
+    }
+  </div>
+</Section>

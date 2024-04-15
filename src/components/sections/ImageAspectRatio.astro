@@ -1,0 +1,21 @@
+---
+// DEPRECATED: Not used anymore
+import type { ImageAspectRatioStoryblok } from '@/types/storyblok'
+import { storyblokEditable } from '@/utils/storyblok'
+import Media from '../shared/Media.astro'
+
+export type Props = {
+  class?: string
+  blok: ImageAspectRatioStoryblok
+}
+
+const { class: className, blok } = Astro.props
+---
+
+<Media
+  class={className}
+  asset={blok.asset}
+  aspectRatio={blok.aspectRatio}
+  {...storyblokEditable(blok)}
+  pictureSizes="100vw"
+/>

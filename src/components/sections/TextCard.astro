@@ -1,0 +1,62 @@
+---
+import Section from '@/components/sections/Section.astro'
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import type { TextCardStoryblok } from '@/types/storyblok'
+import type { WithStoryblokPluginPalette } from '@/types/storyblok-plugin'
+import { getAspectRatio } from '@/utils/aspectRatio'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+import type { AspectRatio } from '@/utils/aspectRatio'
+import { applyLinkAttrs } from '@/utils/link'
+
+export type Props = {
+  class?: string
+  blok: TextCardStoryblok & WithStoryblokPluginPalette
+  aspectRatio?: AspectRatio
+}
+
+const { class: className, blok, aspectRatio } = Astro.props
+const { theme, replaceButtonPreset } = getBlokColorClasses(blok)
+const aspectRatioClass = getAspectRatio(aspectRatio)
+
+const [link] = blok.links ?? []
+const hasLink = blok.links && blok.links?.length > 0
+const linkAttrs = hasLink ? { ...applyLinkAttrs(link?.link) } : {}
+---
+
+<Section
+  as={hasLink ? 'a' : 'div'}
+  blok={blok}
+  class={clsx(
+    'flex w-full flex-auto flex-col rounded p-10 text-left',
+    aspectRatioClass,
+    hasLink && 'card-hover',
+    className,
+  )}
+  {...linkAttrs}
+>
+  <div class="mt-auto">
+    {
+      blok.text && (
+        <p
+          class={clsx(
+            'max-w-text-card text-16 md:text-18',
+            blok.headline && 'mt-5',
+          )}
+          set:html={blok.text}
+        />
+      )
+    }
+    {
+      blok.links && (
+        <ButtonGroup
+          as="div"
+          links={replaceButtonPreset(blok.links)}
+          linkArrow="left"
+          theme={theme}
+          class="-mb-3 mt-10"
+        />
+      )
+    }
+  </div>
+</Section>

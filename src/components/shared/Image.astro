@@ -1,0 +1,46 @@
+---
+import type { ImageStoryblok, MultilinkStoryblok } from '@/types/storyblok'
+import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
+import clsx from 'clsx'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import { applyLinkAttrs } from '@/utils/link'
+
+export type Props = {
+  class?: string
+  blok?: ImageStoryblok
+  aspectRatio?: string | number
+  pictureSizes: string
+}
+
+const { class: className, blok, aspectRatio, pictureSizes } = Astro.props
+
+const Component = blok?.link ? 'a' : 'div'
+---
+
+<Component
+  {...applyLinkAttrs(blok?.link as MultilinkStoryblok)}
+  class={clsx(
+    'block',
+    blok?.link && 'group',
+
+    className,
+  )}
+>
+  <figure>
+    <StoryblokPicture
+      image={blok?.asset}
+      aspectRatio={aspectRatio}
+      class="w-full rounded bg-white"
+      sizes={pictureSizes}
+      classPicture={clsx(blok?.link && 'card-hover-group')}
+    />
+    {
+      isRichTextField(blok?.caption) && (
+        <figcaption class="mt-1 text-18 text-steel lg:mt-5">
+          <StoryblokRichText content={blok?.caption} />
+        </figcaption>
+      )
+    }
+  </figure>
+</Component>

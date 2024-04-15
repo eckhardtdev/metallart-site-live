@@ -1,0 +1,106 @@
+---
+import { fetchStories } from '@/utils/storyblok'
+// @ts-ignore
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import { storyHasContent } from '@/utils/storyblok/storyHasContent'
+import { componentNames } from '../../storyblok.config.mjs'
+import { getPageLocale } from '@/utils/storyblok/i18n'
+
+// REVIEW: Use server or hybrid?
+// export const prerender = true
+// export async function getStaticPaths() {
+//   const links = await fetchLinks()
+//   const validLinks = filterStoryLinks(links)
+//   const paths = await generateStaticPaths(validLinks)
+
+//   return paths
+// }
+
+// console.log('Astro.params.slug', Astro.params.slug)
+
+const slug = Astro.params.slug
+let page = Astro.props.page
+if (!page || !page?.slug) {
+  // const paths = await generateStaticPaths([
+  //   {
+  //     slug: Astro.params.slug,
+  //   },
+  // ])
+  // page = paths[0].props?.page
+  const pageProps = getPageLocale(slug)
+  page = {
+    ...pageProps,
+    slug,
+  }
+}
+
+console.log('##### page', page)
+
+let story
+if (page) {
+  try {
+    // NOTE: fetchStories by full_slug is not working with translated slugs
+    const query = {
+      starts_with: page.sbSlug ?? '/',
+      // language: page.sbLanguage,
+    }
+    const stories: any = await fetchStories(query)
+    // console.log('########## stories\n', stories)
+    const [pageStory] = stories.filter(
+      (story) =>
+        story.full_slug === page.sbSlug ||
+        story.full_slug === page.sbSlug + '/' ||
+        story.full_slug + '/' === page.sbSlug,
+    )
+    // console.log('########## pageStory\n', pageStory)
+
+    if (
+      pageStory.content &&
+      componentNames.includes(pageStory.content?.component)
+    ) {
+      story = pageStory
+      // console.log('########## PASSED\n', story)
+    }
+  } catch (error) {
+    if (import.meta.env.DEV || import.meta.env.PUBLIC_ENV === 'preview') {
+      console.warn('ERROR', page, JSON.stringify(error))
+    } else {
+      return Astro.redirect('/404')
+    }
+  }
+} else {
+  if (import.meta.env.DEV || import.meta.env.PUBLIC_ENV === 'preview') {
+    console.warn('NO PAGE', page)
+  } else {
+    return Astro.redirect('/404')
+  }
+}
+
+// console.log(`##### PAGE ${new Date()} #####`, page, story)
+---
+
+{
+  !page && (
+    <div class="flex min-h-svh items-center justify-center">
+      <div class="rounded-lg bg-white p-10 font-mono drop-shadow">
+        <p>Oh oh. No page was found.</p>
+        <p>Reach out to your lazy developer.</p>
+      </div>
+    </div>
+  )
+}
+
+{
+  page && !storyHasContent(story) && (
+    <div class="flex min-h-svh items-center justify-center ">
+      <div class="rounded-lg bg-white p-10 font-mono drop-shadow">
+        <p>Empty here. Time to add some content 👉</p>
+      </div>
+    </div>
+  )
+}
+{
+  story?.content && (
+    <StoryblokComponent page={page} story={story} blok={story?.content} />
+  )
+}

@@ -1,0 +1,39 @@
+---
+import EntryLayout from '@/layouts/EntryLayout.astro'
+import { storyblokEditable } from '@/utils/storyblok'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+
+import type { JobPostingStoryblok } from '@/types/storyblok'
+import type { StoryblokStory } from 'storyblok-generate-ts'
+import SiteHeaderSticky from '../shared/SiteHeaderSticky.astro'
+
+export type Props = {
+  slug?: string
+  language?: string
+  alternates?: {
+    [key: string]: string
+  }
+  story: StoryblokStory<JobPostingStoryblok>
+  blok: JobPostingStoryblok
+  color: string
+}
+
+const { story, blok } = Astro.props
+
+const { body, ...storyProps } = blok
+const heroBlok = {
+  ...storyProps,
+  component: 'JobHero',
+}
+const content = [...(body ?? [])]
+---
+
+<!-- Add {...storyblokEditable(blok)} ??? -->
+<EntryLayout story={story}>
+  <main class={clsx()}>
+    {heroBlok && <StoryblokComponent blok={heroBlok} />}
+    <SiteHeaderSticky />
+    {content.map((blok) => <StoryblokComponent blok={blok} />)}
+  </main>
+</EntryLayout>

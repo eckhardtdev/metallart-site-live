@@ -1,0 +1,56 @@
+---
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import type { LinkListStoryblok } from '@/types/storyblok'
+import type { WithStoryblokPluginPalette } from '@/types/storyblok-plugin'
+import { applyLinkAttrs } from '@/utils/link'
+import clsx from 'clsx'
+import Section from './Section.astro'
+import Icon from '../shared/Icon.astro'
+
+export type Props = {
+  class?: string
+  blok: LinkListStoryblok & WithStoryblokPluginPalette
+}
+
+const { class: className, blok } = Astro.props
+
+const Sizes = {
+  lg: 'text-22 md:text-32 lg:text-46',
+  md: 'text-22 md:text-32',
+}
+const sizeClass = Sizes[blok.size ?? 'lg'] ?? Sizes.lg
+---
+
+<Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>
+  <div class="area-content">
+    {
+      blok.headline && (
+        <HtmlHeading
+          class={clsx('text-18 leading-125 lg:text-24', 'mb-4 md:mb-6 lg:mb-8')}
+          order={blok.headingOrder}
+        >
+          {blok.headline}
+        </HtmlHeading>
+      )
+    }
+    {
+      blok.linksI18n && blok.linksI18n?.length > 0 && (
+        <ul class={clsx('-mt-[0.0.1875em] leading-125', sizeClass)}>
+          {blok.linksI18n.map((link) => (
+            <li>
+              <a
+                class="group flex items-center justify-between py-[0.375em] hovers:transition-colors hovers:hover:text-spark"
+                {...applyLinkAttrs(link.link)}
+              >
+                <span>{link.label}</span>
+                <span class="flex-none hovers:transition-transform hovers:group-hover:translate-x-2">
+                  <Icon name="arrow" class="w-[1.3em] flex-none" />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</Section>

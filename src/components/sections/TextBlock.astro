@@ -1,0 +1,76 @@
+---
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import StoryblokRichText from '@/components/storyblok/StoryblokRichText.astro'
+import type { TextBlockStoryblok } from '@/types/storyblok'
+import type { WithStoryblokPluginPalette } from '@/types/storyblok-plugin'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+import Section from './Section.astro'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+
+export type Props = {
+  class?: string
+  blok: TextBlockStoryblok & WithStoryblokPluginPalette
+}
+
+const { class: className, blok } = Astro.props
+const { proseColor, theme, replaceButtonPreset } = getBlokColorClasses(blok)
+const hasHeading = Boolean(blok.headline || blok.subline)
+
+const headlineStyles = {
+  xl: 'text-30 md:text-46 leading-150',
+  lg: 'text-22 md:text-36 leading-150',
+  md: 'text-20 md:text-24 leading-150',
+  sm: 'text-18 font-bold leading-150',
+}
+const headlineStyle =
+  headlineStyles[blok.headlineStyle ?? 'xl'] || headlineStyles.xl
+---
+
+<Section
+  blok={blok}
+  defaultSpacing="md"
+  padding="py-sm lg:py-md"
+  class={clsx('area', className)}
+>
+  <div class="area-content">
+    {
+      blok.headline && (
+        <HtmlHeading class={headlineStyle} order={blok.headingOrder}>
+          {blok.headline}
+        </HtmlHeading>
+      )
+    }
+    {
+      blok.subline && (
+        <p class={clsx('text-24 leading-150', blok.headline && 'mt-2')}>
+          {blok.subline}
+        </p>
+      )
+    }
+    {
+      isRichTextField(blok.text) && (
+        <StoryblokRichText
+          class={clsx(
+            'prose prose-lg',
+            proseColor,
+            blok.twoColumn && 'gap-x-5 md:max-w-none md:columns-2',
+            hasHeading && 'mt-10',
+          )}
+          content={blok.text}
+        />
+      )
+    }
+    {
+      blok.links && (
+        <ButtonGroup
+          links={replaceButtonPreset(blok.links)}
+          linkArrow="left"
+          theme={theme}
+          class="mt-5"
+        />
+      )
+    }
+  </div>
+</Section>

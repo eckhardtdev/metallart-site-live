@@ -1,0 +1,32 @@
+---
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import type { PageHeroStoryblok } from '@/types/storyblok'
+import clsx from 'clsx'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: PageHeroStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const imageSizes = {
+  'sm': 'h-[18.75rem]',
+  'md': 'h-[35rem]',
+  'lg': 'h-[45rem]',
+}
+const imageHeight = imageSizes[blok.imageSize ?? 'lg'] ?? imageSizes.lg
+---
+
+<Section blok={blok} class={clsx('hero-shade overflow-hidden', className)}>
+  {
+    blok.image?.filename && (
+      <StoryblokPicture
+        image={blok.image}
+        class={clsx(imageHeight, 'w-full object-cover')}
+        sizes="100vw"
+      />
+    )
+  }
+</Section>

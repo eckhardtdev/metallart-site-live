@@ -1,0 +1,56 @@
+---
+import Carousel from '@/components/shared/Carousel.astro'
+import type { HomePageHeroStoryblok } from '@/types/storyblok'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+import Section from './Section.astro'
+import Icon from '../shared/Icon.astro'
+
+export type Props = {
+  class?: string
+  blok: HomePageHeroStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const splideOptions = {
+  arrows: false,
+  classes: {
+    pagination: 'splide__pagination !bottom-5 md:!bottom-15 z-10',
+  },
+}
+---
+
+<Section as="header" blok={blok} class={clsx('relative h-svh', className)}>
+  {
+    blok.items?.length === 1 && (
+      <StoryblokComponent blok={blok.items[0]} class="h-svh w-full" />
+    )
+  }
+  {
+    blok.items && blok.items?.length > 1 && (
+      <Carousel splideOptions={JSON.stringify(splideOptions)}>
+        {blok.items?.map((item) => (
+          <li class="splide__slide">
+            <StoryblokComponent blok={item} class="h-svh w-full" />
+          </li>
+        ))}
+      </Carousel>
+    )
+  }
+  <div
+    class={clsx(
+      'hidden md:block',
+      'absolute bottom-0 right-0 z-50 px-page-margin pb-14 md:pb-18',
+    )}
+  >
+    <button
+      type="button"
+      class="flex h-12 w-12 items-center justify-center rounded-full border border-creme/50 text-creme"
+      x-data
+      x-on:click="window.scrollTo({ top: window.scrollY + window.innerHeight, behavior: 'smooth' })"
+    >
+      <Icon name="arrow-down" class="h-5 w-4 animate-bounce-rest" />
+    </button>
+  </div>
+</Section>

@@ -1,0 +1,48 @@
+---
+import '@splidejs/splide/css'
+import '@splidejs/splide/css/core'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  as?: string
+  label?: string
+}
+
+const { class: className, as: Component = 'section', label } = Astro.props
+const splideOptions = {
+  speed: 700,
+  arrows: true,
+  pagination: false,
+  fixedHeight: 430,
+  autoWidth: true,
+}
+---
+
+<Component
+  class={clsx('splide', className)}
+  data-splide={`${JSON.stringify(splideOptions)}`}
+  aria-label={label}
+>
+  <div class="splide__track">
+    <ul class="splide__list">
+      <slot />
+    </ul>
+  </div>
+</Component>
+
+<script>
+  import Splide from '@splidejs/splide'
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const carouselElems = document.querySelectorAll('.splide')
+    if (carouselElems.length === 0) return
+
+    var splide = new Splide('.splide', {
+      classes: {
+        pagination: 'splide__pagination !bottom-5 md:!bottom-15',
+      },
+    })
+    splide.mount()
+  })
+</script>

@@ -1,0 +1,107 @@
+---
+import clsx from 'clsx'
+import Icon from './Icon.astro'
+import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
+import AnchorNavigation from './AnchorNavigation.astro'
+import type { AnchorLink } from './AnchorNavigation.astro'
+import { useSiteConfig } from '@/utils/useSiteConfig'
+import { applyLinkAttrs } from '@/utils/link'
+
+export type Props = {
+  anchors?: AnchorLink[]
+  showAnchorNavigation?: boolean
+}
+
+const { anchors, showAnchorNavigation = false } = Astro.props
+
+const currentSite = getSiteFromRoute(Astro.url.href)
+const currentLocale = Astro.currentLocale
+const site = await useSiteConfig({ site: currentSite, lang: currentLocale })
+const t = useTranslate(Astro.url)
+const hasAnchors = anchors && anchors?.length > 1 && showAnchorNavigation
+---
+
+<div
+  class={clsx(
+    'sticky top-0 z-header w-full',
+    hasAnchors ? 'h-anchornav' : 'h-0',
+  )}
+  data-expanded="true"
+  x-data={`
+  {
+    scroll() {
+      const header = document.querySelector('[data-header]');
+      const headerY = this.$el.getBoundingClientRect().top;
+      const scrollY = window.scrollY;
+      const isScrollingUp = scrollY < this.lastScrollY;
+      const isScrollingDown = scrollY > this.lastScrollY;
+      const isScrolling = isScrollingUp || isScrollingDown;
+      const isScrollingPastHeader = headerY <= 0;
+
+      if (isScrollingUp && isScrollingPastHeader) {
+        header.classList.remove('-translate-y-header');
+      }
+      if (isScrollingDown || !isScrollingPastHeader) {
+        header.classList.add('-translate-y-header');
+      }
+
+      this.lastScrollY = scrollY;
+    },
+    lastScrollY: 0,
+  }
+`}
+  @scroll.window="scroll"
+>
+  <div class="overflow-hidden">
+    <div
+      class={clsx('-translate-y-header', 'transition-transform duration-500')}
+      data-header
+    >
+      <div
+        class={clsx(
+          'relative h-header px-5 text-white md:px-15',
+          'flex items-center justify-between',
+          'bg-steel',
+        )}
+      >
+        <button
+          type="button"
+          class={clsx(
+            'flex-center h-12 w-12',
+            'hovers:transition hovers:hover:opacity-80',
+          )}
+          x-data
+          x-on:click="$store.ui.toggleNav(true)"
+        >
+          <Icon name="menu" class="h-6 w-6" />
+          <span class="sr-only">{t('nav.open_nav')}</span>
+        </button>
+        <a
+          {...applyLinkAttrs(site?.homePageSlug)}
+          class="absolute-center block"
+        >
+          <Icon name="logo" class="w-[10rem] md:w-[14.375rem]" />
+        </a>
+        <button
+          type="button"
+          class={clsx(
+            'flex-center ml-auto h-12 w-12',
+            'hovers:transition hovers:hover:opacity-80',
+          )}
+          x-data
+          x-on:click="$store.ui.toggleContact(true)"
+        >
+          <Icon name="speech-bubble" class="h-6 w-6" />
+          <span class="sr-only">{t('nav.open_contact_drawer')}</span>
+        </button>
+      </div>
+      {hasAnchors && <AnchorNavigation anchors={anchors} />}
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  [data-expanded='true'][data-navbar] {
+    @apply bg-steel;
+  }
+</style>

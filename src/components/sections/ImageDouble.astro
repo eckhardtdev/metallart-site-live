@@ -1,0 +1,109 @@
+---
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import type { ImageDoubleStoryblok } from '@/types/storyblok'
+import { containerWidth } from '@/utils/containerWidth'
+import clsx from 'clsx'
+import Markdown from '../shared/Markdown.astro'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: ImageDoubleStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const imageLayouts = [
+  blok.containerWidth === 'full'
+    ? 'area-full md:area-full-left'
+    : 'area-content md:area-content-left',
+  blok.containerWidth === 'full'
+    ? 'area-full md:area-full-right'
+    : 'area-content md:area-content-right',
+]
+
+const images = blok.images?.slice(0, 2) ?? []
+const sizes =
+  blok.containerWidth === 'full'
+    ? 'min-width(768px) 50vw, 100vw'
+    : 'min-width(1024px) calc(50vw - var(--offset-content)), min-width(768px) 50vw, 100vw'
+---
+
+<Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>
+  {
+    images.map((image, index) => (
+      <div
+        class={clsx(
+          containerWidth(blok.containerWidth ?? 'content'),
+          imageLayouts[index],
+          blok.withGap && (index === 0 ? 'md:pr-2.5' : 'md:pl-2.5'),
+        )}
+      >
+        {image.filename && (
+          <StoryblokPicture
+            image={image}
+            aspectRatio={blok.imageAspectRatio}
+            sizes={sizes}
+            class={clsx(
+              blok.containerWidth === 'content'
+                ? index === 0
+                  ? clsx(
+                      blok.captionFirst
+                        ? 'md+:rounded'
+                        : 'md+:rounded-tl md+:rounded-tr',
+                      blok.withGap
+                        ? 'md:rounded'
+                        : 'md:rounded-bl md:rounded-tl',
+                    )
+                  : clsx(
+                      blok.captionFirst
+                        ? 'md+:rounded'
+                        : 'md+:rounded-bl md+:rounded-br',
+                      blok.withGap
+                        ? 'md:rounded'
+                        : 'md:rounded-br md:rounded-tr',
+                    )
+                : blok.withGap &&
+                    (index === 0
+                      ? 'md:rounded-br md:rounded-tr'
+                      : 'md:rounded-bl md:rounded-tl'),
+            )}
+          />
+        )}
+      </div>
+    ))
+  }
+  {
+    blok.captionFirst && (
+      <div
+        class={clsx(
+          'row-start-2 md:row-start-3',
+          imageLayouts[0],
+          blok.containerWidth === 'full' && !blok.withGap && 'px-5 md:pr-0',
+          blok.containerWidth === 'full' && blok.withGap && 'px-5 md:pr-2.5',
+        )}
+      >
+        <p class="mb-2 ml-auto mt-2 max-w-4xl text-right text-base text-steel md:mb-0 md:text-lg">
+          <Markdown content={blok.captionFirst} />
+        </p>
+      </div>
+    )
+  }
+  {
+    blok.caption && (
+      <div
+        class={clsx(
+          'md:row-start-3',
+          blok.captionFirst
+            ? imageLayouts[1]
+            : containerWidth(blok.containerWidth ?? 'content'),
+          blok.containerWidth === 'full' && 'px-5',
+        )}
+      >
+        <p class="ml-auto mt-2 max-w-4xl text-right text-base text-steel md:text-lg">
+          <Markdown content={blok.caption} />
+        </p>
+      </div>
+    )
+  }
+</Section>

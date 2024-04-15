@@ -1,0 +1,23 @@
+---
+import { Marked } from 'marked'
+
+const marked = new Marked({
+  breaks: true,
+})
+
+export type Props = {
+  content: string
+}
+
+if (typeof Astro.props.content !== 'string') {
+  console.error(
+    `Markdown content is not a string. [${typeof Astro.props.content}]`,
+    Astro.props.content,
+  )
+}
+
+const content =
+  typeof Astro.props.content === 'string' ? Astro.props.content : ''
+---
+
+<Fragment set:html={marked.parseInline(content)} />

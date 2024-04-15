@@ -1,0 +1,120 @@
+---
+import Section from '@/components/sections/Section.astro'
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import Icon from '@/components/shared/Icon.astro'
+import type { ImageCarouselStoryblok } from '@/types/storyblok'
+import type { SbBlokData } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: ImageCarouselStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const sizes = {
+  '4/3': {
+    track: clsx(
+      'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
+    ),
+    sizes:
+      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+  },
+  '1/1': {
+    track: clsx(
+      'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
+    ),
+    sizes:
+      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+  },
+  '16/9': {
+    track: clsx('auto-cols-[calc(100%_-_var(--gap))] lg:auto-cols-full'),
+    sizes:
+      'min-width(1024px) calc(100vw - var(--offset-wide) * 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+  },
+}
+const sizeConfig = sizes[blok.aspectRatio ?? ''] ?? sizes['4/3']
+
+const items = blok.items?.slice(0, 20) ?? []
+---
+
+<Section
+  blok={blok}
+  defaultSpacing="md"
+  class={clsx('area', className)}
+  x-data="carousel"
+>
+  <div class="area-content flex">
+    {
+      blok.headline && (
+        <HtmlHeading
+          class="text-24 leading-140 lg:text-36"
+          order={blok.headingOrder}
+        >
+          {blok.headline}
+        </HtmlHeading>
+      )
+    }
+    <div class="ml-auto flex flex-none items-end">
+      <button
+        type="button"
+        class="group flex h-10 w-10 cursor-pointer items-center justify-center"
+        data-carousel-prev
+        x-on:click="() => prev()"
+      >
+        <Icon
+          name="chevron-left"
+          class="h-5 w-5 hovers:transition hovers:group-hover:animate-point-left hovers:group-hover:text-spark"
+        />
+      </button>
+      <button
+        type="button"
+        class="group flex h-10 w-10 cursor-pointer items-center justify-center"
+        data-carousel-next
+        x-on:click="() => next()"
+      >
+        <Icon
+          name="chevron-right"
+          class="h-5 w-5 hovers:transition hovers:group-hover:animate-point-right hovers:group-hover:text-spark"
+        />
+      </button>
+    </div>
+  </div>
+  {
+    items?.length > 0 && (
+      <div class="area-full">
+        <div
+          class={clsx(
+            'grid grid-flow-col gap-x-xs',
+            'scroll-px-offset-wide px-offset-wide',
+            'scrollbar-hidden snap-x snap-mandatory overflow-x-auto overflow-y-hidden',
+            // To prevent elements from being cut off when sliding up on hover
+            'py-8',
+            sizeConfig.track,
+          )}
+          data-carousel-track
+        >
+          {items.map((item) => (
+            <div class={clsx('w-full flex-none snap-start')}>
+              <StoryblokComponent
+                blok={item as unknown as SbBlokData}
+                aspectRatio={blok.aspectRatio}
+                pictureSizes={sizeConfig.sizes}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  {
+    blok.links && (
+      <div class="area-content lg:mt-8">
+        <ButtonGroup links={blok.links} />
+      </div>
+    )
+  }
+</Section>

@@ -1,0 +1,51 @@
+<style is:global>
+  [x-cloak] {
+    display: none !important;
+  }
+</style>
+
+<script>
+  import Splide from '@splidejs/splide'
+  import Alpine from 'alpinejs'
+  import collapse from '@alpinejs/collapse'
+  import { carousel } from '@/alpine/carousel'
+  import { projects } from '@/alpine/projects'
+  // import * as bodyScrollLock from 'body-scroll-lock'
+
+  Alpine.plugin(collapse)
+
+  Alpine.data('carousel', carousel)
+  Alpine.data('projects', projects)
+
+  type UiStore = {
+    navOpen: boolean
+    contactOpen: boolean
+    toggleNav(force?: boolean): void
+    toggleContact(force?: boolean): void
+  }
+
+  Alpine.store('ui', {
+    navOpen: false,
+    contactOpen: false,
+    toggleNav(force: boolean) {
+      this.navOpen = force ?? !this.navOpen
+      this.contactOpen = false
+    },
+    toggleContact(force: boolean) {
+      this.contactOpen = force ?? !this.navOpen
+      this.navOpen = false
+    },
+  } as UiStore)
+
+  window.Alpine = Alpine
+  Alpine.start()
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const carouselElems = document.querySelectorAll('.splide')
+    if (carouselElems.length === 0) return
+    carouselElems.forEach((elem) => {
+      var splide = new Splide(elem as HTMLElement)
+      splide.mount()
+    })
+  })
+</script>

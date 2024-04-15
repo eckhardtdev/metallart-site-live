@@ -1,0 +1,23 @@
+---
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  classPicture?: string
+  [key: string]: any
+}
+
+const { class: className = 'w-full', classPicture, ...props } = Astro.props
+---
+
+<div
+  x-bind:data-copyright="item.copyright"
+  class={clsx(
+    'relative block',
+    'after:absolute after:bottom-1 after:right-2 after:block after:text-[8px] after:content-[attr(data-copyright)]',
+    'after:z-60 after:text-white/80',
+    classPicture,
+  )}
+>
+  <img class={clsx('block', className)} {...props} />
+</div>

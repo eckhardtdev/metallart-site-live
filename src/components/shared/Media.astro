@@ -1,0 +1,66 @@
+---
+import type { AssetStoryblok, MediaStoryblok } from '@/types/storyblok'
+import type { AspectRatio } from '../storyblok/StoryblokImage.astro'
+import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
+
+export type Props = {
+  class?: string
+  classPicture?: string
+  blok?: MediaStoryblok
+  asset?: AssetStoryblok
+  videoPoster?: AssetStoryblok
+  aspectRatio?: AspectRatio
+  backgroundVideo?: boolean
+  pictureSizes: string
+  loading?: 'lazy' | 'eager'
+}
+
+const {
+  class: className,
+  aspectRatio = '16/9',
+  backgroundVideo = true,
+  videoPoster,
+  pictureSizes,
+  classPicture,
+  loading,
+  ...props
+} = Astro.props
+
+const asset = Astro.props.blok?.asset ?? Astro.props.asset
+const isVideo = asset?.filename?.match(/\.(mp4|webm|ogg|mov)$/)
+
+const videoProps = backgroundVideo
+  ? {
+      autoplay: true,
+      muted: true,
+      playsinline: true,
+      loop: true,
+    }
+  : {}
+---
+
+{
+  !isVideo && asset?.filename && (
+    <StoryblokPicture
+      image={asset}
+      aspectRatio={aspectRatio}
+      class={className}
+      classPicture={classPicture}
+      sizes={pictureSizes}
+      loading={loading}
+      {...props}
+    />
+  )
+}
+{
+  isVideo && asset?.filename && (
+    <div class={classPicture ?? className}>
+      <video
+        src={asset.filename}
+        class="h-full w-full object-cover object-center"
+        poster={videoPoster?.filename}
+        {...videoProps}
+      />
+    </div>
+  )
+}

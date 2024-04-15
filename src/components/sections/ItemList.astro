@@ -1,0 +1,28 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { ItemListStoryblok } from '@/types/storyblok'
+import type { SbBlokData } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: ItemListStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const items = blok.items?.slice(0, 2) ?? []
+---
+
+<Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>
+  {
+    items?.length > 0 && (
+      <div class="area-content grid gap-gap md:grid-cols-2">
+        {items.map((item) => (
+          <StoryblokComponent blok={item as unknown as SbBlokData} />
+        ))}
+      </div>
+    )
+  }
+</Section>

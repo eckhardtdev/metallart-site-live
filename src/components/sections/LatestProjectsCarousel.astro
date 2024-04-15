@@ -1,0 +1,188 @@
+---
+import Section from '@/components/sections/Section.astro'
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import Icon from '@/components/shared/Icon.astro'
+import type {
+  AssetStoryblok,
+  LatestProjectsCarouselStoryblok,
+} from '@/types/storyblok'
+import { fetchStories } from '@/utils/storyblok'
+import type { SbBlokData } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+import CarouselImageLink from '../shared/CarouselImageLink.astro'
+import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
+import { useSiteConfig } from '@/utils/useSiteConfig'
+import { getSbLanguageFromLocale } from '@/utils/storyblok/i18n'
+
+type CarouselImageLinkProps = {
+  title: string
+  image: AssetStoryblok
+  url: string
+  aspectRatio?: string
+}
+type Item = CarouselImageLinkProps | SbBlokData
+
+export type Props = {
+  class?: string
+  blok: LatestProjectsCarouselStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const t = useTranslate(Astro.url)
+const sbLang = getSbLanguageFromLocale(Astro.currentLocale)
+const numItems = parseInt(blok.numItems) ?? 5
+const projects = await fetchStories({
+  language: sbLang,
+  by_slugs: 'global/projects/*',
+  content_type: 'Project',
+  per_page: numItems,
+  sort_by: 'sort_by_date:desc,published_at:desc,created_at:desc',
+})
+
+// TODO: Resolve links --> 'projects/sample-project'
+const items: Item[] =
+  projects?.map((story) => {
+    const { content } = story
+    return {
+      title: content.title,
+      image: content.cover?.filename ? content.cover : content.image,
+      url: story.full_slug,
+    }
+  }) ?? []
+
+const [textCard] = blok.textCards ?? []
+if (textCard) {
+  if (items?.length > 1) {
+    items.splice(2, 0, textCard)
+  } else {
+    items.push(textCard)
+  }
+}
+
+const headline = blok.headline || t('latest_projects_carousel.headline')
+
+const currentSite = getSiteFromRoute(Astro.url.href)
+const currentLocale = 'de-de' ?? Astro.currentLocale
+const site = await useSiteConfig({ site: currentSite, lang: currentLocale })
+const projectsSlug = site?.projectsSlug
+const allProjectsLink =
+  projectsSlug && blok.showAllProjectsButton
+    ? {
+        label: t('latest_projects_carousel.button'),
+        link: {
+          url: projectsSlug,
+        },
+        preset: 'outline',
+      }
+    : undefined
+
+const sizes = {
+  '4/3': {
+    track: clsx(
+      'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
+    ),
+    sizes:
+      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+  },
+  '1/1': {
+    track: clsx(
+      'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
+    ),
+    sizes:
+      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+  },
+  '16/9': {
+    track: clsx('auto-cols-[calc(100%_-_var(--gap))] lg:auto-cols-full'),
+    sizes:
+      'min-width(1024px) calc(100vw - var(--offset-wide) * 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+  },
+}
+const sizeConfig = sizes[blok.aspectRatio ?? '4/3'] ?? sizes['4/3']
+---
+
+<Section
+  blok={blok}
+  defaultSpacing="md"
+  class={clsx('area', className)}
+  x-data="carousel"
+>
+  <div class="area-content flex">
+    {
+      headline && (
+        <HtmlHeading
+          class="text-24 leading-140 lg:text-36"
+          order={blok.headingOrder}
+        >
+          {headline}
+        </HtmlHeading>
+      )
+    }
+    <div class="ml-auto flex flex-none items-end">
+      <button
+        type="button"
+        class="group flex h-10 w-10 cursor-pointer items-center justify-center"
+        data-carousel-prev
+        x-on:click="() => prev()"
+      >
+        <Icon
+          name="chevron-left"
+          class="h-5 w-5 hovers:transition hovers:group-hover:animate-point-left hovers:group-hover:text-spark"
+        />
+      </button>
+      <button
+        type="button"
+        class="group flex h-10 w-10 cursor-pointer items-center justify-center"
+        data-carousel-next
+        x-on:click="() => next()"
+      >
+        <Icon
+          name="chevron-right"
+          class="h-5 w-5 hovers:transition hovers:group-hover:animate-point-right hovers:group-hover:text-spark"
+        />
+      </button>
+    </div>
+  </div>
+  {
+    items?.length > 0 && (
+      <div class="area-full">
+        <ul
+          class={clsx(
+            'grid grid-flow-col gap-x-xs',
+            'scroll-px-offset-wide px-offset-wide',
+            'scrollbar-hidden snap-x snap-mandatory overflow-x-auto overflow-y-hidden',
+            'py-8', // allows shadow effects to be visible
+            sizeConfig.track,
+          )}
+          data-carousel-track
+        >
+          {items.map((item) => (
+            <li class={clsx('block w-full flex-none snap-start')}>
+              {(item as unknown as SbBlokData).component ? (
+                <StoryblokComponent
+                  blok={item}
+                  aspectRatio={blok.aspectRatio}
+                />
+              ) : (
+                <CarouselImageLink
+                  {...(item as CarouselImageLinkProps)}
+                  aspectRatio={blok.aspectRatio}
+                  pictureSizes={sizeConfig.sizes}
+                />
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    allProjectsLink && (
+      <div class="area-content lg:mt-7">
+        <ButtonGroup links={[allProjectsLink]} />
+      </div>
+    )
+  }
+</Section>

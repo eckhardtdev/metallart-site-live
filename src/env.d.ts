@@ -11,7 +11,7 @@ interface ImportMetaEnv {
   readonly STORYBLOK_SPACE: string
   readonly STORYBLOK_TOKEN: string
   readonly STORYBLOK_PERSONAL_TOKEN: string
-  readonly STORYBLOK_VERSION: string
+  readonly PUBLIC_STORYBLOK_VERSION: string
   readonly PUBLIC_LANGUAGES: string
   readonly PUBLIC_DEFAULT_LANGUAGE: string
   readonly SENTRY_AUTH_TOKEN: string

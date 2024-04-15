@@ -1,0 +1,33 @@
+---
+import { Icon as AstroIcon } from 'astro-icon/components'
+import clsx from 'clsx'
+
+interface Props {
+  class?: string
+  name: string
+  title?: string
+  width?: number
+  height?: number
+  size?: number
+}
+
+const {
+  name,
+  class: className,
+  title,
+  size,
+  width,
+  height,
+  ...props
+} = Astro.props
+---
+
+<AstroIcon
+  name={name}
+  class={clsx(className)}
+  title={title}
+  size={size}
+  width={width}
+  height={height}
+  {...props}
+/>

@@ -1,0 +1,157 @@
+---
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import type { ImageTeaserStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import { applyLinkAttrs } from '@/utils/link'
+import clsx from 'clsx'
+import Markdown from '../shared/Markdown.astro'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: ImageTeaserStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const { theme, replaceButtonPreset, containerColor } = getBlokColorClasses(blok)
+const hasText = blok.headline || blok.text
+
+const layouts = {
+  '1/2': {
+    'true': 'image-half',
+    'false': 'text-half',
+  },
+  '1/3': {
+    'true': 'image-thirds',
+    'false': 'text-thirds',
+  },
+}
+const layout =
+  layouts[blok.textWidth ?? '']?.[blok.imageLeft ? 'true' : 'false'] ??
+  'image-half'
+
+const imageSizes = {
+  'sm': 'h-[18.75rem]',
+  'md': 'h-[35rem]',
+  'lg': 'h-[45rem]',
+}
+const imageSize = imageSizes[blok.imageSize ?? 'md'] ?? imageSizes.md
+
+const primaryLink = blok.links?.[0]?.link
+const linkAttrs = applyLinkAttrs(primaryLink)
+const LinkComponent = linkAttrs?.href ? 'a' : 'div'
+
+const sizesConfig = {
+  content: {
+    '1/2':
+      '(min-width: 768px) calc((100vw - var(--offset-content) * 2) / 2), 100vw',
+    '1/3':
+      '(min-width: 768px) calc((100vw - var(--offset-content) * 2) / 3 * 2), 100vw',
+  },
+  full: {
+    '1/2': '(min-width:768px) 50vw, 100vw',
+    '1/3': '(min-width:768px) 67vw, 100vw',
+  },
+}
+const sizes =
+  sizesConfig[blok.containerWidth ?? '']?.[blok.textWidth ?? ''] ?? '100vw'
+---
+
+<Section
+  blok={blok}
+  defaultSpacing="md"
+  addContainerColor={false}
+  class={clsx('area', className)}
+>
+  <div
+    class={clsx(
+      blok.containerWidth === 'content' ? 'area-content rounded' : 'area-full',
+      containerColor,
+      'lg:grid',
+      layout,
+    )}
+  >
+    <LinkComponent class="lg:area-image block" {...linkAttrs}>
+      {
+        blok.image?.filename && (
+          <StoryblokPicture
+            image={blok.image}
+            class={clsx(
+              imageSize,
+              'object-cover',
+              'lg+:rounded-tl lg+:rounded-tr',
+              blok.containerWidth === 'content' &&
+                (blok.imageLeft
+                  ? 'lg:rounded-bl lg:rounded-tl'
+                  : 'lg:rounded-br lg:rounded-tr'),
+            )}
+            sizes={sizes}
+          />
+        )
+      }
+    </LinkComponent>
+    <div class={clsx('lg:area-text self-end px-page-margin py-8 md:p-10')}>
+      {
+        blok.headline && (
+          <HtmlHeading class="text-24 leading-140" order={blok.headingOrder}>
+            <LinkComponent class="inline-block" {...linkAttrs}>
+              {blok.headline}
+            </LinkComponent>
+          </HtmlHeading>
+        )
+      }
+      {
+        blok.text && (
+          <p
+            set:html={blok.text}
+            class={clsx('whitespace-pre-line', blok.headline && 'mt-5')}
+          />
+        )
+      }
+      {
+        blok.linksI18n && (
+          <ButtonGroup
+            links={replaceButtonPreset(blok.linksI18n)}
+            theme={theme}
+            class={hasText && '!mt-10'}
+          />
+        )
+      }
+    </div>
+  </div>
+  {
+    blok.caption && (
+      <div
+        class={clsx(
+          blok.containerWidth === 'content' ? 'area-content' : 'area-full pr-5',
+        )}
+      >
+        <p class="ml-auto mt-5 max-w-4xl text-right text-base text-steel md:text-lg">
+          <Markdown content={blok.caption} />
+        </p>
+      </div>
+    )
+  }
+</Section>
+
+<style>
+  .image-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas: 'image image text';
+  }
+  .image-half {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'image text';
+  }
+  .text-thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas: 'text image image';
+  }
+  .text-half {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'text image';
+  }
+</style>

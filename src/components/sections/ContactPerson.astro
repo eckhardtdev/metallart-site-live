@@ -1,0 +1,69 @@
+---
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import StoryblokRichText from '@/components/storyblok/StoryblokRichText.astro'
+import type { ContactPersonStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+import Section from './Section.astro'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+
+export type Props = {
+  class?: string
+  blok: ContactPersonStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const { theme, replaceButtonPreset } = getBlokColorClasses(blok)
+const hasText = blok.headline || blok.text
+---
+
+<Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>
+  <div class={clsx('area-content grid gap-y-7 md:grid-cols-2 md:gap-x-gap')}>
+    {
+      blok.image?.filename && (
+        <div class={clsx('lg:ml-auto lg:max-w-[31rem]')}>
+          <StoryblokPicture
+            image={blok.image}
+            sizes="min-width(768px) 50vw, 100vw"
+            aspectRatio="1/1"
+            class="rounded"
+          />
+        </div>
+      )
+    }
+    <div
+      class="flex flex-col justify-center gap-y-7 md:col-start-1 md:row-start-1"
+    >
+      {
+        blok.headline && (
+          <HtmlHeading
+            class="text-24 leading-140 lg:text-30 xl:text-36"
+            order={blok.headingOrder}
+          >
+            {blok.headline}
+          </HtmlHeading>
+        )
+      }
+      {
+        isRichTextField(blok.text) && (
+          <StoryblokRichText
+            class="prose prose-lg xl:prose-2xl"
+            content={blok.text}
+          />
+        )
+      }
+      {
+        blok.links && (
+          <ButtonGroup
+            links={replaceButtonPreset(blok.links)}
+            theme={theme}
+            class={hasText && '!mt-10'}
+          />
+        )
+      }
+    </div>
+  </div>
+</Section>

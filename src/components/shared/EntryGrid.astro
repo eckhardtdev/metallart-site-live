@@ -1,0 +1,74 @@
+---
+import type { Props as EntryGridItemProps } from '@/components/shared/EntryGridItem.astro'
+import EntryGridItem from '@/components/shared/EntryGridItem.astro'
+import EntryGridItemX from '@/components/shared/EntryGridItemX.astro'
+import clsx from 'clsx'
+import Icon from './Icon.astro'
+
+export type Props = {
+  class?: string
+  variant?: 'square-columns'
+  items: EntryGridItemProps[]
+  usesAlpine?: boolean
+  [key: string]: unknown
+}
+
+const { class: className, items = [], usesAlpine, variant } = Astro.props
+
+const squares = variant === 'square-columns'
+const containerClasses = clsx(
+  'grid gap-x-gap gap-y-10 md:grid-cols-2',
+  squares && 'lg:grid-cols-3',
+)
+---
+
+<div class={clsx('relative', className)}>
+  <div
+    x-cloak
+    x-bind:class="!loading && 'opacity-0'"
+    class="pointer-events-none absolute inset-0 z-10 bg-creme/50 transition-opacity"
+  >
+    <div
+      class="sticky top-[25svh] py-[25svh]"
+      x-show="loading"
+      x-transition:enter="transition ease-out duration-300 delay-500"
+      x-transition:enter-start="opacity-0 scale-50"
+      x-transition:enter-end="opacity-100 scale-100"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="opacity-100 scale-100"
+      x-transition:leave-end="opacity-0 scale-50"
+    >
+      <Icon name="signet" class="absolute-center h-[25svh] animate-pulse" />
+    </div>
+  </div>
+  {
+    items.length > 0 && (
+      <div
+        class={clsx(containerClasses)}
+        {...(usesAlpine ? { 'x-show': '!filtered' } : undefined)}
+      >
+        {items.map((item, index) => (
+          <EntryGridItem
+            {...item}
+            class={clsx(!squares && 'odd:md:row-span-2')}
+            aspectRatio={index % 2 === 0 || squares ? '1/1' : '16/9'}
+          />
+        ))}
+      </div>
+    )
+  }
+  {
+    usesAlpine && (
+      <div x-show="filtered" class={clsx(containerClasses)}>
+        <template
+          x-for="(item,index) in filteredResults"
+          x-bind:key="item.uuid"
+        >
+          <EntryGridItemX
+            x-bind:class={!squares && `index % 2 === 0 && 'md:row-span-2'`}
+          />
+        </template>
+      </div>
+    )
+  }
+</div>

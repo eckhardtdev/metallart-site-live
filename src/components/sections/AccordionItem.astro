@@ -1,0 +1,64 @@
+---
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import StoryblokRichText from '@/components/storyblok/StoryblokRichText.astro'
+import type { AccordionItemStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+import Section from './Section.astro'
+import Icon from '../shared/Icon.astro'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import { getAnchor } from '@/utils/anchor'
+
+export type Props = {
+  class?: string
+  blok: AccordionItemStoryblok
+  headlineOrder?: string | number
+}
+
+const { class: className, blok, headlineOrder } = Astro.props
+const { proseColor } = getBlokColorClasses(blok)
+const anchor = getAnchor(blok.anchor)
+const initialExpanded = anchor
+  ? `window.location.hash === '${anchor.href}'`
+  : 'false'
+---
+
+<Section
+  blok={blok}
+  class={clsx('border-b border-black/30 py-5 md:pt-7', className)}
+  x-data=`{ expanded: ${initialExpanded}}`
+>
+  {
+    blok.headline && (
+      <HtmlHeading
+        class="text-22 font-500 leading-140 md:text-32"
+        order={headlineOrder}
+      >
+        <button
+          type="button"
+          class={clsx(
+            'flex w-full items-center justify-between text-left',
+            'hovers:transition-colors hovers:hover:text-spark',
+          )}
+          x-on:click="expanded = ! expanded"
+        >
+          <span>{blok.headline}</span>
+          <div class="h-8 w-8 flex-none stack md:h-12 md:w-12">
+            <Icon name="plus" x-bind:class="expanded && 'hidden'" />
+            <Icon name="minus" x-bind:class="!expanded && 'hidden'" />
+          </div>
+        </button>
+      </HtmlHeading>
+    )
+  }
+  {
+    isRichTextField(blok.text) && (
+      <div x-show="expanded" x-collapse x-cloak>
+        <StoryblokRichText
+          class={clsx('prose prose-lg pt-5', proseColor)}
+          content={blok.text}
+        />
+      </div>
+    )
+  }
+</Section>

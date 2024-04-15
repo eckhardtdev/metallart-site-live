@@ -1,0 +1,77 @@
+---
+import type { HomePageHeroItemStoryblok } from '@/types/storyblok'
+import { getBlokColorClasses } from '@/utils/color'
+import { getValidImage } from '@/utils/storyblok'
+import clsx from 'clsx'
+import ButtonGroup from './ButtonGroup.astro'
+import HtmlHeading from './HtmlHeading.astro'
+import Media from './Media.astro'
+import MediaSplit from './MediaSplit.astro'
+
+export type Props = {
+  class?: string
+  blok: HomePageHeroItemStoryblok
+  [key: string]: any
+}
+
+const { class: className, blok, ...props } = Astro.props
+
+const { replaceButtonPreset } = getBlokColorClasses(blok)
+const split = getValidImage(blok.image) && getValidImage(blok.video)
+---
+
+<div class={clsx('relative', className)} {...props}>
+  <div
+    class="my:pb-18 absolute inset-0 z-30 h-full w-full px-page-margin py-14 text-white stack"
+  >
+    {
+      blok.title && (
+        <HtmlHeading
+          class={clsx(
+            'text-36 leading-125 md:text-46 lg:text-60',
+            'mx-auto flex max-w-[900px] flex-auto items-center justify-center text-center',
+          )}
+          order={1}
+        >
+          {blok.title}
+        </HtmlHeading>
+      )
+    }
+    {
+      blok.links && blok.links?.length > 0 && (
+        <div class="mt-auto min-h-15">
+          {blok.links && (
+            <ButtonGroup
+              links={replaceButtonPreset(blok.links)}
+              linkArrow="left"
+              theme="light"
+            />
+          )}
+        </div>
+      )
+    }
+  </div>
+  {
+    split ? (
+      <MediaSplit
+        image={blok.image}
+        video={blok.video}
+        videoPoster={blok.videoPoster}
+        imageLeft={blok.imageLeft}
+        class="hero-shade absolute inset-0 h-full w-full overflow-hidden"
+        aria-hidden="true"
+        loading="eager"
+      />
+    ) : (
+      <Media
+        asset={blok.image?.filename ? blok.image : blok.video}
+        videoPoster={blok.videoPoster}
+        class="hero-shade absolute inset-0 h-full w-full overflow-hidden object-cover"
+        classPicture="hero-shade absolute inset-0 h-full w-full object-cover"
+        aria-hidden="true"
+        pictureSizes="100vw"
+        loading="eager"
+      />
+    )
+  }
+</div>

@@ -1,0 +1,347 @@
+{
+  "presets": [
+    {
+      "id": 2049254,
+      "name": "Vorlage News",
+      "preset": {
+        "seo": {
+          "_uid": "993a1148-2b67-41a0-9eb0-d6ef145e93f1",
+          "title": "Sample Page",
+          "plugin": "seo_metatags",
+          "og_image": "",
+          "og_title": "",
+          "description": "Minim consequat ullamco nostrud anim.",
+          "twitter_image": "",
+          "twitter_title": "",
+          "og_description": "",
+          "twitter_description": ""
+        },
+        "_uid": "4ec5dd93-d79d-4750-92a7-d15c148a29ab",
+        "body": [
+          {
+            "_uid": "48e22aef-f86b-4c06-a33d-5cb1aae423bb",
+            "component": "AnchorNavigation"
+          },
+          {
+            "_uid": "a6344b2a-559a-4be4-86d2-72f13218c067",
+            "items": [
+              {
+                "_uid": "5b76bf5a-4e82-401e-8ee1-008d9651d80b",
+                "text": {
+                  "type": "doc",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Esse et quis ",
+                          "type": "text"
+                        },
+                        {
+                          "text": "veniam",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "bold"
+                            }
+                          ]
+                        },
+                        {
+                          "text": " esse dolore quis velit ut commodo eu. Sunt dolore consequat ullamco veniam laboris. Quis exercitation enim ipsum ullamco aute aute nulla est esse reprehenderit.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "bullet_list",
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "text": "Erster Punkt",
+                                  "type": "text"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "text": "Zweiter Punkt",
+                                  "type": "text"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "text": "Dritter Punkt",
+                                  "type": "text"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Minim veniam enim commodo aliqua officia irure sunt cillum laborum",
+                          "type": "text"
+                        },
+                        {
+                          "text": " cillum anim veniam proident ad",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "link",
+                              "attrs": {
+                                "href": "/sites/de/",
+                                "uuid": "6ea8037e-c097-4d2e-93b3-c3d82d5fc58a",
+                                "anchor": null,
+                                "target": "_self",
+                                "linktype": "story"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "text": ". Minim ipsum aute qui Lorem excepteur sit nostrud. Est excepteur aute tempor mollit laboris pariatur incididunt deserunt. Consequat excepteur labore do sunt exercitation excepteur elit ullamco cillum ipsum reprehenderit. Esse non in eiusmod id nostrud mollit sint elit cupidatat deserunt consectetur proident. Est in do nisi ipsum consequat anim.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ordered_list",
+                      "attrs": {
+                        "order": 1
+                      },
+                      "content": [
+                        {
+                          "type": "list_item",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "text": "Nummerierte Liste",
+                                  "type": "text"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list_item",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "text": "Lorem ipsum",
+                                  "type": "text"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Id eiusmod magna Lorem reprehenderit consectetur enim do nostrud consequat. Qui anim proident esse elit enim quis nisi elit commodo anim. Ipsum id sint elit ullamco duis aliquip officia magna. Pariatur aliquip nostrud eu enim quis. Deserunt Lorem minim eu sunt consequat occaecat eiusmod ipsum pariatur cupidatat minim. Ex dolor eu ullamco culpa in voluptate amet culpa proident. Labore in adipisicing magna sit labore est proident non tempor.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "headline": "Aute id sint esse elit occaecat qui fugiat do minim?",
+                "component": "AccordionItem"
+              }
+            ],
+            "headline": "Häufige Fragen zum Treppenbau",
+            "component": "Accordion"
+          },
+          {
+            "_uid": "2d8720ab-1213-47fc-ae95-ba265b836eb4",
+            "text": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "Laborum excepteur minim culpa esse nulla veniam Lorem aute adipisicing nulla proident aliqua enim occaecat.",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            },
+            "image": {
+              "id": 13960013,
+              "alt": "",
+              "name": "",
+              "focus": "291x491:292x492",
+              "title": "",
+              "source": "",
+              "filename": "https://a.storyblok.com/f/273160/600x820/60711f01ee/referenz-wangentreppe-in-monumentalem-design-static.jpg",
+              "copyright": "",
+              "fieldtype": "asset",
+              "meta_data": {},
+              "is_private": "",
+              "content_type": "jpg",
+              "is_external_url": false
+            },
+            "links": [
+              {
+                "_uid": "29fa5017-7069-49e2-a000-9068dd9871c2",
+                "link": {
+                  "id": "ca806a04-f916-4f83-aec5-32483f912f53",
+                  "url": "",
+                  "linktype": "story",
+                  "fieldtype": "multilink",
+                  "cached_url": "sites/de/"
+                },
+                "label": "Ad quis do quis",
+                "component": "Link",
+                "label__i18n__en": "This is an english label"
+              }
+            ],
+            "anchor": "",
+            "headline": "Jede Treppe erzählt eine Geschichte",
+            "component": "TextImage",
+            "imageLeft": true,
+            "headlineOrder": "2",
+            "backgroundColor": {
+              "value": "#383f45",
+              "plugin": "storyblok-palette"
+            },
+            "headline__i18n__en": "Every staircase tells a story"
+          },
+          {
+            "_uid": "0ad38148-126e-4753-a048-90a498c3578d",
+            "images": [
+              {
+                "id": 13960013,
+                "alt": "",
+                "name": "",
+                "focus": "",
+                "title": "",
+                "source": "",
+                "filename": "https://a.storyblok.com/f/273160/600x820/60711f01ee/referenz-wangentreppe-in-monumentalem-design-static.jpg",
+                "copyright": "",
+                "fieldtype": "asset",
+                "meta_data": {},
+                "is_private": ""
+              },
+              {
+                "id": 13966977,
+                "alt": "",
+                "name": "",
+                "focus": "",
+                "title": "",
+                "source": "",
+                "filename": "https://a.storyblok.com/f/273160/1280x1057/c0378525c4/treppenteaser-1.jpg",
+                "copyright": "",
+                "fieldtype": "asset",
+                "meta_data": {},
+                "is_private": "",
+                "content_type": "jpg"
+              }
+            ],
+            "caption": {
+              "type": "doc",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "Lorem ipsum dolor",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            },
+            "component": "ImageDouble"
+          },
+          {
+            "_uid": "46613d97-cf58-49f9-a55d-c5cddb2c618e",
+            "links": [
+              {
+                "_uid": "bdffa68d-133b-4ecf-ab1b-bbca1446c23f",
+                "link": {
+                  "id": "6ea8037e-c097-4d2e-93b3-c3d82d5fc58a",
+                  "url": "",
+                  "anchor": "generalunternehmer",
+                  "linktype": "story",
+                  "fieldtype": "multilink",
+                  "cached_url": "sites/de/"
+                },
+                "label": "Generalunternehmer",
+                "component": "Link"
+              },
+              {
+                "_uid": "aafa1962-f803-4ac9-af86-cbe0bbf6c2d6",
+                "link": {
+                  "id": "",
+                  "url": "https://www.metallart-treppen.de/",
+                  "target": "_blank",
+                  "linktype": "url",
+                  "fieldtype": "multilink",
+                  "cached_url": "https://www.metallart-treppen.de/"
+                },
+                "label": "Externer Link",
+                "component": "Link"
+              },
+              {
+                "_uid": "bd5c728e-fe25-42b6-ab7e-896dca0fd53d",
+                "link": {
+                  "id": "2e3e164b-c793-42b9-8d4d-830189c099ba",
+                  "url": "",
+                  "linktype": "story",
+                  "fieldtype": "multilink",
+                  "cached_url": "contact-form-presets/appointment-from-architect"
+                },
+                "label": "Kontaktformular öffnen",
+                "component": "Link"
+              }
+            ],
+            "headline": "Wir bieten Beratung & Service für:",
+            "component": "LinkList"
+          }
+        ],
+        "component": "Page"
+      },
+      "component_id": 5246750,
+      "space_id": 273160,
+      "created_at": "2024-02-06T11:18:55.861Z",
+      "updated_at": "2024-02-06T11:18:55.861Z",
+      "image": "",
+      "color": "",
+      "icon": "",
+      "description": ""
+    }
+  ]
+}

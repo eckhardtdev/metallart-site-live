@@ -1,0 +1,36 @@
+---
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import type { CallToActionStoryblok } from '@/types/storyblok'
+import type { WithStoryblokPluginPalette } from '@/types/storyblok-plugin'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+import Section from './Section.astro'
+
+export type Props = {
+  class?: string
+  blok: CallToActionStoryblok & WithStoryblokPluginPalette
+}
+
+const { class: className, blok } = Astro.props
+const { theme, replaceButtonPreset } = getBlokColorClasses(blok)
+---
+
+<Section
+  blok={blok}
+  padding="py-sm"
+  defaultSpacing="md"
+  class={clsx('area', className)}
+>
+  <div class="area-content">
+    {
+      blok.links && (
+        <ButtonGroup
+          links={replaceButtonPreset(blok.links)}
+          linkArrow="left"
+          theme={theme}
+          centered={blok.centerButton}
+        />
+      )
+    }
+  </div>
+</Section>

@@ -1,0 +1,24 @@
+---
+import { applyLinkAttrs } from '@/utils/link'
+import clsx from 'clsx'
+
+import type { LinkStoryblok } from '@/types/storyblok'
+
+export type Props = {
+  as?: string
+  class?: string
+  blok?: LinkStoryblok
+  [k: string]: any
+}
+
+const { as: Tag, class: className, blok, ...props } = Astro.props
+
+const attrs = blok.link ? applyLinkAttrs(blok.link) : props
+const Component = Tag ?? attrs?.href ? 'a' : 'div'
+---
+
+<Component class={clsx('underline', className)} {...attrs}>
+  <slot>
+    {blok?.label && <span>{blok?.label}</span>}
+  </slot>
+</Component>

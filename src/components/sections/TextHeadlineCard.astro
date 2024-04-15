@@ -1,0 +1,53 @@
+---
+import Section from '@/components/sections/Section.astro'
+import ButtonGroup from '@/components/shared/ButtonGroup.astro'
+import HtmlHeading from '@/components/shared/HtmlHeading.astro'
+import type { TextHeadlineCardStoryblok } from '@/types/storyblok'
+import type { WithStoryblokPluginPalette } from '@/types/storyblok-plugin'
+import { getBlokColorClasses } from '@/utils/color'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: TextHeadlineCardStoryblok & WithStoryblokPluginPalette
+}
+
+const { class: className, blok } = Astro.props
+const { theme, replaceButtonPreset } = getBlokColorClasses(blok)
+---
+
+<Section
+  blok={blok}
+  class={clsx('flex w-full flex-auto flex-col p-5 text-left', className)}
+>
+  <div class="mt-auto">
+    {
+      blok.headline && (
+        <HtmlHeading
+          class="text-18 leading-125 lg:text-24"
+          order={blok.headingOrder}
+        >
+          {blok.headline}
+        </HtmlHeading>
+      )
+    }
+    {
+      blok.text && (
+        <p
+          class={clsx('text-16 md:text-18', blok.headline && 'mt-5')}
+          set:html={blok.text}
+        />
+      )
+    }
+    {
+      blok.links && (
+        <ButtonGroup
+          links={replaceButtonPreset(blok.links)}
+          linkArrow="left"
+          theme={theme}
+          class="mt-10"
+        />
+      )
+    }
+  </div>
+</Section>

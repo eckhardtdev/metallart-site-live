@@ -1,0 +1,41 @@
+---
+import { applyLinkAttrs } from '@/utils/link'
+import clsx from 'clsx'
+
+import type { SocialLinkStoryblok } from '@/types/storyblok'
+import Icon from './Icon.astro'
+
+const icons = {
+  facebook: 'fa-brands:facebook',
+  houzz: 'fa-brands:houzz',
+  instagram: 'fa-brands:instagram',
+  linkedin: 'fa-brands:linkedin',
+  pinterest: 'fa-brands:pinterest',
+  x: 'fa-brands:x-twitter',
+  xing: 'fa-brands:xing',
+  youtube: 'fa-brands:youtube',
+}
+
+export type Props = {
+  as?: string
+  icon?: string
+  class?: string
+  blok?: SocialLinkStoryblok
+  [k: string]: any
+}
+
+const { as: Tag, class: className, icon, blok, ...props } = Astro.props
+
+const attrs = blok.link ? applyLinkAttrs(blok.link) : props
+const Component = Tag ?? attrs?.href ? 'a' : 'div'
+
+const iconName = blok.icon || icon
+const finalIcon = iconName && `fa-brands:${iconName}`
+---
+
+<Component class={clsx('p-2 underline', className)} {...attrs}>
+  {finalIcon && <Icon name={finalIcon} class="h-6 w-6" />}
+  <slot>
+    {blok?.label && <span class="sr-only">{blok?.label}</span>}
+  </slot>
+</Component>

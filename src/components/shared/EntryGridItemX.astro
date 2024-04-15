@@ -1,0 +1,46 @@
+---
+import clsx from 'clsx'
+import Icon from './Icon.astro'
+import StoryblokPictureX from '../storyblok/StoryblokPictureX.astro'
+
+export type Props = {
+  class?: string
+  [key: string]: unknown
+}
+
+const { class: className, ...props } = Astro.props
+---
+
+<a
+  class={clsx('group relative block', className)}
+  x-bind:href="item.link?.href"
+  {...props}
+>
+  <figure>
+    <div class="card-hover">
+      <div
+        x-show="item.featured"
+        class={clsx(
+          'absolute right-0 top-0 z-10 flex items-center gap-x-2 px-6 py-4',
+          'text-18 leading-none',
+          'bg-spark text-white',
+          'rounded-tr',
+        )}
+      >
+        <Icon name="logo-icon" class="h-6 w-6" />
+        Highlight
+      </div>
+      <StoryblokPictureX
+        x-bind:src="item.imageSrc"
+        x-bind:alt="item.imageAlt"
+        x-bind:class="item.imageClass"
+        class="w-full rounded bg-creme-200/50"
+      />
+    </div>
+    <figcaption
+      class="mt-2 whitespace-pre-line text-18 leading-120 lg:mt-5"
+      x-text="item.title"
+    >
+    </figcaption>
+  </figure>
+</a>

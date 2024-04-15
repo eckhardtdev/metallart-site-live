@@ -1,0 +1,47 @@
+---
+import clsx from 'clsx'
+import Media from './Media.astro'
+import type { AssetStoryblok } from '@/types/storyblok'
+
+export type Props = {
+  class?: string
+  video?: AssetStoryblok
+  image?: AssetStoryblok
+  videoPoster?: AssetStoryblok
+  imageLeft?: boolean
+  loading?: 'lazy' | 'eager'
+}
+
+const {
+  class: className,
+  video,
+  image,
+  videoPoster,
+  imageLeft = false,
+  loading,
+  ...props
+} = Astro.props
+---
+
+<div class={clsx('grid grid-cols-2 items-center', className)} {...props}>
+  <div class="relative h-full">
+    <Media
+      asset={imageLeft ? image : video}
+      videoPoster={videoPoster}
+      class="absolute inset-0 h-full w-full object-cover"
+      classPicture="absolute inset-0 h-full w-full object-cover"
+      pictureSizes="50vw"
+      loading={loading}
+    />
+  </div>
+  <div class="relative h-full">
+    <Media
+      asset={imageLeft ? video : image}
+      videoPoster={videoPoster}
+      class="absolute inset-0 h-full w-full object-cover"
+      classPicture="absolute inset-0 h-full w-full object-cover"
+      pictureSizes="50vw"
+      loading={loading}
+    />
+  </div>
+</div>

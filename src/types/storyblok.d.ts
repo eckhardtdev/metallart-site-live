@@ -29,13 +29,6 @@ export interface AccordionItemStoryblok {
   [k: string]: any;
 }
 
-export interface AnchorNavigationStoryblok {
-  title?: string;
-  _uid: string;
-  component: "AnchorNavigation";
-  [k: string]: any;
-}
-
 export interface CallToActionStoryblok {
   centerButton?: boolean;
   spacing?: "" | "auto" | "none" | "xs" | "sm" | "md" | "lg" | "xl";
@@ -100,22 +93,24 @@ export type MultilinkStoryblok =
     };
 
 export interface ConfigurationStoryblok {
+  address?: RichtextStoryblok;
+  contact?: RichtextStoryblok;
+  openingHours?: RichtextStoryblok;
+  copyright?: string;
+  homePage: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
+  projectArchiveLink: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
+  newsArchiveLink: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
+  jobListingPage: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
   footerCtaText?: string;
   footerCtaLink?: LinkStoryblok[];
   directories?: NavigationGroupStoryblok[];
   socialLinks?: SocialLinkStoryblok[];
   legalLinks?: NavigationStoryblok[];
   metaLinks?: NavigationStoryblok[];
-  homePage: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
-  address?: RichtextStoryblok;
-  contact?: RichtextStoryblok;
-  openingHours?: RichtextStoryblok;
-  copyright?: string;
   primaryNavigation?: NavigationStoryblok[];
   secondaryNavigation?: NavigationStoryblok[];
   showContactButton?: boolean;
   contactButtonLabel: string;
-  languages: string[];
   seo?: {
     _uid?: string;
     title?: string;
@@ -135,8 +130,8 @@ export interface ConfigurationStoryblok {
 }
 
 export interface ContactFormPresetStoryblok {
-  referrer?: number | string;
-  audience?: number | string;
+  occupationalGroup?: "" | "architect" | "commercial_builder" | "private_builder" | "locksmith_metalworkers" | "other";
+  originalSourceFirstPerson?: "" | "internet_search" | "social_media" | "recommendation" | "event" | "press" | "other";
   appointmentChecked?: boolean;
   _uid: string;
   component: "ContactFormPreset";
@@ -170,23 +165,6 @@ export interface ContactPersonStoryblok {
   anchor?: string;
   _uid: string;
   component: "ContactPerson";
-  [k: string]: any;
-}
-
-export interface EntryCarouselStoryblok {
-  headline?: string;
-  numItems: string;
-  links?: LinkStoryblok[];
-  headingOrder?: string;
-  anchor?: string;
-  _uid: string;
-  component: "EntryCarousel";
-  [k: string]: any;
-}
-
-export interface EntryListStoryblok {
-  _uid: string;
-  component: "EntryList";
   [k: string]: any;
 }
 
@@ -284,6 +262,12 @@ export interface ImageSingleStoryblok {
 }
 
 export interface ImageTeaserStoryblok {
+  image?: AssetStoryblok;
+  headline?: string;
+  text?: string;
+  linksI18n?: LinkStoryblok[];
+  caption?: string;
+  links?: LinkStoryblok[];
   containerWidth?: "" | "content" | "full";
   textWidth?: "" | "1/2" | "1/3";
   imageSize?: "" | "sm" | "md" | "lg";
@@ -291,11 +275,6 @@ export interface ImageTeaserStoryblok {
   spacing?: "" | "auto" | "none" | "xs" | "sm" | "md" | "lg" | "xl";
   headlineOrder: string;
   anchor?: string;
-  image?: AssetStoryblok;
-  headline?: string;
-  text?: string;
-  links?: LinkStoryblok[];
-  caption?: string;
   _uid: string;
   component: "ImageTeaser";
   [k: string]: any;
@@ -327,11 +306,8 @@ export interface JobPostingStoryblok {
   sites: (StoryblokStory<ConfigStoryblok> | string)[];
   body?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -375,9 +351,10 @@ export interface JobPostingStoryblok {
 }
 
 export interface JobPostingListStoryblok {
-  headline?: string;
+  size?: "" | "lg" | "md";
   headingOrder?: string;
   anchor?: string;
+  headline?: string;
   _uid: string;
   component: "JobPostingList";
   [k: string]: any;
@@ -391,11 +368,8 @@ export interface KnowledgeBaseArticleStoryblok {
   sites: (StoryblokStory<ConfigStoryblok> | string)[];
   body?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -462,10 +436,12 @@ export interface LinkStoryblok {
 }
 
 export interface LinkListStoryblok {
+  size?: "" | "lg" | "md";
   spacing?: "" | "auto" | "none" | "xs" | "sm" | "md" | "lg" | "xl";
   headingOrder?: string;
   anchor?: string;
   headline?: string;
+  linksI18n?: LinkListItemStoryblok[];
   links?: LinkListItemStoryblok[];
   _uid: string;
   component: "LinkList";
@@ -545,11 +521,8 @@ export interface NewsArchiveStoryblok {
   };
   bodyBefore?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -573,11 +546,8 @@ export interface NewsArchiveStoryblok {
   )[];
   bodyAfter?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -614,11 +584,8 @@ export interface NewsArticleStoryblok {
   sites: (StoryblokStory<ConfigStoryblok> | string)[];
   body?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -678,11 +645,8 @@ export interface NewsCarouselStoryblok {
 export interface PageStoryblok {
   body?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -746,11 +710,8 @@ export interface ProjectStoryblok {
   floors?: "" | "1" | "2" | "3" | "4" | "7" | "11";
   body?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -820,11 +781,8 @@ export interface ProjectArchiveStoryblok {
   };
   bodyBefore?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -848,11 +806,8 @@ export interface ProjectArchiveStoryblok {
   )[];
   bodyAfter?: (
     | AccordionStoryblok
-    | AnchorNavigationStoryblok
     | CallToActionStoryblok
     | ContactPersonStoryblok
-    | EntryCarouselStoryblok
-    | EntryListStoryblok
     | HomePageHeroStoryblok
     | ImageCarouselStoryblok
     | ImageDoubleStoryblok
@@ -1000,16 +955,17 @@ export interface TextHeadlineCardStoryblok {
 }
 
 export interface TextImageStoryblok {
+  image?: AssetStoryblok;
+  headline?: string;
+  text?: RichtextStoryblok;
+  linksI18n?: LinkStoryblok[];
+  links?: LinkStoryblok[];
   imageAspectRatio?: "" | "original" | "3/4" | "1/1" | "16/9";
   imageLeft?: boolean;
   spacing?: "" | "auto" | "none" | "xs" | "sm" | "md" | "lg" | "xl";
   headlineStyle?: "" | "lg" | "md" | "sm";
   headlineOrder?: string;
   anchor?: string;
-  image?: AssetStoryblok;
-  headline?: string;
-  text?: RichtextStoryblok;
-  links?: LinkStoryblok[];
   _uid: string;
   component: "TextImage";
   [k: string]: any;

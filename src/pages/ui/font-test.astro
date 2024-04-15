@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+
+const meta = {
+  title: 'Font Test',
+}
+
+const headline = `Individuell gefertigte Design-Treppen direkt vom Hersteller.`
+const subline = `At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. `
+const richtext = `<p><b>Lorem ipsum dolor sit amet, consetetur</b></p>
+<p>Body At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+<p>Et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+`
+const weights = `<p class="font-extrabold">Lorem ipsum extrabold=800</p>
+<p class="font-bold">Lorem ipsum bold=700</p>
+<p class="font-semibold">Lorem ipsum semibold=600</p>
+<p class="font-medium">Lorem ipsum medium=500</p>
+<p>Lorem ipsum normal=400</p>
+<p class="font-light">Lorem ipsum light=300</p>`
+---
+
+<BaseLayout meta={meta}>
+  <div class="mt-10 grid grid-cols-2 gap-x-10 px-20">
+    <div class="font-sans">
+      <pre class="mb-0">Sora variable version</pre>
+      <pre class="mb-10">33.9 kb</pre>
+      <div class="text-[48px] leading-[70px]" set:html={headline} />
+      <div class="mt-2 text-[24px] leading-[34px]" set:html={subline} />
+      <div class="mt-10 text-[18px] leading-[28px]" set:html={richtext} />
+      <div class="mt-10 text-[18px] leading-[28px]" set:html={weights} />
+    </div>
+    <div class="font-static">
+      <pre class="mb-0">Sora static version</pre>
+      <pre class="mb-10">45.5 kb (30.2 kb 400+800)</pre>
+      <div class="text-[48px] leading-[70px]" set:html={headline} />
+      <div class="mt-2 text-[24px] leading-[34px]" set:html={subline} />
+      <div class="mt-10 text-[18px] leading-[28px]" set:html={richtext} />
+      <div class="mt-10 text-[18px] leading-[28px]" set:html={weights} />
+    </div>
+  </div>
+</BaseLayout>

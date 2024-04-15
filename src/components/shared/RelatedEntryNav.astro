@@ -1,0 +1,60 @@
+---
+import type { AssetStoryblok } from '@/types/storyblok'
+import RelatedEntryNavItem from './RelatedEntryNavItem.astro'
+import clsx from 'clsx'
+import HtmlHeading from './HtmlHeading.astro'
+
+type Story = {
+  listTitle?: string
+  title?: string
+  cover?: AssetStoryblok
+  image?: AssetStoryblok
+  full_slug?: string
+}
+
+export type Props = {
+  class?: string
+  headline?: string
+  headingOrder?: number
+  prev: Story
+  next: Story
+}
+
+const {
+  class: className = '',
+  prev,
+  next,
+  headline,
+  headingOrder = 2,
+} = Astro.props
+
+const prevItem = {
+  title: prev.listTitle || prev.title,
+  image: prev.cover?.filename ? prev.cover : prev.image,
+  url: prev.full_slug,
+}
+const nextItem = {
+  title: next.listTitle || next.title,
+  image: next.cover?.filename ? next.cover : next.image,
+  url: next.full_slug,
+}
+---
+
+<div class={clsx('area', className)}>
+  <div class="area-content">
+    {
+      headline && (
+        <HtmlHeading
+          class="mb-10 text-22 leading-150 md:text-36"
+          order={headingOrder}
+        >
+          {headline}
+        </HtmlHeading>
+      )
+    }
+  </div>
+  <div class="area-wide grid gap-x-gap gap-y-10 md:grid-cols-2">
+    <RelatedEntryNavItem {...prevItem} />
+    <RelatedEntryNavItem {...nextItem} />
+  </div>
+</div>

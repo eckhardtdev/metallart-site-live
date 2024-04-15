@@ -1,18 +1,39 @@
 ---
 import type { Site } from '@/types'
+import { setSite } from '@/api/site'
 import MetaSeo from '@/components/meta/MetaSeo.astro'
 import MetaIcon from '@/components/meta/MetaIcon.astro'
+import MetaFacebook from '@/components/meta/MetaFacebook.astro'
+import MetaTwitter from '@/components/meta/MetaTwitter.astro'
 import MetaColorScheme from '@/components/meta/MetaColorScheme.astro'
 import MetaRobots from '@/components/meta/MetaRobots.astro'
+import MetaHreflangs from '@/components/meta/MetaHreflangs.astro'
+import { getSiteFromRoute } from '@/i18n/utils'
+import { useSiteConfig } from '@/utils/useSiteConfig'
+import setDefaults from 'lodash/defaults'
+
+// TODO: Add schema.org
 
 export type Props = { meta?: Site }
 
-const { meta } = Astro.props
+let { meta = {} } = Astro.props
 
-const site = {
-  ...meta,
-}
+const currentSite = getSiteFromRoute(Astro.url.href)
+const currentLocale = Astro.currentLocale
+const siteConfig = await useSiteConfig({
+  site: currentSite,
+  lang: currentLocale,
+})
+
+meta = setDefaults(meta, siteConfig?.config?.seo)
+
+const site = await setSite(Astro, meta)
 ---
 
 <MetaSeo site={site} />
+<MetaHreflangs hreflangs={site.hreflangs} />
+<MetaColorScheme />
 <MetaRobots />
+<MetaIcon />
+<MetaFacebook site={site} />
+<MetaTwitter site={site} />
