@@ -1,6 +1,7 @@
 import type { ConfigurationStoryblok } from '@/types/storyblok'
 import { fetchStories } from '@/utils/storyblok'
 import { resolveFullSlug } from '@/utils/storyblok/resolveSlug'
+import { applyLinkAttrs } from '.'
 
 const configs = {}
 
@@ -34,11 +35,14 @@ export const fetchSiteConfig = async (params): Promise<SiteConfiguration> => {
 
   const homePageSlug = config?.content?.homePage?.story?.full_slug
 
+  const { href: projectArchiveUrl } =
+    applyLinkAttrs(projectArchive?.full_slug) ?? {}
+
   return {
     id: site,
     name: config.name,
     homePageSlug,
-    projectsSlug: resolveFullSlug(projectArchive?.full_slug),
+    projectsSlug: projectArchiveUrl,
     config: config.content as ConfigurationStoryblok,
   }
 }
