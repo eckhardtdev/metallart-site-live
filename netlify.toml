@@ -10,5 +10,13 @@
   status = 200 # ok code
   force = true # ensure to always redirect
 
+# A redirect rule with many of the supported properties
+[[redirects]]
+  from = "/"
+  to = "/de"
+  status = 301
+  force = true
+  conditions = {Language = ["de"], Country = ["DE"]}
+
 [images]
   remote_images = ["https://a.storyblok.com/.*"]
