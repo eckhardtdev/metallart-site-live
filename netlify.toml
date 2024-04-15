@@ -13,7 +13,7 @@
 # A redirect rule with many of the supported properties
 [[redirects]]
   from = "/"
-  to = "/de"
+  to = "/de/"
   status = 301
   force = true
   conditions = {Language = ["de"], Country = ["DE"]}
