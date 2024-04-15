@@ -15,6 +15,7 @@ import CarouselImageLink from '../shared/CarouselImageLink.astro'
 import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 import { getSbLanguageFromLocale } from '@/utils/storyblok/i18n'
+import { projectsSortBy } from '@/utils/metallart'
 
 type CarouselImageLinkProps = {
   title: string
@@ -39,7 +40,7 @@ const projects = await fetchStories({
   by_slugs: 'global/projects/*',
   content_type: 'Project',
   per_page: numItems,
-  sort_by: 'sort_by_date:desc,published_at:desc,created_at:desc',
+  sort_by: projectsSortBy,
 })
 
 // TODO: Resolve links --> 'projects/sample-project'
