@@ -77,7 +77,11 @@ if (page) {
 }
 
 if (!Astro.cookies.get('i18n')?.value) {
-  Astro.cookies.set('i18n', Astro.preferredLocale ?? 'en')
+  Astro.cookies.set('i18n', Astro.preferredLocale ?? 'en', { path: '/' })
+
+  if (Astro.preferredLocale === 'de') {
+    return Astro.redirect('/de/', 301)
+  }
 }
 
 // console.log(`##### PAGE ${new Date()} #####`, page, story)
