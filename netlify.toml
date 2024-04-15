@@ -10,7 +10,12 @@
   status = 200 # ok code
   force = true # ensure to always redirect
 
-# A redirect rule with many of the supported properties
+[[redirects]]
+  from = "/"
+  to = "/"
+  status = 301
+  conditions = {Language = ["de"], Country = ["DE"], Cookie = ["i18n"]}
+
 [[redirects]]
   from = "/"
   to = "/de/"

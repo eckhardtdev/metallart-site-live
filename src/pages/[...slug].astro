@@ -76,6 +76,10 @@ if (page) {
   }
 }
 
+if (!Astro.cookies.get('i18n')?.value) {
+  Astro.cookies.set('i18n', Astro.preferredLocale ?? 'en')
+}
+
 // console.log(`##### PAGE ${new Date()} #####`, page, story)
 ---
 
