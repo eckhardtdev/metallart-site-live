@@ -182,7 +182,7 @@ const imageSrc = `${image.filename}/${storyblokParamString}`
 
 // Astro Image
 // https://docs.astro.build/en/guides/images/
-const ext = getAssetExtension(image, { withoutDot: true }) ?? '.png'
+const ext = getAssetExtension(image, { withoutDot: true }) ?? 'png'
 const isSVG = ext?.endsWith('svg')
 
 const copyright = image.copyright

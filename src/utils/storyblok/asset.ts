@@ -12,7 +12,7 @@ export const getAssetBasename = (url, extension) => {
 
 export const getExtension = (url, { withoutDot }) => {
   if (typeof url !== 'string') return
-  let ext = url.substring(url.lastIndexOf('.') + 1)
+  let ext = url.toLowerCase().substring(url.lastIndexOf('.') + 1)
   if (!withoutDot) ext = '.' + ext
 
   ext = ext.replace(/jpeg/, 'jpg')
