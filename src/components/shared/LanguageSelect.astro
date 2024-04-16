@@ -8,12 +8,19 @@ const isCurrentLocale = (locale) => currentLocale === locale
 ---
 
 <div class="flex h-12 flex-none items-center gap-x-5">
-  <a href="/" class={clsx('font-bold', !isCurrentLocale('en') && 'opacity-50')}>
+  <a
+    href="/"
+    class={clsx('font-bold', !isCurrentLocale('en') && 'opacity-50')}
+    x-data
+    x-on:click="$store.ui.setLang('en')"
+  >
     EN
   </a>
   <a
-    href="/de"
+    href="/de/"
     class={clsx('font-bold', !isCurrentLocale('de') && 'opacity-50')}
+    x-data
+    x-on:click="$store.ui.setLang('de')"
   >
     DE
   </a>

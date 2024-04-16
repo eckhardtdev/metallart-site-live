@@ -1,15 +1,15 @@
 import netlify from '@astrojs/netlify'
 import tailwind from '@astrojs/tailwind'
-// import sentry from '@sentry/astro'
-// import spotlightjs from '@spotlightjs/astro'
+import alpine from '@astrojs/alpinejs'
+import react from '@astrojs/react'
+import sitemap from '@astrojs/sitemap'
 import storyblok from '@storyblok/astro'
+import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
 import { loadEnv } from 'vite'
 import { components } from './storyblok.config.mjs'
-import icon from 'astro-icon'
 import { interceptor } from './storyblok/interceptor.js'
-import sitemap from '@astrojs/sitemap'
-import react from '@astrojs/react'
+
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 
 // TODO: CSP Integration https://app.netlify.com/sites/reliable-rabanadas-659a34/integrations/security
@@ -93,6 +93,7 @@ export default defineConfig({
     //   },
     // }),
     // spotlightjs(),
+    alpine({ entrypoint: '/src/alpine/entrypoint' }),
     react(),
   ],
   output,

@@ -76,11 +76,25 @@ if (page) {
   }
 }
 
-if (!Astro.cookies.get('i18n')?.value) {
-  Astro.cookies.set('i18n', Astro.preferredLocale ?? 'en', { path: '/' })
-
-  if (Astro.preferredLocale === 'de') {
-    return Astro.redirect('/de/', 301)
+if (import.meta.env.PUBLIC_ENV === 'production') {
+  // We need to JSON.stringify/parse the cookie value because Alpine persits expects a JSON string
+  let cookieLang
+  try {
+    cookieLang = JSON.parse(Astro.cookies.get('i18n')?.value ?? '"en"')
+  } catch (error) {
+    console.error('Error: Cookie i18n not set as JSON-Data.', error)
+  }
+  if (!Astro.cookies.has('i18n')) {
+    cookieLang = Astro.preferredLocale ?? 'en'
+    Astro.cookies.set('i18n', JSON.stringify(cookieLang), {
+      path: '/',
+      maxAge: 3600 * 24 * 365,
+    })
+  }
+  if (Astro.url.pathname === '/') {
+    if (cookieLang === 'de') {
+      return Astro.redirect('/de/', 301)
+    }
   }
 }
 

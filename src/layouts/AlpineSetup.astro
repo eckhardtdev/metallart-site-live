@@ -6,39 +6,18 @@
 
 <script>
   import Splide from '@splidejs/splide'
-  import Alpine from 'alpinejs'
-  import collapse from '@alpinejs/collapse'
-  import { carousel } from '@/alpine/carousel'
-  import { projects } from '@/alpine/projects'
-  // import * as bodyScrollLock from 'body-scroll-lock'
+  import Cookies from 'js-cookie'
 
-  Alpine.plugin(collapse)
-
-  Alpine.data('carousel', carousel)
-  Alpine.data('projects', projects)
-
-  type UiStore = {
-    navOpen: boolean
-    contactOpen: boolean
-    toggleNav(force?: boolean): void
-    toggleContact(force?: boolean): void
+  // @ts-ignore
+  window.cookieStorage = {
+    getItem(key) {
+      return Cookies.get(key)
+    },
+    setItem(key, value, options = { path: '/', expires: 365 }) {
+      if (value === undefined || value === null) return
+      Cookies.set(key, value, options)
+    },
   }
-
-  Alpine.store('ui', {
-    navOpen: false,
-    contactOpen: false,
-    toggleNav(force: boolean) {
-      this.navOpen = force ?? !this.navOpen
-      this.contactOpen = false
-    },
-    toggleContact(force: boolean) {
-      this.contactOpen = force ?? !this.navOpen
-      this.navOpen = false
-    },
-  } as UiStore)
-
-  window.Alpine = Alpine
-  Alpine.start()
 
   document.addEventListener('DOMContentLoaded', function () {
     const carouselElems = document.querySelectorAll('.splide')

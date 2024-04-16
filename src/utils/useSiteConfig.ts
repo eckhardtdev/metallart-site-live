@@ -1,7 +1,6 @@
 import type { ConfigurationStoryblok } from '@/types/storyblok'
 import { fetchStories } from '@/utils/storyblok'
-import { resolveFullSlug } from '@/utils/storyblok/resolveSlug'
-import { applyLinkAttrs } from '.'
+import { applyLinkAttrs } from '@/utils/link'
 
 const configs = {}
 
