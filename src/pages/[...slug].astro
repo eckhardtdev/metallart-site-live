@@ -79,12 +79,14 @@ if (page) {
 if (import.meta.env.PUBLIC_ENV === 'production') {
   // We need to JSON.stringify/parse the cookie value because Alpine persits expects a JSON string
   let cookieLang
+  let setCookie = false
   try {
     cookieLang = JSON.parse(Astro.cookies.get('i18n')?.value ?? '"en"')
   } catch (error) {
     console.error('Error: Cookie i18n not set as JSON-Data.', error)
+    setCookie = true
   }
-  if (!Astro.cookies.has('i18n')) {
+  if (!Astro.cookies.has('i18n') || setCookie) {
     cookieLang = Astro.preferredLocale ?? 'en'
     Astro.cookies.set('i18n', JSON.stringify(cookieLang), {
       path: '/',
