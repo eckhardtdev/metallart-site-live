@@ -18,7 +18,7 @@
     "sb:push": "node scripts/prompt-sb-push.js",
     "sb:pull-seperate": "storyblok pull-components --space 273160 --separate-files --file-name production --path ./storyblok/components/",
     "ssl": "local-ssl-proxy --source 4000 --target 4321 --cert localhost.pem --key localhost-key.pem",
-    "ssl:netlify": "local-ssl-proxy --source 8000 --target 8888 --cert localhost.pem --key localhost-key.pem"
+    "ssl:serve": "local-ssl-proxy --source 8000 --target 8888 --cert localhost.pem --key localhost-key.pem"
   },
   "dependencies": {
     "@alpinejs/collapse": "^3.13.8",

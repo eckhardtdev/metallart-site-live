@@ -48,7 +48,7 @@ export function getSbLanguageFromLocale(
 
   let lang = sbLanguagesForLocale[locale] ?? sbDefaultLang
   let sbLang = excludeDefault && lang === sbDefaultLang ? 'default' : lang
-  console.log('getSbLanguageFromLocale', sbLang)
+  // console.log('getSbLanguageFromLocale', sbLang)
   return sbLang
 }
 
@@ -123,6 +123,7 @@ function getSbSlugFromAstroSlug(astroSlug: string) {
 
 export function getLocalePath(sbSlug: string) {
   if (!isPublished) return sbSlug
+  if (!sbSlug) return sbSlug
 
   const sbLang = getSbLangFromSlug(sbSlug)
   const regex = new RegExp(`^/\?${sbLang}/?`)

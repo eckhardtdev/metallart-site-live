@@ -105,6 +105,26 @@ export async function fetchLinks(
   return []
 }
 
+export async function fetchAllLinks(
+  query: FetchLinksQuery = {},
+): Promise<StoryblokLink[]> {
+  const storyblokApi = useStoryblokApi()
+  const storyblokEntryVersion =
+    import.meta.env.PUBLIC_STORYBLOK_VERSION ?? 'published'
+
+  try {
+    const links = await storyblokApi.getAll('cdn/links', {
+      version: storyblokEntryVersion,
+      ...query,
+    })
+    return links
+  } catch (error) {
+    console.error(error)
+  }
+
+  return []
+}
+
 export async function fetchFolders(query = {}): Promise<MultilinkStoryblok[]> {
   const links = await fetchLinks({ ...query })
   if (!links) return []

@@ -29,7 +29,7 @@ export const addLeadingSlash = (url: string | undefined) => {
   return `/${url}`
 }
 
-export const removeLeadingSlash = (url: string | undefined) => {
+export const removeLeadingSlash = (url) => {
   if (typeof url !== 'string') return url
   if (url.startsWith('/')) {
     return url.slice(1)
