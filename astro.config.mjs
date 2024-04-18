@@ -15,15 +15,14 @@ const env = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 // TODO: CSP Integration https://app.netlify.com/sites/reliable-rabanadas-659a34/integrations/security
 
 const isPublished = env.PUBLIC_STORYBLOK_VERSION === 'published'
-const output = 'server'
+// TODO: Condition based on PUBLIC_ENV
+const output = env.PUBLIC_ENV === 'production' ? 'hybrid' : 'server'
 const storyblokBridge = env.PUBLIC_ENV !== 'production'
 console.log('environment', env.PUBLIC_ENV)
 console.log('storyblok version', env.PUBLIC_STORYBLOK_VERSION)
 console.log('storyblok bridge', storyblokBridge)
 console.log('astro output', output)
 console.log('site url', env.SITE_URL)
-console.log('secure', env.SECURE)
-const ssl = env.SECURE === 'on' ? true : false
 const i18n = {
   defaultLocale: isPublished ? 'en' : 'de',
   locales: [

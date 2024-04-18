@@ -1,16 +1,17 @@
 ---
-import type { Site } from '@/types'
 import { setSite } from '@/api/site'
-import MetaSeo from '@/components/meta/MetaSeo.astro'
-import MetaIcon from '@/components/meta/MetaIcon.astro'
-import MetaFacebook from '@/components/meta/MetaFacebook.astro'
-import MetaTwitter from '@/components/meta/MetaTwitter.astro'
 import MetaColorScheme from '@/components/meta/MetaColorScheme.astro'
-import MetaRobots from '@/components/meta/MetaRobots.astro'
+import MetaFacebook from '@/components/meta/MetaFacebook.astro'
 import MetaHreflangs from '@/components/meta/MetaHreflangs.astro'
+import MetaIcon from '@/components/meta/MetaIcon.astro'
+import MetaRobots from '@/components/meta/MetaRobots.astro'
+import MetaSeo from '@/components/meta/MetaSeo.astro'
+import MetaTwitter from '@/components/meta/MetaTwitter.astro'
 import { getSiteFromRoute } from '@/i18n/utils'
+import type { Site } from '@/types'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 import setDefaults from 'lodash/defaults'
+import MetaSitemap from './MetaSitemap.astro'
 import ConsentManagement from './ConsentManagement.astro'
 
 // TODO: Add schema.org
@@ -32,6 +33,7 @@ const site = await setSite(Astro, meta)
 ---
 
 <MetaSeo site={site} />
+<MetaSitemap />
 <MetaHreflangs hreflangs={site.hreflangs} />
 <ConsentManagement />
 <MetaColorScheme />

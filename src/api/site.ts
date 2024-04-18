@@ -1,9 +1,17 @@
-import { GET } from '@/pages/api/site.ts'
+import siteDefaults from '@/site.config'
 import type { Site } from '@/types'
 
+const env = import.meta.env.PUBLIC_ENV
+const languages = import.meta.env.PUBLIC_LANGUAGES
+const defaultLanguage = import.meta.env.PUBLIC_DEFAULT_LANGUAGE ?? 'de'
+
 export const setSite = async (Astro: any, page: Site = {}) => {
-  let response = await GET(Astro)
-  const defaults = await (response as Response).json()
+  const defaults = {
+    env,
+    ...siteDefaults,
+    languages,
+    defaultLanguage,
+  }
 
   const slug = page.slug ?? ''
   const siteUrl = Astro.site ?? ''

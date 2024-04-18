@@ -12,7 +12,7 @@ import { Transition } from '@headlessui/react'
 const isSmtpTest = !(import.meta.env.PUBLIC_SMTP_VERSION === 'production')
 
 const submit = async (data) => {
-  console.log('submit', data)
+  // console.log('submit', data)
   // const url = `${window.location.origin}/functions/send-contact-emails`
   const url = `${window.location.origin}/.netlify/functions/send-contact-emails`
 
@@ -337,7 +337,7 @@ export function ContactForm(props: ContactFormProps) {
                     </Field>
                   </div>
                 </fieldset>
-                <div className="text-10 mt-8 leading-150 md:text-12">
+                <div className="mt-8 text-10 leading-150 md:text-12">
                   {privacyText}
                 </div>
                 <div className="mt-8 flex justify-between">
