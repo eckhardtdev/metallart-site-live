@@ -1,6 +1,26 @@
-<script
-  id="Cookiebot"
-  src="https://consent.cookiebot.com/uc.js"
-  data-cbid="fbd83be4-7111-4dd8-b213-12f19c749050"
-  data-blockingmode="auto"
-  type="text/javascript"></script>
+---
+const isProduction = import.meta.env.PUBLIC_ENV === 'production'
+---
+
+{
+  // Google Consent Mode
+
+  isProduction && (
+    <script
+      is:inline
+      data-cookieconsent="ignore"
+      src="/scripts/google-consent-mode.js"
+    />
+  )
+}
+
+{
+  // Google Tag Manager
+  isProduction && (
+    <script
+      is:inline
+      data-cookieconsent="ignore"
+      src="/scripts/google-tag-manager.js"
+    />
+  )
+}
