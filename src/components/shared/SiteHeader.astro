@@ -5,7 +5,7 @@ import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
 import { applyLinkAttrs } from '@/utils/link'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 
-const { floating = true } = Astro.props
+const { floating = true, hideNav = false, hideContact = false } = Astro.props
 
 const currentSite = getSiteFromRoute(Astro.url.href)
 const currentLocale = Astro.currentLocale
@@ -22,33 +22,41 @@ const t = useTranslate(Astro.url)
       floating ? '' : ' bg-steel',
     )}
   >
-    <button
-      type="button"
-      class={clsx(
-        'flex-center h-12 w-12',
-        'hovers:transition hovers:hover:opacity-80',
-      )}
-      x-data
-      x-on:click="$store.ui.toggleNav(true)"
-    >
-      <Icon name="menu" class="h-6 w-6" />
-      <span class="sr-only">{t('nav.open_nav')}</span>
-    </button>
+    {
+      !hideNav && (
+        <button
+          type="button"
+          class={clsx(
+            'flex-center h-12 w-12',
+            'hovers:transition hovers:hover:opacity-80',
+          )}
+          x-data
+          x-on:click="$store.ui.toggleNav(true)"
+        >
+          <Icon name="menu" class="h-6 w-6" />
+          <span class="sr-only">{t('nav.open_nav')}</span>
+        </button>
+      )
+    }
     <a {...applyLinkAttrs(site?.homePageSlug)} class="absolute-center block">
       <Icon name="logo" class="w-[10rem] md:w-[14.375rem]" />
     </a>
-    <button
-      type="button"
-      class={clsx(
-        'flex-center ml-auto h-12 w-12',
-        'hovers:transition hovers:hover:opacity-80',
-      )}
-      x-data
-      x-on:click="$store.ui.toggleContact(true)"
-    >
-      <Icon name="speech-bubble" class="h-6 w-6" />
-      <span class="sr-only">{t('nav.open_contact_drawer')}</span>
-    </button>
+    {
+      !hideContact && (
+        <button
+          type="button"
+          class={clsx(
+            'flex-center ml-auto h-12 w-12',
+            'hovers:transition hovers:hover:opacity-80',
+          )}
+          x-data
+          x-on:click="$store.ui.toggleContact(true)"
+        >
+          <Icon name="speech-bubble" class="h-6 w-6" />
+          <span class="sr-only">{t('nav.open_contact_drawer')}</span>
+        </button>
+      )
+    }
   </div>
 </div>
 

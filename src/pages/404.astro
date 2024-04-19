@@ -1,0 +1,54 @@
+---
+import Button from '@/components/shared/Button.astro'
+import SiteHeader from '@/components/shared/SiteHeader.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+---
+
+<!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full">
+  <body class="h-full">
+  ```
+-->
+<BaseLayout>
+  <SiteHeader floating={true} hideNav={true} hideContact={true} />
+  <header class="bg-cream relative !mt-0 h-svh text-body">
+    <div class="relative h-svh w-full">
+      <div
+        class="my:pb-18 absolute inset-0 z-30 h-full w-full px-page-margin py-14 text-white stack"
+      >
+        <div
+          class="mx-auto flex max-w-[900px] flex-auto items-center justify-center text-center"
+        >
+          <div>
+            <h1>
+              <div class="text-18">404</div>
+              <div class="text-36 leading-125 md:text-46 lg:text-60">
+                Page not found
+              </div>
+            </h1>
+            <div>
+              <Button href="/" preset="link-light">Back to home</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <picture
+        class="hero-shade absolute inset-0 block h-full w-full object-cover after:absolute after:bottom-1 after:right-2 after:z-60 after:block after:text-[8px] after:text-white/80 after:content-[attr(data-copyright)]"
+      >
+        <img
+          src="https://a.storyblok.com/f/273160/5315x3543/039e06fda8/1313-futurium1-berlin-13094.jpg/m/1920x0/filters:format(webp)"
+          class="hero-shade absolute inset-0 h-full w-full overflow-hidden object-cover"
+          alt=""
+          sizes="100vw"
+          loading="eager"
+          width="3840"
+          height="2160"
+          decoding="async"
+        />
+      </picture>
+    </div>
+  </header>
+</BaseLayout>
