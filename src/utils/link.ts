@@ -120,7 +120,7 @@ export const applyLinkAttrs = (
     // console.log('URL', getLinkUrl(link), url)
   }
   if (isMail) {
-    url = `mailto:${link.email}`
+    url = `mailto:${link.href || link.url || link.story?.email || url}`
   }
 
   let attrs: LinkAttrs = {
