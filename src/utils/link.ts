@@ -2,7 +2,7 @@ import type { MultilinkStoryblok } from '@/types/storyblok'
 import { normalizePath, normalizeUrl } from '.'
 import { getLocalePath } from './storyblok/i18n'
 
-type Link = MultilinkStoryblok
+export type Link = MultilinkStoryblok
 
 type LinkAttrs = {
   as?: string
@@ -106,9 +106,9 @@ export const applyLinkAttrs = (
     typeof linkOrUrl === 'string' && !isExternal && !isMail && !isAsset
 
   let url = typeof linkOrUrl === 'string' ? linkOrUrl : getLinkUrl(link)
-  if (isExternal) {
-    url = normalizeUrl(url)
-  }
+  // if (isExternal) {
+  //   url = url
+  // }
   // TODO: Check also if internalLink sites/germany something like that
   // console.log('URL', url, isStory, isInternal)
   if (isStory || isInternal) {
