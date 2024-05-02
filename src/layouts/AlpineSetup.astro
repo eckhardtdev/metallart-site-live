@@ -41,7 +41,7 @@
     const language = JSON.parse(window.cookieStorage.getItem('i18n'))
     if (language) {
       if (window.location.pathname === '/' && language !== 'en') {
-        window.location.href = `/${language}`
+        window.location.href = `/${language}/`
       }
     }
   }
