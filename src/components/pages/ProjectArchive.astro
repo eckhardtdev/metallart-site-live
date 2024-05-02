@@ -50,6 +50,7 @@ const items =
         image: story.content?.cover?.filename
           ? story.content?.cover
           : story.content?.image,
+        id: story.id,
         uuid: story.uuid,
         // link: {
         //   url: story.full_slug,
@@ -160,6 +161,21 @@ const filterWithResults = filters.map((filter) => {
     options,
   }
 })
+
+const entries = items.map((item) => {
+  const entry = {
+    id: item.id + '',
+    filters: fields.flatMap((field) => {
+      const values = item[field]
+      if (Array.isArray(values)) {
+        return values.map((value) => getFieldOptionId(field, value))
+      } else {
+        return getFieldOptionId(field, values)
+      }
+    }),
+  }
+  return entry
+})
 ---
 
 <EntryLayout story={story} {...storyblokEditable(blok)}>
@@ -169,7 +185,10 @@ const filterWithResults = filters.map((filter) => {
         <StoryblokComponent blok={sectionBlok} />
       ))
     }
-    <div x-data="projects" class={clsx('area relative mt-md grid gap-y-10')}>
+    <div
+      x-data={`entrygrid({items: ${JSON.stringify(entries)}})`}
+      class={clsx('area relative mt-md grid gap-y-10')}
+    >
       {
         // NOTE: Astro Icon defines a sprite <symbol> with a unique ID the first time the Icon component is included on a page.
         // This is why we need to include the Icon component here to ensure the sprite is available before the ProjectFilter component is rendered.

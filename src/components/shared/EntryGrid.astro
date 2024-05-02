@@ -1,7 +1,6 @@
 ---
 import type { Props as EntryGridItemProps } from '@/components/shared/EntryGridItem.astro'
 import EntryGridItem from '@/components/shared/EntryGridItem.astro'
-import EntryGridItemX from '@/components/shared/EntryGridItemX.astro'
 import clsx from 'clsx'
 import Icon from './Icon.astro'
 
@@ -9,11 +8,10 @@ export type Props = {
   class?: string
   variant?: 'square-columns'
   items: EntryGridItemProps[]
-  usesAlpine?: boolean
   [key: string]: unknown
 }
 
-const { class: className, items = [], usesAlpine, variant } = Astro.props
+const { class: className, items = [], variant } = Astro.props
 
 const squares = variant === 'square-columns'
 const containerClasses = clsx(
@@ -43,31 +41,19 @@ const containerClasses = clsx(
   </div>
   {
     items.length > 0 && (
-      <div
-        class={clsx(containerClasses)}
-        {...(usesAlpine ? { 'x-show': '!filtered' } : undefined)}
-      >
+      <div class={clsx(containerClasses)}>
         {items.map((item, index) => (
-          <EntryGridItem
-            {...item}
+          <div
             class={clsx(!squares && 'odd:md:row-span-2')}
-            aspectRatio={index % 2 === 0 || squares ? '1/1' : '16/9'}
-          />
+            x-data={`entrygriditem({id: '${item.id}'})`}
+            x-show="visible"
+          >
+            <EntryGridItem
+              {...item}
+              aspectRatio={index % 2 === 0 || squares ? '1/1' : '16/9'}
+            />
+          </div>
         ))}
-      </div>
-    )
-  }
-  {
-    usesAlpine && (
-      <div x-show="filtered" class={clsx(containerClasses)}>
-        <template
-          x-for="(item,index) in filteredResults"
-          x-bind:key="item.uuid"
-        >
-          <EntryGridItemX
-            x-bind:class={!squares && `index % 2 === 0 && 'md:row-span-2'`}
-          />
-        </template>
       </div>
     )
   }

@@ -1,5 +1,6 @@
 import { carousel } from '@/alpine/carousel'
 import { projects } from '@/alpine/projects'
+import { entrygrid, entrygriditem } from '@/alpine/entrygrid'
 import collapse from '@alpinejs/collapse'
 import persist from '@alpinejs/persist'
 import type { Alpine } from 'alpinejs'
@@ -12,6 +13,8 @@ export default (Alpine: Alpine) => {
 
   Alpine.data('carousel', carousel)
   Alpine.data('projects', projects)
+  Alpine.data('entrygrid', entrygrid)
+  Alpine.data('entrygriditem', entrygriditem)
 
   type UiStore = {
     navOpen: boolean

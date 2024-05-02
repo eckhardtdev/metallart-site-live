@@ -48,6 +48,7 @@ const items = stories.map(
       image: story.content?.cover?.filename
         ? story.content?.cover
         : story.content?.image,
+      id: story.id,
       uuid: story.uuid,
       url: story.full_slug,
     }) as EntryGridItemProps,
@@ -120,6 +121,21 @@ const filterWithResults = filters.map((filter) => {
     options,
   }
 })
+
+const entries = items.map((item) => {
+  const entry = {
+    id: item.id + '',
+    filters: fields.flatMap((field) => {
+      const values = item[field]
+      if (Array.isArray(values)) {
+        return values.map((value) => getFieldOptionId(field, value))
+      } else {
+        return getFieldOptionId(field, values)
+      }
+    }),
+  }
+  return entry
+})
 ---
 
 <EntryLayout story={story} {...storyblokEditable(blok)}>
@@ -130,7 +146,7 @@ const filterWithResults = filters.map((filter) => {
       ))
     }
     <div
-      x-data="projects({type:'news'})"
+      x-data={`entrygrid({items: ${JSON.stringify(entries)}, type:'news'})`}
       class={clsx('area relative mt-md grid gap-y-10')}
     >
       <ProjectFilter
