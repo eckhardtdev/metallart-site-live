@@ -5,7 +5,7 @@ import {
   filterStoryLinks,
   generateStaticPathsV2,
 } from '@/utils/storyblok'
-import { getPageLocale } from '@/utils/storyblok/i18n'
+// import { getPageLocale } from '@/utils/storyblok/i18n'
 import { storyHasContent } from '@/utils/storyblok/storyHasContent'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import { componentNames } from '../../storyblok.config.mjs'
@@ -40,7 +40,7 @@ export async function getStaticPaths() {
 // console.log('Astro.params.slug', Astro.params.slug)
 
 // @ts-ignore
-const slug = Astro.params.slug
+// const slug = Astro.params.slug
 // @ts-ignore
 let page = Astro.props.page
 // if (!page || !page?.slug) {
@@ -88,45 +88,12 @@ if (page) {
     if (import.meta.env.DEV || import.meta.env.PUBLIC_ENV === 'preview') {
       console.warn('ERROR', page, JSON.stringify(error))
     }
-    // else {
-    //   return Astro.redirect('/404')
-    // }
   }
 } else {
   if (import.meta.env.DEV || import.meta.env.PUBLIC_ENV === 'preview') {
     console.warn('NO PAGE', page)
   }
-  // else {
-  //   return Astro.redirect('/404')
-  // }
 }
-
-// TODO:Find a static solution for cookies
-// if (import.meta.env.PUBLIC_ENV === 'production') {
-//   // We need to JSON.stringify/parse the cookie value because Alpine persits expects a JSON string
-//   let cookieLang
-//   let setCookie = false
-//   try {
-//     cookieLang = JSON.parse(Astro.cookies.get('i18n')?.value ?? '"en"')
-//   } catch (error) {
-//     console.error('Error: Cookie i18n not set as JSON-Data.', error)
-//     setCookie = true
-//   }
-//   if (!Astro.cookies.has('i18n') || setCookie) {
-//     cookieLang = Astro.preferredLocale ?? 'en'
-//     Astro.cookies.set('i18n', JSON.stringify(cookieLang), {
-//       path: '/',
-//       maxAge: 3600 * 24 * 365,
-//     })
-//   }
-//   if (Astro.url.pathname === '/') {
-//     if (cookieLang === 'de') {
-//       return Astro.redirect('/de/', 301)
-//     }
-//   }
-// }
-
-// console.log(`##### PAGE ${new Date()} #####`, page, story)
 ---
 
 {

@@ -4,6 +4,7 @@ import { fetchStory } from '.'
 import type { StoryblokLink } from './types'
 import { getPageLocale } from './i18n'
 import { getLocalizedPaths } from './i18nv2'
+const isPublished = import.meta.env.PUBLIC_STORYBLOK_VERSION === 'published'
 
 type Site = {
   siteCountry: string
@@ -52,7 +53,7 @@ export const filterStoryLinks = (links: StoryblokLink[]) => {
         const passed =
           link?.slug?.startsWith('global') ||
           link?.slug?.startsWith('sites') ||
-          link?.slug?.startsWith('test')
+          (!isPublished && link?.slug?.startsWith('test'))
         return passed
       })
       // Blacklist
