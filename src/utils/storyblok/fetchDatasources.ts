@@ -48,7 +48,7 @@ export async function fetchDatasourceEntries(datasourceIdOrSlug, query = {}) {
       defaultValue: entry.value,
       value: entry.dimension_value ?? entry.value,
     }))
-    console.log('entries', entries)
+    // console.log('entries', entries)
 
     return entries
   } catch (error) {

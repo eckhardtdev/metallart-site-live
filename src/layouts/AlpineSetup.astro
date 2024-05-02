@@ -19,6 +19,34 @@
     },
   }
 
+  function findPreferredLanguage(supportedLanguages) {
+    for (let userLang of navigator.languages) {
+      userLang = userLang.slice(0, 2)
+      if (supportedLanguages.includes(userLang)) {
+        return userLang
+      }
+    }
+    return 'en'
+  }
+
+  function setLanguageAndRedirect() {
+    const preferredLanguage = findPreferredLanguage(['en', 'de'])
+
+    // @ts-ignore
+    if (!window.cookieStorage.getItem('i18n')) {
+      // @ts-ignore
+      window.cookieStorage.setItem('i18n', JSON.stringify(preferredLanguage))
+    }
+    // @ts-ignore
+    const language = JSON.parse(window.cookieStorage.getItem('i18n'))
+    if (language) {
+      if (window.location.pathname === '/' && language !== 'en') {
+        window.location.href = `/${language}`
+      }
+    }
+  }
+  setLanguageAndRedirect()
+
   document.addEventListener('DOMContentLoaded', function () {
     const carouselElems = document.querySelectorAll('.splide')
     if (carouselElems.length === 0) return

@@ -6,7 +6,7 @@ import type { Alpine } from 'alpinejs'
 // import * as bodyScrollLock from 'body-scroll-lock'
 
 export default (Alpine: Alpine) => {
-  console.log('Alpine entrypoint', Alpine)
+  // console.log('Alpine entrypoint', Alpine)
   Alpine.plugin(collapse)
   Alpine.plugin(persist)
 

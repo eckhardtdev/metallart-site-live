@@ -1,40 +1,63 @@
 ---
-import { fetchStories } from '@/utils/storyblok'
-// @ts-ignore
-import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import {
+  fetchAllLinks,
+  fetchStories,
+  filterStoryLinks,
+  generateStaticPathsV2,
+} from '@/utils/storyblok'
+// import { getPageLocale } from '@/utils/storyblok/i18n'
 import { storyHasContent } from '@/utils/storyblok/storyHasContent'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import { componentNames } from '../../storyblok.config.mjs'
-import { getPageLocale } from '@/utils/storyblok/i18n'
 
 // REVIEW: Use server or hybrid?
 // export const prerender = true
-// export async function getStaticPaths() {
-//   const links = await fetchLinks()
-//   const validLinks = filterStoryLinks(links)
-//   const paths = await generateStaticPaths(validLinks)
+export async function getStaticPaths() {
+  const links = await fetchAllLinks()
+  const validLinks = filterStoryLinks(links)
+  // .sort((a, b) =>
+  //   a.slug.localeCompare(b.slug),
+  // )
+  // console.log('----- ↓↓↓ links ↓↓↓ -----')
+  // for (const link of validLinks) {
+  //   console.log(`${link.slug} (${link.published})`)
+  //   console.log(
+  //     `     ${link.alternates.map((altern) => `${altern.lang} ${altern.translated_slug}`)}`,
+  //   )
+  // }
+  // console.log('----- ↑↑↑ links ↑↑↑ -----')
 
-//   return paths
-// }
+  const paths = await generateStaticPathsV2(validLinks)
+  // console.log('----- ↓↓↓ paths ↓↓↓ -----')
+  // for (const path of paths) {
+  //   console.log(path.params.slug)
+  // }
+  // console.log('----- ↑↑↑ paths ↑↑↑ -----')
+
+  return paths
+}
 
 // console.log('Astro.params.slug', Astro.params.slug)
 
-const slug = Astro.params.slug
+// @ts-ignore
+// const slug = Astro.params.slug
+// @ts-ignore
 let page = Astro.props.page
-if (!page || !page?.slug) {
-  // const paths = await generateStaticPaths([
-  //   {
-  //     slug: Astro.params.slug,
-  //   },
-  // ])
-  // page = paths[0].props?.page
-  const pageProps = getPageLocale(slug)
-  page = {
-    ...pageProps,
-    slug,
-  }
-}
+// if (!page || !page?.slug) {
+//   // const paths = await generateStaticPaths([
+//   //   {
+//   //     slug: Astro.params.slug,
+//   //   },
+//   // ])
+//   // page = paths[0].props?.page
+//   const pageProps = getPageLocale(slug)
+//   page = {
+//     ...pageProps,
+//     slug,
+//   }
+// }
 
-console.log('##### page', page)
+// console.log('##### page', page)
 
 let story
 if (page) {
@@ -64,43 +87,13 @@ if (page) {
   } catch (error) {
     if (import.meta.env.DEV || import.meta.env.PUBLIC_ENV === 'preview') {
       console.warn('ERROR', page, JSON.stringify(error))
-    } else {
-      return Astro.redirect('/404')
     }
   }
 } else {
   if (import.meta.env.DEV || import.meta.env.PUBLIC_ENV === 'preview') {
     console.warn('NO PAGE', page)
-  } else {
-    return Astro.redirect('/404')
   }
 }
-
-if (import.meta.env.PUBLIC_ENV === 'production') {
-  // We need to JSON.stringify/parse the cookie value because Alpine persits expects a JSON string
-  let cookieLang
-  let setCookie = false
-  try {
-    cookieLang = JSON.parse(Astro.cookies.get('i18n')?.value ?? '"en"')
-  } catch (error) {
-    console.error('Error: Cookie i18n not set as JSON-Data.', error)
-    setCookie = true
-  }
-  if (!Astro.cookies.has('i18n') || setCookie) {
-    cookieLang = Astro.preferredLocale ?? 'en'
-    Astro.cookies.set('i18n', JSON.stringify(cookieLang), {
-      path: '/',
-      maxAge: 3600 * 24 * 365,
-    })
-  }
-  if (Astro.url.pathname === '/') {
-    if (cookieLang === 'de') {
-      return Astro.redirect('/de/', 301)
-    }
-  }
-}
-
-// console.log(`##### PAGE ${new Date()} #####`, page, story)
 ---
 
 {

@@ -3,6 +3,8 @@ import { normalizePath, normalizeUrl, removeTrailingSlash } from '@/utils/url'
 import { fetchStory } from '.'
 import type { StoryblokLink } from './types'
 import { getPageLocale } from './i18n'
+import { getLocalizedPaths } from './i18nv2'
+const isPublished = import.meta.env.PUBLIC_STORYBLOK_VERSION === 'published'
 
 type Site = {
   siteCountry: string
@@ -49,12 +51,9 @@ export const filterStoryLinks = (links: StoryblokLink[]) => {
       // Whitelist
       .filter((link) => {
         const passed =
-          link?.slug?.startsWith('jobs') ||
-          link?.slug?.startsWith('news') ||
-          link?.slug?.startsWith('projects') ||
+          link?.slug?.startsWith('global') ||
           link?.slug?.startsWith('sites') ||
-          link?.slug?.startsWith('knowledge-base') ||
-          link?.slug?.startsWith('test')
+          (!isPublished && link?.slug?.startsWith('test'))
         return passed
       })
       // Blacklist
@@ -70,9 +69,20 @@ export const filterStoryLinks = (links: StoryblokLink[]) => {
   )
 }
 
+export const generateStaticPathsV2 = async (links) => {
+  const paths = links.flatMap((link) => {
+    const paths = getLocalizedPaths(link)
+
+    return paths
+  })
+
+  return paths
+}
+
 export const generateStaticPaths = async (links) => {
   const pathsNew = links.map((link) => {
-    const pageLocale = getPageLocale(link.slug)
+    const slug = removeTrailingSlash(link.slug)
+    const pageLocale = getPageLocale(slug)
 
     return {
       props: {
