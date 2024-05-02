@@ -12,7 +12,6 @@ import clsx from 'clsx'
 // TODO: astro:assets performance not very well in server mode
 
 const STORYBLOK_MAX_SIZE = 4000
-const IS_PREVIEW = import.meta.env.PUBLIC_ENV === 'preview'
 
 type FocusPoint =
   | {
@@ -220,18 +219,6 @@ const finalPictureAttrs = {
       loading={loading}
       {...props}
     />
-  ) : IS_PREVIEW ? (
-    <div {...finalPictureAttrs}>
-      <img
-        class={clsx(className)}
-        src={imageSrc}
-        alt={alt}
-        loading={loading}
-        width={originalWidth}
-        height={originalHeight}
-        {...props}
-      />
-    </div>
   ) : (
     <Picture
       class={clsx(className)}
