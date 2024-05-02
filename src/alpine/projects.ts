@@ -60,24 +60,15 @@ export function projects(initialState: InitialState) {
     },
     async fetchData() {
       this.loading = true
-      // const params = new URLSearchParams()
-      // params.append('f', this.activeFilters)
       const locale = getLangFromUrl(new URL(window.location.href))
       this.currentFetchId = new Date().getTime()
-
-      // console.log('------------')
-      // console.log('NEW FETCH ID', this.currentFetchId)
 
       try {
         const filters = this.activeFilters.join('!')
         const type = this.type === 'news' ? 'news' : 'projects'
         const endpoint = `/api/${type}/${locale}/${filters}?t=${this.currentFetchId}`
-        // console.log('FETCHING', endpoint)
         const result = await fetch(endpoint)
         const data = await result.json()
-        // console.log(
-        //   `FETCHED\n       currentFetchId=${this.currentFetchId}\n       data.meta.t=   ${data.meta?.t}\n       current=${parseInt(data.meta?.t) === this.currentFetchId}\n       total=${data?.stories?.length}`,
-        // )
 
         if (parseInt(data.meta?.t) === this.currentFetchId) {
           this.filteredResults = data?.stories?.map((story, index) => {
