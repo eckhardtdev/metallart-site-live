@@ -1,5 +1,4 @@
 ---
-import { setSite } from '@/utils/site'
 import MetaColorScheme from '@/components/meta/MetaColorScheme.astro'
 import MetaFacebook from '@/components/meta/MetaFacebook.astro'
 import MetaHreflangs from '@/components/meta/MetaHreflangs.astro'
@@ -9,10 +8,11 @@ import MetaSeo from '@/components/meta/MetaSeo.astro'
 import MetaTwitter from '@/components/meta/MetaTwitter.astro'
 import { getSiteFromRoute } from '@/i18n/utils'
 import type { Site } from '@/types'
+import { setSite } from '@/utils/site'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 import setDefaults from 'lodash/defaults'
-import MetaSitemap from './MetaSitemap.astro'
 import ConsentManagement from './ConsentManagement.astro'
+import MetaSitemap from './MetaSitemap.astro'
 
 // TODO: Add schema.org
 
