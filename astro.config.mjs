@@ -1,14 +1,15 @@
-import netlify from '@astrojs/netlify'
-import tailwind from '@astrojs/tailwind'
 import alpine from '@astrojs/alpinejs'
+import netlify from '@astrojs/netlify'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
+import tailwind from '@astrojs/tailwind'
+import sentry from '@sentry/astro'
 import storyblok from '@storyblok/astro'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
 import { loadEnv } from 'vite'
 import { components } from './storyblok.config.mjs'
-import { interceptor } from './storyblok/interceptor.js'
+// import { interceptor } from './storyblok/interceptor.js'
 
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 
@@ -57,7 +58,7 @@ export default defineConfig({
         // Choose your Storyblok space region
         region: 'eu',
         // TODO: Not working. Idea intercepting the response and adding width/height to svgs
-        responseInterceptor: interceptor,
+        // responseInterceptor: interceptor,
       },
       components,
       // resolveRelations: ['Post.previousPost', 'Post.nextPost'],
@@ -84,13 +85,15 @@ export default defineConfig({
       },
     }),
     sitemap(),
-    // sentry({
-    //   dsn: 'https://a2da306d88df32d6e51c1cdd861652a8@us.sentry.io/4506700051185664',
-    //   sourceMapsUploadOptions: {
-    //     project: 'metallart',
-    //     authToken: process.env.SENTRY_AUTH_TOKEN,
-    //   },
-    // }),
+    // Sentry Error Monitoring
+    // https://docs.sentry.io/platforms/javascript/guides/astro/#configure
+    sentry({
+      dsn: 'https://a2da306d88df32d6e51c1cdd861652a8@o4506671757852672.ingest.us.sentry.io/4506700051185664',
+      sourceMapsUploadOptions: {
+        project: 'metallart',
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+      },
+    }),
     // spotlightjs(),
     alpine({ entrypoint: '/src/alpine/entrypoint' }),
     react(),
