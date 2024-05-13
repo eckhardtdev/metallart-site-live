@@ -119,16 +119,16 @@ export function getLocalizedPages(link) {
           return !sbSlug.startsWith('sites/')
         }
 
-        console.log(
-          'Check alternate',
-          alternate.translated_slug,
-          siteCountrySlug,
-          alternate.lang,
-        )
+        // console.log(
+        //   'Check alternate',
+        //   alternate.translated_slug,
+        //   siteCountrySlug,
+        //   alternate.lang,
+        // )
         const isSupportedLanguage = countryConfig.languages.includes(
           alternate.lang,
         )
-        console.log('isSupportedLanguage', isSupportedLanguage)
+        // console.log('isSupportedLanguage', isSupportedLanguage)
         return isSupportedLanguage
       })
       .map((alternate) => {

@@ -5,7 +5,7 @@ import {
   filterStoryLinks,
   generateStaticPathsV2,
 } from '@/utils/storyblok'
-// import { getPageLocale } from '@/utils/storyblok/i18n'
+import { getPageLocale } from '@/utils/storyblok/i18n'
 import { storyHasContent } from '@/utils/storyblok/storyHasContent'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import { componentNames } from '../../storyblok.config.mjs'
@@ -37,27 +37,26 @@ export async function getStaticPaths() {
   return paths
 }
 
-// console.log('Astro.params.slug', Astro.params.slug)
+const isPreview = import.meta.env.PUBLIC_ENV === 'preview'
 
+// console.log('Astro.params.slug', Astro.params.slug)
 // @ts-ignore
-// const slug = Astro.params.slug
+const slug = Astro.params.slug
 // @ts-ignore
 let page = Astro.props.page
-// if (!page || !page?.slug) {
-//   // const paths = await generateStaticPaths([
-//   //   {
-//   //     slug: Astro.params.slug,
-//   //   },
-//   // ])
-//   // page = paths[0].props?.page
-//   const pageProps = getPageLocale(slug)
-//   page = {
-//     ...pageProps,
-//     slug,
-//   }
-// }
-
-// console.log('##### page', page)
+if (slug && isPreview && !page?.slug) {
+  // const paths = await generateStaticPaths([
+  //   {
+  //     slug: Astro.params.slug,
+  //   },
+  // ])
+  // page = paths[0].props?.page
+  const pageProps = getPageLocale(slug)
+  page = {
+    ...pageProps,
+    slug,
+  }
+}
 
 let story
 if (page) {
