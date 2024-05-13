@@ -16,7 +16,7 @@ export type Props = {
 const { class: className, blok } = Astro.props
 
 const sizes = {
-  '4/3': {
+  '3/4': {
     track: clsx(
       'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
     ),
@@ -34,6 +34,13 @@ const sizes = {
     track: clsx('auto-cols-[calc(100%_-_var(--gap))] lg:auto-cols-full'),
     sizes:
       'min-width(1024px) calc(100vw - var(--offset-wide) * 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+  },
+  '210/297': {
+    track: clsx(
+      'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
+    ),
+    sizes:
+      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
   },
 }
 const sizeConfig = sizes[blok.aspectRatio ?? ''] ?? sizes['4/3']
