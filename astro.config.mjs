@@ -9,7 +9,6 @@ import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
 import { loadEnv } from 'vite'
 import { components } from './storyblok.config.mjs'
-import partytown from '@astrojs/partytown'
 // import { interceptor } from './storyblok/interceptor.js'
 
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), '')
@@ -89,13 +88,6 @@ export default defineConfig({
     // spotlightjs(),
     alpine({ entrypoint: '/src/alpine/entrypoint' }),
     react(),
-    partytown({
-      // Google Tag Manager uses the dataLayer array to send events.
-      // https://partytown.builder.io/google-tag-manager
-      config: {
-        forward: ['dataLayer.push'],
-      },
-    }),
     // Sentry Error Monitoring
     // https://docs.sentry.io/platforms/javascript/guides/astro/#configure
     sentry({
