@@ -17,7 +17,10 @@ const env = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 
 const isPublished = env.PUBLIC_STORYBLOK_VERSION === 'published'
 // TODO: Condition based on PUBLIC_ENV
-const output = env.PUBLIC_ENV === 'production' ? 'static' : 'server'
+const output =
+  env.PUBLIC_ENV === 'production' || env.PUBLIC_ENV === 'staging'
+    ? 'static'
+    : 'server'
 const storyblokBridge = env.PUBLIC_ENV !== 'production'
 console.log('environment', env.PUBLIC_ENV)
 console.log('storyblok version', env.PUBLIC_STORYBLOK_VERSION)
