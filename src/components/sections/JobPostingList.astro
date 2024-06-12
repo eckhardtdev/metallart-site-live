@@ -1,25 +1,32 @@
 ---
 import HtmlHeading from '@/components/shared/HtmlHeading.astro'
 import type { JobPostingListStoryblok } from '@/types/storyblok'
+import type { PageStoryStoryblok } from '@/types/storyblok-content'
 import type { WithStoryblokPluginPalette } from '@/types/storyblok-plugin'
 import { applyLinkAttrs } from '@/utils/link'
 import { fetchStories } from '@/utils/storyblok'
 import clsx from 'clsx'
-import Section from './Section.astro'
 import Icon from '../shared/Icon.astro'
-import { getSbLanguageFromLocale } from '@/utils/storyblok/i18n'
+import Section from './Section.astro'
+import { sitesFilterQuery } from '@/utils/metallart'
 
 export type Props = {
   class?: string
   blok: JobPostingListStoryblok & WithStoryblokPluginPalette
+  story: PageStoryStoryblok
 }
-const sbLang = getSbLanguageFromLocale(Astro.currentLocale)
+const { class: className, blok, story } = Astro.props
+
+const sbLang = story?.lang
 
 const stories = await fetchStories({
   language: sbLang,
   by_slugs: 'global/jobs/*',
   content_type: 'JobPosting',
   sort_by: 'sort_by_date:desc,published_at:desc,created_at:desc',
+  filter_query: {
+    ...sitesFilterQuery(sbLang),
+  },
 })
 
 const links =
@@ -27,8 +34,6 @@ const links =
     label: story.content.listTitle || story.content.title,
     url: story.full_slug,
   })) ?? []
-
-const { class: className, blok } = Astro.props
 
 const Sizes = {
   lg: 'text-22 md:text-32 lg:text-46',

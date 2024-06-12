@@ -1,6 +1,7 @@
 import type { MultilinkStoryblok } from '@/types/storyblok'
 import { normalizePath, normalizeUrl } from '.'
 import { getLocalePath } from './storyblok/i18n'
+import { getPathFromSbSlug } from './storyblok/i18nv2'
 
 export type Link = MultilinkStoryblok
 
@@ -17,7 +18,11 @@ type LinkAttrs = {
 export const getLinkUrl = (link: Link) => {
   return typeof link === 'string'
     ? link
-    : link?.story?.full_slug || link?.story?.url || link?.url || link?.href
+    : link?.story?.full_slug ||
+        link?.story?.url ||
+        link?.url ||
+        link?.cached_url ||
+        link?.href
 }
 
 export const checkExternalUrl = (url: string) => {
@@ -113,7 +118,7 @@ export const applyLinkAttrs = (
   // console.log('URL', url, isStory, isInternal)
   if (isStory || isInternal) {
     url = normalizePath(url)
-    url = getLocalePath(url)
+    url = getPathFromSbSlug(url)
     if (link?.anchor && typeof link?.anchor === 'string') {
       url += `#${link.anchor}`
     }

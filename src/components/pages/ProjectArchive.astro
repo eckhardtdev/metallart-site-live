@@ -17,7 +17,8 @@ import {
   getFieldsForDatasources,
 } from '@/utils/storyblok/datasource-field-mapping'
 import Icon from '../shared/Icon.astro'
-import { projectsSortBy } from '@/utils/metallart'
+import { projectsSortBy, sitesFilterQuery } from '@/utils/metallart'
+import { getLanguageFromSbStory } from '@/utils/storyblok/i18nv2'
 
 export type Props = {
   slug?: string
@@ -33,12 +34,16 @@ export type Props = {
 const { story, blok } = Astro.props
 const t = useTranslate(Astro.url)
 
-// created_at, published_at, sort_by_date
+// const sbLang = getLanguageFromSbStory(story)
+const sbLang = story.lang
+
 const stories = await fetchStories({
   starts_with: 'global/projects/',
-  language: story.lang,
+  language: sbLang,
   sort_by: projectsSortBy,
-  // per_page: 100,
+  filter_query: {
+    ...sitesFilterQuery(sbLang),
+  },
 })
 
 const items =

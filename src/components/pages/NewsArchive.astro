@@ -16,7 +16,7 @@ import {
   getDatasourceByField,
   getFieldsForDatasources,
 } from '@/utils/storyblok/datasource-field-mapping'
-import { newsSortBy } from '@/utils/metallart'
+import { newsSortBy, sitesFilterQuery } from '@/utils/metallart'
 
 export type Props = {
   slug?: string
@@ -31,13 +31,16 @@ export type Props = {
 
 const { story, blok } = Astro.props
 const t = useTranslate(Astro.url)
+const sbLang = story.lang
 
 const stories =
   (await fetchStories({
-    language: story.lang,
     starts_with: 'global/news/',
+    language: sbLang,
     sort_by: newsSortBy,
-    // per_page: 100,
+    filter_query: {
+      ...sitesFilterQuery(sbLang),
+    },
   })) ?? []
 
 const items = stories.map(

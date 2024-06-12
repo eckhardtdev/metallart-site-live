@@ -3,19 +3,19 @@ import Section from '@/components/sections/Section.astro'
 import ButtonGroup from '@/components/shared/ButtonGroup.astro'
 import HtmlHeading from '@/components/shared/HtmlHeading.astro'
 import Icon from '@/components/shared/Icon.astro'
+import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
 import type {
   AssetStoryblok,
   LatestProjectsCarouselStoryblok,
 } from '@/types/storyblok'
+import type { PageStoryStoryblok } from '@/types/storyblok-content'
+import { projectsSortBy, sitesFilterQuery } from '@/utils/metallart'
 import { fetchStories } from '@/utils/storyblok'
+import { useSiteConfig } from '@/utils/useSiteConfig'
 import type { SbBlokData } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import CarouselImageLink from '../shared/CarouselImageLink.astro'
-import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
-import { useSiteConfig } from '@/utils/useSiteConfig'
-import { getSbLanguageFromLocale } from '@/utils/storyblok/i18n'
-import { projectsSortBy } from '@/utils/metallart'
 
 type CarouselImageLinkProps = {
   title: string
@@ -28,12 +28,13 @@ type Item = CarouselImageLinkProps | SbBlokData
 export type Props = {
   class?: string
   blok: LatestProjectsCarouselStoryblok
+  story: PageStoryStoryblok
 }
 
-const { class: className, blok } = Astro.props
+const { class: className, blok, story } = Astro.props
 
 const t = useTranslate(Astro.url)
-const sbLang = getSbLanguageFromLocale(Astro.currentLocale)
+const sbLang = story?.lang
 const numItems = parseInt(blok.numItems) ?? 5
 const projects = await fetchStories({
   language: sbLang,
@@ -41,6 +42,9 @@ const projects = await fetchStories({
   content_type: 'Project',
   per_page: numItems,
   sort_by: projectsSortBy,
+  filter_query: {
+    ...sitesFilterQuery(sbLang),
+  },
 })
 
 // TODO: Resolve links --> 'projects/sample-project'
@@ -67,7 +71,11 @@ const headline = blok.headline || t('latest_projects_carousel.headline')
 
 const currentSite = getSiteFromRoute(Astro.url.href)
 const currentLocale = 'de-de' ?? Astro.currentLocale
-const site = await useSiteConfig({ site: currentSite, lang: currentLocale })
+const site = await useSiteConfig({
+  url: Astro.url,
+  site: currentSite,
+  lang: currentLocale,
+})
 const projectsSlug = site?.projectsSlug
 const allProjectsLink =
   projectsSlug && blok.showAllProjectsButton

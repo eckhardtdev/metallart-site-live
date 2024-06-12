@@ -9,7 +9,11 @@ const { floating = true, hideNav = false, hideContact = false } = Astro.props
 
 const currentSite = getSiteFromRoute(Astro.url.href)
 const currentLocale = Astro.currentLocale
-const site = await useSiteConfig({ site: currentSite, lang: currentLocale })
+const site = await useSiteConfig({
+  url: Astro.url,
+  site: currentSite,
+  lang: currentLocale,
+})
 const t = useTranslate(Astro.url)
 ---
 

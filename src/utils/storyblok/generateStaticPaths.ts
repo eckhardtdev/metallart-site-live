@@ -66,6 +66,8 @@ export const filterStoryLinks = (links: StoryblokLink[]) => {
 
         return !block
       })
+    // Only test pages
+    // .filter((link) => link?.slug?.endsWith('test'))
   )
 }
 

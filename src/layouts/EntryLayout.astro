@@ -14,20 +14,13 @@ import type {
 } from '@/types/storyblok'
 import { getStoryDates, type AstroStoryblokPage } from '@/utils/storyblok'
 import clsx from 'clsx'
-import type { StoryblokStory } from 'storyblok-generate-ts'
 import BaseLayout from './BaseLayout.astro'
+import type { PageStoryStoryblok } from '@/types/storyblok-content'
 
 export type Props = {
   class?: string
   page?: AstroStoryblokPage
-  story:
-    | StoryblokStory<PageStoryblok>
-    | StoryblokStory<JobPostingStoryblok>
-    | StoryblokStory<KnowledgeBaseArticleStoryblok>
-    | StoryblokStory<NewsArchiveStoryblok>
-    | StoryblokStory<NewsArticleStoryblok>
-    | StoryblokStory<ProjectStoryblok>
-    | StoryblokStory<ProjectArchiveStoryblok>
+  story: PageStoryStoryblok
 }
 
 const { page, story } = Astro.props
@@ -68,5 +61,5 @@ if (story?.content?.component === 'Project') {
   <slot />
   <SiteFooter ctaVariant={story?.content?.footerCtaVariant} />
   <GlobalNavigation />
-  <ContactDialog />
+  <ContactDialog story={story} />
 </BaseLayout>

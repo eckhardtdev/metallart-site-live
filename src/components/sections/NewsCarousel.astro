@@ -3,13 +3,13 @@ import Section from '@/components/sections/Section.astro'
 import HtmlHeading from '@/components/shared/HtmlHeading.astro'
 import Icon from '@/components/shared/Icon.astro'
 import type { AssetStoryblok, NewsCarouselStoryblok } from '@/types/storyblok'
+import type { PageStoryStoryblok } from '@/types/storyblok-content'
+import { newsSortBy, sitesFilterQuery } from '@/utils/metallart'
 import { fetchStories } from '@/utils/storyblok'
 import type { SbBlokData } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import CarouselImageLink from '../shared/CarouselImageLink.astro'
-import { getSbLanguageFromLocale } from '@/utils/storyblok/i18n'
-import { newsSortBy } from '@/utils/metallart'
 
 type CarouselImageLinkProps = {
   title: string
@@ -22,10 +22,11 @@ type Item = CarouselImageLinkProps | SbBlokData
 export type Props = {
   class?: string
   blok: NewsCarouselStoryblok
+  story: PageStoryStoryblok
 }
 
-const { class: className, blok } = Astro.props
-const sbLang = getSbLanguageFromLocale(Astro.currentLocale)
+const { class: className, blok, story } = Astro.props
+const sbLang = story?.lang
 
 type FilterQuery =
   | {
@@ -42,6 +43,7 @@ if (blok.tags?.length) {
     newsTags: {
       any_in_array: blok.tags.join(','),
     },
+    ...sitesFilterQuery(sbLang),
   }
 }
 const storiesQuery = {

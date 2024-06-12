@@ -2,17 +2,17 @@
 import type { AnchorLink } from '@/components/shared/AnchorNavigation.astro'
 import EntryLayout from '@/layouts/EntryLayout.astro'
 import type { PageStoryblok } from '@/types/storyblok'
+import type { PageStoryStoryblok } from '@/types/storyblok-content'
 import { getAnchor } from '@/utils/anchor'
 import { storyblokEditable } from '@/utils/storyblok'
 import type { AstroStoryblokPage } from '@/utils/storyblok/generateStaticPaths'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
-import type { StoryblokStory } from 'storyblok-generate-ts'
 import SiteHeaderSticky from '../shared/SiteHeaderSticky.astro'
 
 export type Props = {
   page?: AstroStoryblokPage
-  story: StoryblokStory<PageStoryblok>
+  story: PageStoryStoryblok
   blok: PageStoryblok
 }
 
@@ -35,11 +35,19 @@ validAnchorFields.forEach((field) => {
 
 <EntryLayout page={page} story={story} {...storyblokEditable(blok)}>
   <main class={clsx()}>
-    {firstBlocks.map((firstBlock) => <StoryblokComponent blok={firstBlock} />)}
+    {
+      firstBlocks.map((firstBlock) => (
+        <StoryblokComponent blok={firstBlock} story={story} />
+      ))
+    }
     <SiteHeaderSticky
       anchors={anchors}
       showAnchorNavigation={blok.showAnchorNavigation}
     />
-    {lastBlocks.map((latestBlock) => <StoryblokComponent blok={latestBlock} />)}
+    {
+      lastBlocks.map((latestBlock) => (
+        <StoryblokComponent blok={latestBlock} story={story} />
+      ))
+    }
   </main>
 </EntryLayout>

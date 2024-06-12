@@ -23,6 +23,7 @@ let { meta = {} } = Astro.props
 const currentSite = getSiteFromRoute(Astro.url.href)
 const currentLocale = Astro.currentLocale
 const siteConfig = await useSiteConfig({
+  url: Astro.url,
   site: currentSite,
   lang: currentLocale,
 })

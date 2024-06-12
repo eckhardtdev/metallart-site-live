@@ -40,17 +40,17 @@ function getLocales() {
   return isPublished ? ['en', 'de', 'ch'] : ['de', 'en', 'de-ch']
 }
 
-export function getSbLanguageFromLocale(
-  locale?: string,
-  excludeDefault = false,
-) {
-  if (!locale) return
+// export function getSbLanguageFromLocale(
+//   locale?: string,
+//   excludeDefault = false,
+// ) {
+//   if (!locale) return
 
-  let lang = sbLanguagesForLocale[locale] ?? sbDefaultLang
-  let sbLang = excludeDefault && lang === sbDefaultLang ? 'default' : lang
-  // console.log('getSbLanguageFromLocale', sbLang)
-  return sbLang
-}
+//   let lang = sbLanguagesForLocale[locale] ?? sbDefaultLang
+//   let sbLang = excludeDefault && lang === sbDefaultLang ? 'default' : lang
+//   // console.log('getSbLanguageFromLocale', sbLang)
+//   return sbLang
+// }
 
 export function getSbLanguage(locale: string) {
   const lang = sbLanguagesForLocale[locale]

@@ -2,6 +2,7 @@ import { ui, defaultLang } from './ui'
 
 // TODO: Build a function that returns the site from the route
 export const getSiteFromRoute = (route: string) => {
+  // console.log('##### getSiteFromRoute', route)
   return 'germany'
 }
 

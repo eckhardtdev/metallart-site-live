@@ -1,10 +1,12 @@
 ---
 import { applyLinkAttrs } from '@/utils/link'
-import { useSiteConfiguration } from '@/utils/storyblok/useSiteConfiguration'
 import clsx from 'clsx'
 import Icon from './Icon.astro'
+import { useSiteConfig } from '@/utils/useSiteConfig'
 
-const config = (await useSiteConfiguration(Astro.currentLocale ?? 'de')) ?? {}
+const { config } = await useSiteConfig({
+  url: Astro.url,
+})
 ---
 
 <div
@@ -74,51 +76,53 @@ const config = (await useSiteConfiguration(Astro.currentLocale ?? 'de')) ?? {}
       >
         <nav class="flex flex-1 flex-col justify-center">
           {
-            config.primaryNavigation?.length > 0 && (
-              <ul class="space-y-2 lg:space-y-6">
-                {config.primaryNavigation.map((item) => (
-                  <li>
-                    <a
-                      {...applyLinkAttrs(item.link)}
-                      class={clsx(
-                        'group block py-2',
-                        'text-30 leading-none md:text-46 lg:text-60',
-                        'transition-colors',
-                        'text-creme hovers:hover:text-white',
-                        'hovers:transition hovers:hover:opacity-80',
-                      )}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )
+            config.primaryNavigation &&
+              config.primaryNavigation?.length > 0 && (
+                <ul class="space-y-2 lg:space-y-6">
+                  {config.primaryNavigation.map((item) => (
+                    <li>
+                      <a
+                        {...applyLinkAttrs(item.link)}
+                        class={clsx(
+                          'group block py-2',
+                          'text-30 leading-none md:text-46 lg:text-60',
+                          'transition-colors',
+                          'text-creme hovers:hover:text-white',
+                          'hovers:transition hovers:hover:opacity-80',
+                        )}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )
           }
           <hr
             class="mx-auto my-5 h-1 w-32 rounded-full border-none bg-white md:my-8 lg:my-10"
           />
           {
-            config.secondaryNavigation?.length > 0 && (
-              <ul class="">
-                {config.secondaryNavigation.map((item) => (
-                  <li>
-                    <a
-                      {...applyLinkAttrs(item.link)}
-                      class={clsx(
-                        'block py-3',
-                        'md:text-28 text-18 leading-none lg:text-36',
-                        'transition-colors',
-                        'text-creme hovers:hover:text-white',
-                        'hovers:transition hovers:hover:opacity-80',
-                      )}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )
+            config.secondaryNavigation &&
+              config.secondaryNavigation?.length > 0 && (
+                <ul class="">
+                  {config.secondaryNavigation.map((item) => (
+                    <li>
+                      <a
+                        {...applyLinkAttrs(item.link)}
+                        class={clsx(
+                          'block py-3',
+                          'md:text-28 text-18 leading-none lg:text-36',
+                          'transition-colors',
+                          'text-creme hovers:hover:text-white',
+                          'hovers:transition hovers:hover:opacity-80',
+                        )}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )
           }
         </nav>
         <div class="mt-auto pt-5">

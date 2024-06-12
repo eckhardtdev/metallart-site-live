@@ -5,14 +5,23 @@ import Icon from '@/components/shared/Icon.astro'
 import SocialLink from '@/components/shared/SocialLink.astro'
 import StoryblokRichText from '@/components/storyblok/StoryblokRichText.astro'
 import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
+import type { PageStoryStoryblok } from '@/types/storyblok-content'
 import { applyLinkAttrs } from '@/utils/link'
-import { getSbLanguageFromLocale } from '@/utils/storyblok/i18n'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 import clsx from 'clsx'
 
+export type Props = {
+  story: PageStoryStoryblok
+}
+const { story } = Astro.props
+
+const sbLang = story?.lang
 const currentSite = getSiteFromRoute(Astro.url.href)
-const sbLang = getSbLanguageFromLocale(Astro.currentLocale)
-const site = await useSiteConfig({ site: currentSite, lang: sbLang })
+const site = await useSiteConfig({
+  url: Astro.url,
+  site: currentSite,
+  lang: sbLang,
+})
 const t = useTranslate(Astro.url)
 ---
 
