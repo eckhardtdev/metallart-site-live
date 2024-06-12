@@ -6,11 +6,12 @@ import BgImage from '@/images/made-in-salach-bg.jpg'
 import ButtonGroup from './ButtonGroup.astro'
 
 type Props = {
+  showMadeInSalach: boolean
   text?: string
   links?: LinkStoryblok[]
 }
 
-const { text, links } = Astro.props
+const { text, links, showMadeInSalach = true } = Astro.props
 ---
 
 <div class="bg-steel text-white md:grid md:grid-cols-2">
@@ -25,12 +26,16 @@ const { text, links } = Astro.props
       class="h-full w-full object-cover object-center"
       pictureAttributes={{ class: 'absolute inset-0 w-full h-full' }}
     />
-    <div class="flex items-center justify-center">
-      <Icon
-        name="made-in-salach"
-        class="relative z-10 w-[64%] min-w-[260px] max-w-[340px]"
-      />
-    </div>
+    {
+      showMadeInSalach && (
+        <div class="flex items-center justify-center">
+          <Icon
+            name="made-in-salach"
+            class="relative z-10 w-[64%] min-w-[260px] max-w-[340px]"
+          />
+        </div>
+      )
+    }
   </div>
   <div class="flex items-center bg-spark p-20 md:p-10">
     <div class="mx-auto w-full max-w-[32rem] flex-none">
