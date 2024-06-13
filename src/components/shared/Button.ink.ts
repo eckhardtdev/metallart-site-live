@@ -9,12 +9,7 @@ const HOVER_OPACITY = 'hovers:transition hovers:hover:opacity-80'
 export const config: InkConfig = {
   variants: {
     DEFAULT: {
-      root: clsx(
-        FIXED_CLASSES,
-        'hovers:transition-transform hovers:hover:-translate-x-2',
-      ),
-      label:
-        '-ml-[1.25em] hovers:transition-transform hovers:group-hover:translate-x-4',
+      root: clsx(FIXED_CLASSES),
       showArrow: true,
     },
     contained: {

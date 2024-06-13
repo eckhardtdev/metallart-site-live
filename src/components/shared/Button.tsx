@@ -82,9 +82,27 @@ export function Button(props) {
   }
 
   return (
-    <Component className={ink('root', className)} {...rest}>
+    <Component
+      className={ink(
+        'root',
+        inkProp('showArrow') &&
+          'hovers:transition-transform hovers:hover:-translate-x-2',
+        className,
+      )}
+      {...rest}
+    >
       {arrow === 'left' && inkProp('showArrow') && <ButtonArrow />}
-      <span className={ink('label', 'inline-block')}>{label}</span>
+      <span
+        className={ink(
+          'label',
+          'inline-block',
+          arrow === 'left' &&
+            inkProp('showArrow') &&
+            '-ml-[1.25em] hovers:transition-transform hovers:group-hover:translate-x-4',
+        )}
+      >
+        {label}
+      </span>
       {arrow === 'right' && inkProp('showArrow') && <ButtonArrow />}
     </Component>
   )

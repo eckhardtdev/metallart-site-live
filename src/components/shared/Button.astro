@@ -82,11 +82,33 @@ const { ink, inkProp } = defineInk({
   config,
   ...inkProps,
 })
+
+const animateArrowLeft = arrow === 'left' && inkProp('showArrow')
+const animateArrowRight = arrow === 'right' && inkProp('showArrow')
 ---
 
-<Component class={ink('root', className)} {...props}>
+<Component
+  class={ink(
+    'root',
+    animateArrowLeft &&
+      'hovers:transition-transform hovers:hover:-translate-x-2',
+    animateArrowRight &&
+      'hovers:transition-transform hovers:hover:-translate-x-2',
+    className,
+  )}
+  {...props}
+>
   {arrow === 'left' && inkProp('showArrow') && <ButtonArrow />}
-  <span class={ink('label', 'inline-block')}>
+  <span
+    class={ink(
+      'label',
+      'inline-block',
+      animateArrowLeft &&
+        '-ml-[1.25em] hovers:transition-transform hovers:group-hover:translate-x-4',
+      animateArrowRight &&
+        'hovers:transition-transform hovers:group-hover:-translate-x-4',
+    )}
+  >
     <slot>{label}</slot>
   </span>
   {arrow === 'right' && inkProp('showArrow') && <ButtonArrow />}
