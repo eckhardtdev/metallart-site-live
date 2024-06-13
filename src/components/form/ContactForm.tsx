@@ -9,20 +9,6 @@ import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
 import { Transition } from '@headlessui/react'
 
-const isSmtpTest = !(import.meta.env.PUBLIC_SMTP_VERSION === 'production')
-
-const submit = async (data) => {
-  // console.log('submit', data)
-  // const url = `${window.location.origin}/functions/send-contact-emails`
-  const url = `${window.location.origin}/.netlify/functions/send-contact-emails`
-
-  return await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  })
-}
-
 type ContactFormProps = {
   className?: string
   language: string
@@ -55,6 +41,20 @@ type ContactFormProps = {
   originalSourceFirstPersonOptionEvent: string
   originalSourceFirstPersonOptionPress: string
   originalSourceFirstPersonOptionOther: string
+}
+
+const isSmtpTest = !(import.meta.env.PUBLIC_SMTP_VERSION === 'production')
+
+const submit = async (data) => {
+  // console.log('submit', data)
+  // const url = `${window.location.origin}/functions/send-contact-emails`
+  const url = `${window.location.origin}/.netlify/functions/send-contact-emails`
+
+  return await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/json' },
+  })
 }
 
 const ContactFormContent = (props) => {
