@@ -46,9 +46,10 @@ type ContactFormProps = {
 const isSmtpTest = !(import.meta.env.PUBLIC_SMTP_VERSION === 'production')
 
 const submit = async (data) => {
-  // console.log('submit', data)
-  // const url = `${window.location.origin}/functions/send-contact-emails`
-  const url = `${window.location.origin}/.netlify/functions/send-contact-emails`
+  const url =
+    data?.language === 'ch'
+      ? `${window.location.origin}/.netlify/functions/send-contact-emails-ch`
+      : `${window.location.origin}/.netlify/functions/send-contact-emails`
 
   return await fetch(url, {
     method: 'POST',

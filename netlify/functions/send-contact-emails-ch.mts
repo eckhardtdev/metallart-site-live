@@ -1,6 +1,6 @@
 import type { Context } from '@netlify/functions';
 import { createTransport, getTestMessageUrl } from 'nodemailer';
-import {signature} from '../signature'
+import {signature} from '../signature-ch'
 
 type RequestBody = {
   postalCode: string;
@@ -59,7 +59,7 @@ ${reqBody.message}
 
 
 
-Mit freundlichen Grüßen / Best regards
+Mit freundlichen Grüssen / Best regards
 Ihr METALLART Team
 
 ${signature}`
@@ -113,25 +113,25 @@ export default async (req: Request, context: Context) => {
   }
   const host = isDev
     ? Netlify.env.get('SMTP_TEST_HOST')
-    : Netlify.env.get('SMTP_HOST');
+    : Netlify.env.get('SMTP_HOST_CH');
   const port = isDev
     ? parseInt(String(Netlify.env.get('SMTP_TEST_PORT')))
     : parseInt(String(Netlify.env.get('SMTP_PORT')));
   const user = isDev
     ? Netlify.env.get('SMTP_TEST_USER')
-    : Netlify.env.get('SMTP_USER');
+    : Netlify.env.get('SMTP_USER_CH');
   const pass = isDev
     ? Netlify.env.get('SMTP_TEST_PASS')
-    : Netlify.env.get('SMTP_PASS');
+    : Netlify.env.get('SMTP_PASS_CH');
   const mailFrom = isDev
     ? Netlify.env.get('SMTP_TEST_FROM')
-    : Netlify.env.get('SMTP_FROM');
+    : Netlify.env.get('SMTP_FROM_CH');
   const mailNotification = isDev
     ? Netlify.env.get('SMTP_TEST_NOTIFICATION')
-    : Netlify.env.get('SMTP_NOTIFICATION');
+    : Netlify.env.get('SMTP_NOTIFICATION_CH');
   const mailReply = isDev
     ? Netlify.env.get('SMTP_TEST_REPLY')
-    : Netlify.env.get('SMTP_REPLY');
+    : Netlify.env.get('SMTP_REPLY_CH');
     
   const transportConfig = {
     pool: true,

@@ -26,6 +26,13 @@ interface ImportMetaEnv {
   readonly SMTP_PORT: string
   readonly SMTP_USER: string
   readonly SMTP_PASS: string
+  readonly SMTP_FROM_CH: string
+  readonly SMTP_NOTIFICATION_CH: string
+  readonly SMTP_REPLY_CH: string
+  readonly SMTP_HOST_CH: string
+  readonly SMTP_PORT_CH: string
+  readonly SMTP_USER_CH: string
+  readonly SMTP_PASS_CH: string
   readonly SMTP_TEST_FROM: string
   readonly SMTP_TEST_NOTIFICATION: string
   readonly SMTP_TEST_REPLY: string
