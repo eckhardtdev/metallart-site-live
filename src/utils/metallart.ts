@@ -11,8 +11,8 @@ const siteIds = {
 }
 export const sitesFilterQuery = (sbLang) => {
   return {
-    sites: {
-      any_in_array: siteIds[sbLang ?? 'default'],
-    },
+    // sitesBlacklist: {
+    //   not_in: siteIds[sbLang ?? 'default'],
+    // },
   }
 }
