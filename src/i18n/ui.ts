@@ -91,6 +91,8 @@ export const ui = {
   },
   'ch': {
     ...defaultTexts,
+    'project_filter.outdoor.outdoors': `Aussen`,
+    'contact.privacy': `Die Verarbeitung der von Ihnen übermittelten personenbezogenen Daten erfolgt ausschliesslich zum Zweck der Bearbeitung Ihres Anliegens. Weitere Informationen können Sie unserer Datenschutzerklärung entnehmen.`,
   },
   en: {
     ...defaultTexts,
