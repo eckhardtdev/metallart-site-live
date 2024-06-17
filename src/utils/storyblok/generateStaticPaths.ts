@@ -73,7 +73,12 @@ export const filterStoryLinks = (links: StoryblokLink[]) => {
 
 export const generateStaticPathsV2 = async (links) => {
   const paths = links.flatMap((link) => {
-    const paths = getLocalizedPaths(link)
+    const paths = getLocalizedPaths(link).filter(
+      // TODO: The function returns `undefined` as the path for all Swiss content for the default (storyblok) language.
+      // This is because we use 'de-ch' for the Swiss content even though the content is defined for the default language.
+      // We should find a better solution to deal with this in the future.
+      (path) => path.props?.page?.path !== undefined,
+    )
 
     return paths
   })

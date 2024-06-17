@@ -25,10 +25,14 @@ export async function getStaticPaths() {
   // }
   // console.log('----- ↑↑↑ links ↑↑↑ -----')
 
-  const paths = await generateStaticPathsV2(validLinks)
+  let paths = await generateStaticPathsV2(validLinks)
   // console.log('----- ↓↓↓ paths ↓↓↓ -----')
+  // paths = paths.sort((a, b) => a.params.slug?.localeCompare(b.params.slug))
   // for (const path of paths) {
-  //   console.log(path.params.slug)
+  //   console.log('SLUG:', path.params.slug)
+  //   if (!path.params.slug) {
+  //     console.log('     ', path)
+  //   }
   // }
   // console.log('----- ↑↑↑ paths ↑↑↑ -----')
 

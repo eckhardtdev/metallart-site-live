@@ -165,7 +165,7 @@ export function getSbSlugWithoutLang(sbSlug: string) {
 export const getStoryConfigKey = (sbSlugWithLang: string) => {
   const sbSlug = getSbSlugWithoutLang(sbSlugWithLang)
   return Object.keys(storyConfigs).find((key) => {
-    return sbSlug.startsWith(key)
+    return sbSlug?.startsWith(key)
   })
 }
 

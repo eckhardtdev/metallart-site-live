@@ -74,7 +74,7 @@ const currentLocale = 'de-de' ?? Astro.currentLocale
 const site = await useSiteConfig({
   url: Astro.url,
   site: currentSite,
-  lang: currentLocale,
+  lang: sbLang,
 })
 const projectsSlug = site?.projectsSlug
 const allProjectsLink =
