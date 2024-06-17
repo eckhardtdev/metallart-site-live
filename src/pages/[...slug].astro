@@ -10,8 +10,6 @@ import { storyHasContent } from '@/utils/storyblok/storyHasContent'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import { componentNames } from '../../storyblok.config.mjs'
 
-// REVIEW: Use server or hybrid?
-// export const prerender = true
 export async function getStaticPaths() {
   const links = await fetchAllLinks()
   const validLinks = filterStoryLinks(links)
@@ -67,21 +65,18 @@ if (page) {
       // language: page.sbLanguage,
     }
     const stories: any = await fetchStories(query)
-    // console.log('########## stories\n', stories)
     const [pageStory] = stories.filter(
       (story) =>
         story.full_slug === page.sbSlug ||
         story.full_slug === page.sbSlug + '/' ||
         story.full_slug + '/' === page.sbSlug,
     )
-    // console.log('########## pageStory\n', pageStory)
 
     if (
       pageStory.content &&
       componentNames.includes(pageStory.content?.component)
     ) {
       story = pageStory
-      // console.log('########## PASSED\n', story)
     }
   } catch (error) {
     if (import.meta.env.DEV || import.meta.env.PUBLIC_ENV === 'preview') {
