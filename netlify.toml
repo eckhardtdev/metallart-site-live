@@ -9,6 +9,21 @@
   to = "/.netlify/functions/:splat" # all function calls will go to this path
   status = 200 # ok code
   force = true # ensure to always redirect
+
+[[redirects]]
+  from = "/"
+  to = "/ch/"
+
+  status = 301
+
+  # By default, redirects won’t be applied if there’s a file with the same
+  # path as the one defined in the `from` property. Setting `force` to `true`
+  # will make the redirect rule take precedence over any existing files.
+  force = true
+
+  # Redirect based on conditions including browser language, geolocation,
+  # identity role, and/or cookie presence.
+  conditions = {Country = ["CH"]}
   
 [images]
   remote_images = ["https://a.storyblok.com/.*"]
