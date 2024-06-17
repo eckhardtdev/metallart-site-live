@@ -88,19 +88,18 @@ export const fetchSiteConfig = async (
 export const useSiteConfig = async (params): Promise<SiteConfiguration> => {
   const storyPathConfig = getSbSiteFromUrl(params.url?.href)
 
-  let config = configs[storyPathConfig.sbConfigSlug]
+  const configKey = `${storyPathConfig.sbLang}/${storyPathConfig.sbConfigSlug}`
+
+  let config = configs[configKey]
   if (!config) {
     config = await fetchSiteConfig(
       storyPathConfig.sbConfigSlug,
       storyPathConfig.sbLang,
     )
     if (config) {
-      configs[storyPathConfig.sbConfigSlug] = config
+      configs[configKey] = config
     }
   }
-
-  // console.log('storyPathConfig', storyPathConfig)
-  // console.log('config', config)
 
   return config
 }
