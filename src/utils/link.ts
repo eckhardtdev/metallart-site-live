@@ -111,9 +111,7 @@ export const applyLinkAttrs = (
     typeof linkOrUrl === 'string' && !isExternal && !isMail && !isAsset
 
   let url = typeof linkOrUrl === 'string' ? linkOrUrl : getLinkUrl(link)
-  // if (isExternal) {
-  //   url = url
-  // }
+
   // TODO: Check also if internalLink sites/germany something like that
   // console.log('URL', url, isStory, isInternal)
   if (isStory || isInternal) {
@@ -122,7 +120,6 @@ export const applyLinkAttrs = (
     if (link?.anchor && typeof link?.anchor === 'string') {
       url += `#${link.anchor}`
     }
-    // console.log('URL', getLinkUrl(link), url)
   }
   if (isMail) {
     url = `mailto:${link.href || link.url || link.story?.email || url}`
@@ -147,7 +144,7 @@ export const applyLinkAttrs = (
       story,
       title,
       rel,
-      ...customLinkAttrs
+      // ...customLinkAttrs
     } = link
 
     attrs = {
@@ -155,7 +152,7 @@ export const applyLinkAttrs = (
       // Double check because Storyblok passes `rel` and `title` as blank strings by default
       rel: rel !== '' ? (rel as string) : undefined,
       title: title !== '' ? (title as string) : undefined,
-      ...customLinkAttrs,
+      // ...customLinkAttrs,
     }
   }
 

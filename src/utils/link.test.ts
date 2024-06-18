@@ -75,10 +75,19 @@ describe('applyLinkAttrs', () => {
     }
     const result = applyLinkAttrs(link)
     expect(result).toEqual({
-      as: ' button',
+      as: 'button',
       type: 'button',
       'x-data': '',
       'x-on:click': '$store.ui.toggleContact(true)',
+    })
+  })
+
+  it('should return <a href="/de/">', () => {
+    const link = '/de/'
+    const result = applyLinkAttrs(link)
+    expect(result).toEqual({
+      as: 'a',
+      href: '/de/',
     })
   })
 

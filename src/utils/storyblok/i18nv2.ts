@@ -332,7 +332,7 @@ export function getLocalizedPages(link) {
   const lang = config ? getLang(sbSlug, config) : undefined
   const path = locale !== undefined ? getPath(sbSlug, locale) : undefined
 
-  console.log('config', sbSlug, locale, lang)
+  // console.log('config', sbSlug, locale, lang)
 
   // {
   //   sbLanguage: 'de',
@@ -402,9 +402,9 @@ export function getLocalizedPages(link) {
 
   const pages = [defaultPage, ...alternatePages].filter(Boolean)
 
-  pages.forEach((page) => {
-    console.log('PAGE', page.path, page.sbSlug)
-  })
+  // pages.forEach((page) => {
+  //   console.log('PAGE', page.path, page.sbSlug)
+  // })
 
   const hreflangs = [
     ...pages
