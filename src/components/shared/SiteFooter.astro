@@ -65,7 +65,7 @@ const directoriesAndMetaLinks = [
             directoriesAndMetaLinks.map((directory) => (
               <li x-data="{ expanded: false }">
                 <div class="flex min-h-12 items-center justify-between">
-                  <a
+                  <HtmlInteractiveElement
                     {...applyLinkAttrs(directory?.link as MultilinkStoryblok)}
                     class={clsx(
                       'block',
@@ -74,7 +74,7 @@ const directoriesAndMetaLinks = [
                     )}
                   >
                     <strong>{directory.label}</strong>
-                  </a>
+                  </HtmlInteractiveElement>
                   {directory.items?.length > 0 && (
                     <button
                       type="button"
@@ -102,10 +102,7 @@ const directoriesAndMetaLinks = [
                   <ul class="pb-2" x-show="expanded" x-collapse>
                     {directory.items?.map((item) => (
                       <li>
-                        {
-                          // TODO: Render buttons as button elements
-                        }
-                        <a
+                        <HtmlInteractiveElement
                           {...applyLinkAttrs(item.link)}
                           class={clsx(
                             'block flex-none py-2 leading-5',
@@ -113,7 +110,7 @@ const directoriesAndMetaLinks = [
                           )}
                         >
                           {item.label}
-                        </a>
+                        </HtmlInteractiveElement>
                       </li>
                     ))}
                   </ul>
