@@ -3,7 +3,9 @@ import { applyLinkAttrs } from '@/utils/link'
 import clsx from 'clsx'
 import Icon from './Icon.astro'
 import { useSiteConfig } from '@/utils/useSiteConfig'
+import { useTranslate } from '@/i18n/utils'
 
+const t = useTranslate(Astro.url)
 const { config } = await useSiteConfig({
   url: Astro.url,
 })
@@ -50,9 +52,9 @@ const { config } = await useSiteConfig({
         )}
         x-data
         x-on:click="$store.ui.toggleContact(false)"
+        aria-label={t('nav.close_nav')}
       >
         <Icon name="close" class="h-6 w-6" />
-        <!-- <span class="sr-only">{t('nav.open_nav')}</span> -->
       </button>
     </div>
   </div>

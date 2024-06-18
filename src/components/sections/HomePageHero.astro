@@ -5,6 +5,7 @@ import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import Section from './Section.astro'
 import Icon from '../shared/Icon.astro'
+import { useTranslate } from '@/i18n/utils'
 
 export type Props = {
   class?: string
@@ -12,6 +13,7 @@ export type Props = {
 }
 
 const { class: className, blok } = Astro.props
+const t = useTranslate(Astro.url)
 
 const splideOptions = {
   arrows: false,
@@ -49,6 +51,7 @@ const splideOptions = {
       class="flex h-12 w-12 items-center justify-center rounded-full border border-creme/50 text-creme"
       x-data
       x-on:click="window.scrollTo({ top: window.scrollY + window.innerHeight, behavior: 'smooth' })"
+      aria-label={t('home_page_hero.scroll')}
     >
       <Icon name="arrow-down" class="h-5 w-4 animate-bounce-rest" />
     </button>

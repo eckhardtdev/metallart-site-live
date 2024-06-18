@@ -1,5 +1,5 @@
 ---
-import { getSiteFromRoute } from '@/i18n/utils'
+import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
 import { applyLinkAttrs } from '@/utils/link'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 import clsx from 'clsx'
@@ -12,6 +12,7 @@ import type { MultilinkStoryblok } from '@/types/storyblok'
 import HtmlInteractiveElement from './HtmlInteractiveElement.astro'
 
 const { ctaVariant } = Astro.props
+const t = useTranslate(Astro.url)
 
 const currentSite = getSiteFromRoute(Astro.url.href)
 const currentLocale = Astro.currentLocale
@@ -82,6 +83,7 @@ const directoriesAndMetaLinks = [
                         'hovers:transition-opacity hovers:hover:opacity-80',
                       )}
                       x-on:click="expanded = ! expanded"
+                      aria-label={t('nav.toggle_directory')}
                     >
                       <Icon
                         name="plus"
