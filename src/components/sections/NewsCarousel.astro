@@ -10,6 +10,7 @@ import type { SbBlokData } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import CarouselImageLink from '../shared/CarouselImageLink.astro'
+import { useTranslate } from '@/i18n/utils'
 
 type CarouselImageLinkProps = {
   title: string
@@ -26,6 +27,7 @@ export type Props = {
 }
 
 const { class: className, blok, story } = Astro.props
+const t = useTranslate(Astro.url)
 const sbLang = story?.lang
 
 type FilterQuery =
@@ -123,6 +125,7 @@ const sizeConfig = sizes[blok.aspectRatio ?? '1/1'] ?? sizes['1/1']
         class="group flex h-10 w-10 cursor-pointer items-center justify-center"
         data-carousel-prev
         x-on:click="() => prev()"
+        aria-label={t('carousel.prev')}
       >
         <Icon
           name="chevron-left"
@@ -134,6 +137,7 @@ const sizeConfig = sizes[blok.aspectRatio ?? '1/1'] ?? sizes['1/1']
         class="group flex h-10 w-10 cursor-pointer items-center justify-center"
         data-carousel-next
         x-on:click="() => next()"
+        aria-label={t('carousel.next')}
       >
         <Icon
           name="chevron-right"

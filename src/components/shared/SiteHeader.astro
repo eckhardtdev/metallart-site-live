@@ -4,6 +4,7 @@ import Icon from './Icon.astro'
 import { getSiteFromRoute, useTranslate } from '@/i18n/utils'
 import { applyLinkAttrs } from '@/utils/link'
 import { useSiteConfig } from '@/utils/useSiteConfig'
+import HtmlInteractiveElement from './HtmlInteractiveElement.astro'
 
 const { floating = true, hideNav = false, hideContact = false } = Astro.props
 
@@ -42,9 +43,13 @@ const t = useTranslate(Astro.url)
         </button>
       )
     }
-    <a {...applyLinkAttrs(site?.homePageSlug)} class="absolute-center block">
+    <HtmlInteractiveElement
+      {...applyLinkAttrs(site?.homePageSlug)}
+      class="absolute-center block"
+    >
       <Icon name="logo" class="w-[10rem] md:w-[14.375rem]" />
-    </a>
+      <span class="sr-only">{t('nav.go_home')}</span>
+    </HtmlInteractiveElement>
     {
       !hideContact && (
         <button

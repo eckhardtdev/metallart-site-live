@@ -15,6 +15,8 @@ const defaultTexts = {
   'nav.home': `Startseite`,
   'nav.open_nav': `Öffne Navigationsmenü`,
   'nav.open_contact_drawer': `Öffne Kontakt`,
+  'carousel.next': 'Weiter',
+  'carousel.prev': 'Zurück',
   'latest_projects_carousel.headline': `Neueste Projekte`,
   'latest_projects_carousel.button': `Alle Projekte`,
   'project_filter.color': `Farbe`,
@@ -97,6 +99,9 @@ export const ui = {
   en: {
     ...defaultTexts,
     'nav.open_contact_drawer': `Open contact`,
+    'nav.go_home': `METALLART Homepage`,
+    'carousel.next': 'Next',
+    'carousel.prev': 'Previous',
     'latest_projects_carousel.headline': `Latest projects`,
     'latest_projects_carousel.button': `All projects`,
     'project_filter.color': `Color`,

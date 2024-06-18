@@ -133,6 +133,7 @@ const sizeConfig = sizes[blok.aspectRatio ?? '4/3'] ?? sizes['4/3']
         class="group flex h-10 w-10 cursor-pointer items-center justify-center"
         data-carousel-prev
         x-on:click="() => prev()"
+        aria-label={t('carousel.prev')}
       >
         <Icon
           name="chevron-left"
@@ -144,6 +145,7 @@ const sizeConfig = sizes[blok.aspectRatio ?? '4/3'] ?? sizes['4/3']
         class="group flex h-10 w-10 cursor-pointer items-center justify-center"
         data-carousel-next
         x-on:click="() => next()"
+        aria-label={t('carousel.next')}
       >
         <Icon
           name="chevron-right"

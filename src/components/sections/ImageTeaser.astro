@@ -8,6 +8,7 @@ import { applyLinkAttrs } from '@/utils/link'
 import clsx from 'clsx'
 import Markdown from '../shared/Markdown.astro'
 import Section from './Section.astro'
+import { nanoid } from 'nanoid'
 
 export type Props = {
   class?: string
@@ -41,6 +42,7 @@ const imageSizes = {
 const imageSize = imageSizes[blok.imageSize ?? 'md'] ?? imageSizes.md
 
 const primaryLink = blok.links?.[0]?.link
+const primaryLinkLabelId = nanoid()
 const linkAttrs = applyLinkAttrs(primaryLink)
 const LinkComponent = linkAttrs?.href ? 'a' : 'div'
 
@@ -74,7 +76,11 @@ const sizes =
       layout,
     )}
   >
-    <LinkComponent class="lg:area-image block" {...linkAttrs}>
+    <LinkComponent
+      class="lg:area-image block"
+      {...linkAttrs}
+      aria-labelledby={primaryLinkLabelId}
+    >
       {
         blok.image?.filename && (
           <StoryblokPicture
@@ -93,7 +99,10 @@ const sizes =
         )
       }
     </LinkComponent>
-    <div class={clsx('lg:area-text self-end px-page-margin py-8 md:p-10')}>
+    <div
+      class={clsx('lg:area-text self-end px-page-margin py-8 md:p-10')}
+      id={primaryLinkLabelId}
+    >
       {
         blok.headline && (
           <HtmlHeading class="text-24 leading-140" order={blok.headingOrder}>

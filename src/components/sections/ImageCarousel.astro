@@ -3,6 +3,7 @@ import Section from '@/components/sections/Section.astro'
 import ButtonGroup from '@/components/shared/ButtonGroup.astro'
 import HtmlHeading from '@/components/shared/HtmlHeading.astro'
 import Icon from '@/components/shared/Icon.astro'
+import { useTranslate } from '@/i18n/utils'
 import type { ImageCarouselStoryblok } from '@/types/storyblok'
 import type { SbBlokData } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
@@ -14,6 +15,7 @@ export type Props = {
 }
 
 const { class: className, blok } = Astro.props
+const t = useTranslate(Astro.url)
 
 const sizes = {
   '3/4': {
@@ -71,6 +73,7 @@ const items = blok.items?.slice(0, 20) ?? []
         class="group flex h-10 w-10 cursor-pointer items-center justify-center"
         data-carousel-prev
         x-on:click="() => prev()"
+        aria-label={t('carousel.prev')}
       >
         <Icon
           name="chevron-left"
@@ -82,6 +85,7 @@ const items = blok.items?.slice(0, 20) ?? []
         class="group flex h-10 w-10 cursor-pointer items-center justify-center"
         data-carousel-next
         x-on:click="() => next()"
+        aria-label={t('carousel.next')}
       >
         <Icon
           name="chevron-right"
