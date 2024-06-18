@@ -29,13 +29,13 @@ const { content, full_slug: fullSlug } = story || {}
 const { datePublished, dateModified } = getStoryDates(story)
 
 const meta = {
-  og_image: content.seo?.og_image,
-  og_title: content.seo?.og_title,
-  description: content.seo?.description,
-  twitter_image: content.seo?.twitter_image,
-  twitter_title: content.seo?.twitter_title,
-  og_description: content.seo?.og_description,
-  twitter_description: content.seo?.twitter_description,
+  og_image: content.seo?.og_image || undefined,
+  og_title: content.seo?.og_title || undefined,
+  description: content.seo?.description || undefined,
+  twitter_image: content.seo?.twitter_image || undefined,
+  twitter_title: content.seo?.twitter_title || undefined,
+  og_description: content.seo?.og_description || undefined,
+  twitter_description: content.seo?.twitter_description || undefined,
   title: content.seo?.title || content?.title || story?.name,
   slug: fullSlug,
   datePublished,
