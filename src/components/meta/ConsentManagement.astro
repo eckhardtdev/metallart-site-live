@@ -2,6 +2,13 @@
 const isProduction = import.meta.env.PUBLIC_ENV === 'production'
 ---
 
+<script is:inline>
+  window.addEventListener('CookiebotOnDialogInit', function () {
+    if (Cookiebot.getDomainUrlParam('CookiebotScan') === 'true')
+      Cookiebot.setOutOfRegion()
+  })
+</script>
+
 {
   // Google Consent Mode
 

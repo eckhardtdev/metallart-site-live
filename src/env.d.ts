@@ -4,6 +4,7 @@ import { Alpine as AlpineType } from 'alpinejs'
 
 declare global {
   var Alpine: AlpineType
+  var Cookiebot: any
 }
 
 interface ImportMetaEnv {
