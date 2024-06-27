@@ -3,7 +3,7 @@ import netlify from '@astrojs/netlify'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
-import sentry from '@sentry/astro'
+// import sentry from '@sentry/astro'
 import storyblok from '@storyblok/astro'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
@@ -93,13 +93,13 @@ export default defineConfig({
     react(),
     // Sentry Error Monitoring
     // https://docs.sentry.io/platforms/javascript/guides/astro/#configure
-    sentry({
-      dsn: 'https://a2da306d88df32d6e51c1cdd861652a8@o4506671757852672.ingest.us.sentry.io/4506700051185664',
-      sourceMapsUploadOptions: {
-        project: 'metallart',
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-      },
-    }),
+    // sentry({
+    //   dsn: 'https://a2da306d88df32d6e51c1cdd861652a8@o4506671757852672.ingest.us.sentry.io/4506700051185664',
+    //   sourceMapsUploadOptions: {
+    //     project: 'metallart',
+    //     authToken: process.env.SENTRY_AUTH_TOKEN,
+    //   },
+    // }),
   ],
   output,
   adapter: netlify({
