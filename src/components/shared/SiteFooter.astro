@@ -239,6 +239,14 @@ const directoriesAndMetaLinks = [
                   {item.label}
                 </HtmlInteractiveElement>
               ))}
+              <button
+                type="button"
+                x-data
+                x-on:click="() => window.Cookiebot.show()"
+                class={clsx('block', metaLinkClasses)}
+              >
+                Cookies
+              </button>
             </div>
           )
         }
