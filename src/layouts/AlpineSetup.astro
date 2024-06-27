@@ -29,16 +29,31 @@
     return 'en'
   }
 
+  function setLanguageCookie(lang) {
+    if (window.Cookiebot?.consent?.preferences) {
+      // @ts-ignore
+      window.cookieStorage.setItem('i18n', JSON.stringify(lang))
+    }
+  }
+
   function setLanguageAndRedirect() {
     const preferredLanguage = findPreferredLanguage(['en', 'de'])
 
     // @ts-ignore
     if (!window.cookieStorage.getItem('i18n')) {
-      // @ts-ignore
-      window.cookieStorage.setItem('i18n', JSON.stringify(preferredLanguage))
+      if (window.Cookiebot?.consent?.preferences) {
+        setLanguageCookie(preferredLanguage)
+      } else {
+        window.addEventListener(
+          'CookiebotOnAccept',
+          () => setLanguageCookie(preferredLanguage),
+          false,
+        )
+      }
     }
     // @ts-ignore
-    const language = JSON.parse(window.cookieStorage.getItem('i18n'))
+    const i18nCookie = window.cookieStorage.getItem('i18n')
+    const language = i18nCookie ? JSON.parse(i18nCookie) : preferredLanguage
     if (language) {
       if (window.location.pathname === '/' && language !== 'en') {
         window.location.href = `/${language}/`

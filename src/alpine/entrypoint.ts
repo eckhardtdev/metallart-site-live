@@ -27,8 +27,10 @@ export default (Alpine: Alpine) => {
 
   Alpine.store('ui', {
     // CookieStorage is defined in AlpineSetup.astro
-    // @ts-ignore
-    lang: Alpine.$persist('en').as('i18n').using(window.cookieStorage),
+    lang: window.Cookiebot?.consent?.preferences
+      ? // @ts-ignore
+        Alpine.$persist('en').as('i18n').using(window.cookieStorage)
+      : 'en',
     setLang(lang: string) {
       this.lang = lang
     },
