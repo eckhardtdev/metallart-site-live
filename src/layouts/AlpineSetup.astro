@@ -37,6 +37,13 @@
   }
 
   function setLanguageAndRedirect() {
+    const referrerHostname = document.referrer
+      ? new URL(document.referrer).hostname
+      : undefined
+    const currentHostname = window.location.hostname
+    const isSameSiteReferrer = referrerHostname === currentHostname
+    if (!isSameSiteReferrer) return
+
     const preferredLanguage = findPreferredLanguage(['en', 'de'])
 
     // @ts-ignore
