@@ -45,7 +45,7 @@
     console.log('referrerHostname', referrerHostname)
     console.log('currentHostname', currentHostname)
     console.log('isSameSiteReferrer', isSameSiteReferrer)
-    if (!isSameSiteReferrer) return
+    if (isSameSiteReferrer) return
 
     const preferredLanguage = findPreferredLanguage(['en', 'de'])
 
