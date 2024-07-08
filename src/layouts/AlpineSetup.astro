@@ -42,6 +42,9 @@
       : undefined
     const currentHostname = window.location.hostname
     const isSameSiteReferrer = referrerHostname === currentHostname
+    console.log('referrerHostname', referrerHostname)
+    console.log('currentHostname', currentHostname)
+    console.log('isSameSiteReferrer', isSameSiteReferrer)
     if (!isSameSiteReferrer) return
 
     const preferredLanguage = findPreferredLanguage(['en', 'de'])
