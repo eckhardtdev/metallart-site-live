@@ -45,7 +45,6 @@
     console.log('referrerHostname', referrerHostname)
     console.log('currentHostname', currentHostname)
     console.log('isSameSiteReferrer', isSameSiteReferrer)
-    if (isSameSiteReferrer) return
 
     const preferredLanguage = findPreferredLanguage(['en', 'de'])
 
@@ -64,7 +63,7 @@
     // @ts-ignore
     const i18nCookie = window.cookieStorage.getItem('i18n')
     const language = i18nCookie ? JSON.parse(i18nCookie) : preferredLanguage
-    if (language) {
+    if (language && !isSameSiteReferrer) {
       if (window.location.pathname === '/' && language !== 'en') {
         window.location.href = `/${language}/`
       }
