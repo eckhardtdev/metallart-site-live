@@ -1,0 +1,21 @@
+export default {
+  allow: [
+    '0BSD',
+    'Apache-2.0',
+    'BSD-2-Clause',
+    'BSD-3-Clause',
+    'CC-BY-4.0',
+    'ISC',
+    'MIT-0',
+    'MIT',
+    'OFL-1.1',
+    'Python-2.0',
+    'BlueOak-1.0.0',
+    'CC0-1.0',
+  ],
+  // exclude: [/^@acme/],
+  format: 'json',
+  production: true,
+  report: 'detailed',
+  direct: false,
+}
