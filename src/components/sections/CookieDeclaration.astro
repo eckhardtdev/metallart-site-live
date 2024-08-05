@@ -1,6 +1,18 @@
-<script
-  is:inline
-  id="CookieDeclaration"
-  src="https://consent.cookiebot.com/00000000-0000-0000-0000-000000000000/cd.js"
-  type="text/javascript"
-  async></script>
+---
+// The Cookie Declaration is essentially a cookie policy you can use on your website.
+// @see https://support.cookiebot.com/hc/en-us/articles/360004374474-What-is-included-in-the-Cookie-Declaration
+
+const cookiebotId = import.meta.env.PUBLIC_COOKIEBOT_ID
+---
+
+{
+  cookiebotId && (
+    <script
+      is:inline
+      id="CookieDeclaration"
+      src={`https://consent.cookiebot.com/${cookiebotId}/cd.js`}
+      type="text/javascript"
+      async
+    />
+  )
+}
