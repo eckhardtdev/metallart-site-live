@@ -12,10 +12,12 @@ export default {
     'Python-2.0',
     'BlueOak-1.0.0',
     'CC0-1.0',
+    // 'UNKNOWN',
   ],
   // exclude: [/^@acme/],
   format: 'json',
   production: true,
   report: 'detailed',
+  // report: 'summary',
   direct: false,
 }
