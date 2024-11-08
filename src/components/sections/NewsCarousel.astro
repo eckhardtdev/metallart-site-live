@@ -2,15 +2,15 @@
 import Section from '@/components/sections/Section.astro'
 import HtmlHeading from '@/components/shared/HtmlHeading.astro'
 import Icon from '@/components/shared/Icon.astro'
+import { useTranslate } from '@/i18n/utils'
 import type { AssetStoryblok, NewsCarouselStoryblok } from '@/types/storyblok'
 import type { PageStoryStoryblok } from '@/types/storyblok-content'
-import { newsSortBy, sitesFilterQuery } from '@/utils/metallart'
+import { sitesFilterQuery, sortNews } from '@/utils/metallart'
 import { fetchStories } from '@/utils/storyblok'
 import type { SbBlokData } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import CarouselImageLink from '../shared/CarouselImageLink.astro'
-import { useTranslate } from '@/i18n/utils'
 
 type CarouselImageLinkProps = {
   title: string
@@ -52,22 +52,24 @@ const storiesQuery = {
   language: sbLang,
   by_slugs: 'global/news/*',
   content_type: 'NewsArticle',
-  sort_by: newsSortBy,
-  per_page: numItems,
+  // sort_by: newsSortBy,
+  // per_page: numItems,
   ...(filter_query ? { filter_query } : undefined),
 }
 const stories = await fetchStories(storiesQuery)
 
 // TODO: Resolve links --> 'items/sample-project'
 const items: Item[] =
-  stories?.map((story) => {
-    const { content } = story
-    return {
-      title: content.title,
-      image: content.cover?.filename ? content.cover : content.image,
-      url: story.full_slug,
-    }
-  }) ?? []
+  sortNews(stories)
+    .slice(0, numItems)
+    .map((story) => {
+      const { content } = story
+      return {
+        title: content.title,
+        image: content.cover?.filename ? content.cover : content.image,
+        url: story.full_slug,
+      }
+    }) ?? []
 
 const [textCard] = blok.textCards ?? []
 if (textCard) {
@@ -84,19 +86,19 @@ const sizes = {
       'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
     ),
     sizes:
-      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+      '(min-width: 1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), (min-width: 768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
   },
   '1/1': {
     track: clsx(
       'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
     ),
     sizes:
-      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+      '(min-width: 1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), (min-width: 768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
   },
   '16/9': {
     track: clsx('auto-cols-[calc(100%_-_var(--gap))] lg:auto-cols-full'),
     sizes:
-      'min-width(1024px) calc(100vw - var(--offset-wide) * 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+      '(min-width: 1024px) calc(100vw - var(--offset-wide) * 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
   },
 }
 const sizeConfig = sizes[blok.aspectRatio ?? '1/1'] ?? sizes['1/1']
