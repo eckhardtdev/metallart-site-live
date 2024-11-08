@@ -1,6 +1,3 @@
-import { applyLinkAttrs } from '@/utils/link'
-import { getImageSrc } from './utils/picture'
-import { getLangFromUrl } from '@/i18n/utils'
 import pDebounce from 'p-debounce'
 
 type InitialState = {
@@ -65,10 +62,10 @@ export function entrygrid(initialState: InitialState) {
     reset() {
       this.filtered = false
       this.activeFilters = []
-      this.filteredResults = []
       this.closestMatchFilters = []
       this.setActiveFiltersByCategory()
       this.updateURL()
+      this.fetchData()
     },
     useClosestMatchFilters() {
       this.activeFilters = this.closestMatchFilters.slice(0)
