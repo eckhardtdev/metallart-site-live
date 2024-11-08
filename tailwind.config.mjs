@@ -353,6 +353,9 @@ export default withMT({
             'ol > li::marker': {
               fontVariantNumeric: 'proportional-nums',
             },
+            'h3': {
+              fontWeight: 400,
+            },
             maxWidth: '1200px',
           },
         },
