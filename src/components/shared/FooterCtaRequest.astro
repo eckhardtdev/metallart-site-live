@@ -22,7 +22,7 @@ const { text, links, showMadeInSalach = true } = Astro.props
       formats={['avif', 'webp']}
       alt="Made in Salach"
       widths={[640, 768, 1024, 1366, 1600, 1920, 3840]}
-      sizes="min-width(768px) 50vw, 100vw"
+      sizes="(min-width: 768px) 50vw, 100vw"
       class="h-full w-full object-cover object-center"
       pictureAttributes={{ class: 'absolute inset-0 w-full h-full' }}
     />

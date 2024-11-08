@@ -23,10 +23,10 @@ const columnConfig = {
 const columnClass = columnConfig[blok.numColumns] ?? columnConfig['3']
 
 const sizesConfig = {
-  full: 'min-width(768px) calc((100vw - var(--gap)) / 2), 100vw',
-  wide: 'min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-wide) * 2)',
+  full: '(min-width: 768px) calc((100vw - var(--gap)) / 2), 100vw',
+  wide: '(min-width: 768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-wide) * 2)',
   content:
-    'min-width(768px) calc((100vw - var(--offset-content) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2)',
+    '(min-width: 768px) calc((100vw - var(--offset-content) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2)',
 }
 const sizes = sizesConfig[blok.containerWidth] ?? sizesConfig.full
 

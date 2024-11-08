@@ -44,7 +44,7 @@ const containerClasses = clsx(
       <div class={clsx(containerClasses)}>
         {items.map((item, index) => (
           <div
-            class={clsx(!squares && 'odd:md:row-span-2')}
+            class={clsx(!squares && 'relative odd:md:row-span-2')}
             x-data={`entrygriditem({id: '${item.id}'})`}
             x-show="visible"
           >

@@ -19,8 +19,9 @@ const imageSizes = {
   'lg': 'h-[45rem]',
 }
 const sizesConfig = {
-  'content': 'min-width(1024px) calc(100vw - var(--offset-content) * 2), 100vw',
-  'wide': 'min-width(1024px) calc(100vw - var(--offset-wide) * 2), 100vw',
+  'content':
+    '(min-width: 1024px) calc(100vw - var(--offset-content) * 2), 100vw',
+  'wide': '(min-width: 1024px) calc(100vw - var(--offset-wide) * 2), 100vw',
   'full': '100vw',
 }
 const sizes = sizesConfig[blok.containerWidth ?? ''] ?? sizesConfig.full
