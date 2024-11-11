@@ -53,12 +53,6 @@ const items: Item[] =
     ?.slice(0, numItems)
     .map((story) => {
       const { content } = story
-      console.log('content', {
-        slug: story.slug,
-        year: content.year,
-        sorted_by_date: story.sorted_by_date,
-        published_at: story.published_at,
-      })
       return {
         title: content.title,
         image: content.cover?.filename ? content.cover : content.image,
