@@ -5,7 +5,7 @@ import { useTranslate } from '@/i18n/utils'
 import EntryLayout from '@/layouts/EntryLayout.astro'
 import type { DatasourceFilter } from '@/types/filter'
 import type { ProjectArchiveStoryblok } from '@/types/storyblok'
-import { projectsSortBy, sitesFilterQuery } from '@/utils/metallart'
+import { sitesFilterQuery, sortProjects } from '@/utils/metallart'
 import { fetchStories, storyblokEditable } from '@/utils/storyblok'
 import {
   getDatasourceByField,
@@ -18,6 +18,7 @@ import type { StoryblokStory } from 'storyblok-generate-ts'
 import Button from '../shared/Button.astro'
 import Icon from '../shared/Icon.astro'
 import ProjectFilter from '../shared/ProjectFilter.astro'
+import { isDevelopment } from '@/utils/env'
 
 export type Props = {
   slug?: string
@@ -36,17 +37,18 @@ const t = useTranslate(Astro.url)
 // const sbLang = getLanguageFromSbStory(story)
 const sbLang = story.lang
 
-const stories = await fetchStories({
-  starts_with: 'global/projects/',
-  language: sbLang,
-  sort_by: projectsSortBy,
-  filter_query: {
-    ...sitesFilterQuery(sbLang),
-  },
-})
+const stories =
+  (await fetchStories({
+    starts_with: 'global/projects/',
+    language: sbLang,
+    // sort_by: projectsSortBy,
+    filter_query: {
+      ...sitesFilterQuery(sbLang),
+    },
+  })) ?? []
 
 const items =
-  stories?.map(
+  sortProjects(stories).map(
     (story) =>
       ({
         ...story.content,
@@ -180,6 +182,8 @@ const entries = items.map((item) => {
   }
   return entry
 })
+
+// console.log(items)
 ---
 
 <EntryLayout story={story} {...storyblokEditable(blok)}>
@@ -188,6 +192,28 @@ const entries = items.map((item) => {
       blok.bodyBefore?.map((sectionBlok) => (
         <StoryblokComponent blok={sectionBlok} />
       ))
+    }
+    {
+      isDevelopment() && (
+        <div>
+          <table>
+            <tr>
+              <th class="pr-10 text-left font-bold">Year</th>
+              <th class="pr-10 text-left font-bold">Sort by date</th>
+              <th class="pr-10 text-left font-bold">Published at</th>
+              <th class="pr-10 text-left font-bold">Created at</th>
+            </tr>
+            {stories?.map((story) => (
+              <tr>
+                <td class="pr-10">{story.content?.year}</td>
+                <td class="pr-10">{story.sort_by_date}</td>
+                <td class="pr-10">{story.published_at}</td>
+                <td class="pr-10">{story.created_at}</td>
+              </tr>
+            ))}
+          </table>
+        </div>
+      )
     }
     <div
       x-data={`entrygrid({items: ${JSON.stringify(entries)}})`}

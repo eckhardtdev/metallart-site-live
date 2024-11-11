@@ -3,20 +3,21 @@ import EntryGrid from '@/components/shared/EntryGrid.astro'
 import type { Props as EntryGridItemProps } from '@/components/shared/EntryGridItem.astro'
 import { useTranslate } from '@/i18n/utils'
 import EntryLayout from '@/layouts/EntryLayout.astro'
+import type { DatasourceFilter } from '@/types/filter'
 import type { NewsArchiveStoryblok } from '@/types/storyblok'
+import { sitesFilterQuery, sortNews } from '@/utils/metallart'
 import { fetchStories, storyblokEditable } from '@/utils/storyblok'
+import {
+  getDatasourceByField,
+  getFieldsForDatasources,
+} from '@/utils/storyblok/datasource-field-mapping'
 import { fetchDatasourceEntries } from '@/utils/storyblok/fetchDatasources'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import type { StoryblokStory } from 'storyblok-generate-ts'
 import Button from '../shared/Button.astro'
 import ProjectFilter from '../shared/ProjectFilter.astro'
-import type { DatasourceFilter } from '@/types/filter'
-import {
-  getDatasourceByField,
-  getFieldsForDatasources,
-} from '@/utils/storyblok/datasource-field-mapping'
-import { newsSortBy, sitesFilterQuery } from '@/utils/metallart'
+import { isDevelopment } from '@/utils/env'
 
 export type Props = {
   slug?: string
@@ -37,13 +38,13 @@ const stories =
   (await fetchStories({
     starts_with: 'global/news/',
     language: sbLang,
-    sort_by: newsSortBy,
+    // sort_by: newsSortBy,
     filter_query: {
       ...sitesFilterQuery(sbLang),
     },
   })) ?? []
 
-const items = stories.map(
+const items = sortNews(stories).map(
   (story) =>
     ({
       ...story.content,
@@ -147,6 +148,28 @@ const entries = items.map((item) => {
       blok.bodyBefore?.map((sectionBlok) => (
         <StoryblokComponent blok={sectionBlok} />
       ))
+    }
+    {
+      isDevelopment() && (
+        <div>
+          <table>
+            <tr>
+              <th class="pr-10 text-left font-bold">Year</th>
+              <th class="pr-10 text-left font-bold">Sort by date</th>
+              <th class="pr-10 text-left font-bold">Published at</th>
+              <th class="pr-10 text-left font-bold">Created at</th>
+            </tr>
+            {stories?.map((story) => (
+              <tr>
+                <td class="pr-10">{story.content?.date}</td>
+                <td class="pr-10">{story.sort_by_date}</td>
+                <td class="pr-10">{story.published_at}</td>
+                <td class="pr-10">{story.created_at}</td>
+              </tr>
+            ))}
+          </table>
+        </div>
+      )
     }
     <div
       x-data={`entrygrid({items: ${JSON.stringify(entries)}, type:'news'})`}

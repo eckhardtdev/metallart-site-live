@@ -25,8 +25,8 @@ const imageLayouts = [
 const images = blok.images?.slice(0, 2) ?? []
 const sizes =
   blok.containerWidth === 'full'
-    ? 'min-width(768px) 50vw, 100vw'
-    : 'min-width(1024px) calc(50vw - var(--offset-content)), min-width(768px) 50vw, 100vw'
+    ? '(min-width: 768px) 50vw, 100vw'
+    : '(min-width: 1024px) calc(50vw - var(--offset-content)), (min-width: 768px) 50vw, 100vw'
 ---
 
 <Section blok={blok} defaultSpacing="md" class={clsx('area', className)}>

@@ -7,9 +7,6 @@ import {
 
 export async function getStaticPaths() {
   const stories = await fetchStories()
-  console.log('----> stories', stories.length)
-  // const validStories = filterStoryLinks(stories)
-  // console.log('----> validStories', validStories.length)
 
   const sitemaps = [
     {

@@ -9,7 +9,7 @@ import type {
   LatestProjectsCarouselStoryblok,
 } from '@/types/storyblok'
 import type { PageStoryStoryblok } from '@/types/storyblok-content'
-import { projectsSortBy, sitesFilterQuery } from '@/utils/metallart'
+import { sitesFilterQuery, sortProjects } from '@/utils/metallart'
 import { fetchStories } from '@/utils/storyblok'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 import type { SbBlokData } from '@storyblok/astro'
@@ -40,8 +40,8 @@ const projects = await fetchStories({
   language: sbLang,
   by_slugs: 'global/projects/*',
   content_type: 'Project',
-  per_page: numItems,
-  sort_by: projectsSortBy,
+  // per_page: numItems,
+  // sort_by: projectsSortBy,
   filter_query: {
     ...sitesFilterQuery(sbLang),
   },
@@ -49,14 +49,16 @@ const projects = await fetchStories({
 
 // TODO: Resolve links --> 'projects/sample-project'
 const items: Item[] =
-  projects?.map((story) => {
-    const { content } = story
-    return {
-      title: content.title,
-      image: content.cover?.filename ? content.cover : content.image,
-      url: story.full_slug,
-    }
-  }) ?? []
+  sortProjects(projects)
+    ?.slice(0, numItems)
+    .map((story) => {
+      const { content } = story
+      return {
+        title: content.title,
+        image: content.cover?.filename ? content.cover : content.image,
+        url: story.full_slug,
+      }
+    }) ?? []
 
 const [textCard] = blok.textCards ?? []
 if (textCard) {
@@ -92,19 +94,19 @@ const sizes = {
       'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
     ),
     sizes:
-      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+      '(min-width: 1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), (min-width: 768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
   },
   '1/1': {
     track: clsx(
       'auto-cols-[calc(100%_-_var(--gap))] md:auto-cols-[calc((100%_-_var(--gap))_/_2)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_3)]',
     ),
     sizes:
-      'min-width(1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), min-width(768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+      '(min-width: 1024px) calc((100vw - var(--offset-wide) * 2 - var(--gap) * 2) / 3), (min-width: 768px) calc((100vw - var(--offset-wide) * 2 - var(--gap)) / 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
   },
   '16/9': {
     track: clsx('auto-cols-[calc(100%_-_var(--gap))] lg:auto-cols-full'),
     sizes:
-      'min-width(1024px) calc(100vw - var(--offset-wide) * 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
+      '(min-width: 1024px) calc(100vw - var(--offset-wide) * 2), calc(100vw - var(--offset-content) * 2 - var(--gap))',
   },
 }
 const sizeConfig = sizes[blok.aspectRatio ?? '4/3'] ?? sizes['4/3']
